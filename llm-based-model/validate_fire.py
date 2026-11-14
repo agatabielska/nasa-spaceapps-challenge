@@ -154,6 +154,7 @@ def main():
     post = [datetime.fromisoformat(x) for x in A.post] if A.post else [a0 - timedelta(days=7), a0 + timedelta(days=20)]
     print("Fetching Sentinel-2 (Microsoft Planetary Computer)...")
     dnbr = s2_nbr(g, bbox, *pre) - s2_nbr(g, bbox, *post)
+    np.save(folder / "dnbr.npy", dnbr.astype("float32"))
     res = {}
     for k in (1, A.coarsen):
         d, n = coarsen(diff, k), coarsen(dnbr, k)

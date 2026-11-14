@@ -1,0 +1,94 @@
+{
+  "params": {
+    "smooth_px": 20,
+    "smooth_m": 800.0,
+    "thresh_dB": -0.5,
+    "min_km2": 1.0
+  },
+  "n_regions": 7,
+  "total_area_km2": 95.77,
+  "regions": [
+    {
+      "id": 5,
+      "area_km2": 66.96,
+      "mean_smoothed_dB": -1.29,
+      "min_smoothed_dB": -3.92,
+      "lat": 40.3618,
+      "lon": -4.7068
+    },
+    {
+      "id": 1,
+      "area_km2": 10.13,
+      "mean_smoothed_dB": -0.88,
+      "min_smoothed_dB": -2.33,
+      "lat": 40.4345,
+      "lon": -4.6288
+    },
+    {
+      "id": 3,
+      "area_km2": 6.7,
+      "mean_smoothed_dB": -0.89,
+      "min_smoothed_dB": -2.25,
+      "lat": 40.4138,
+      "lon": -4.5279
+    },
+    {
+      "id": 7,
+      "area_km2": 4.41,
+      "mean_smoothed_dB": -0.61,
+      "min_smoothed_dB": -0.89,
+      "lat": 40.3146,
+      "lon": -4.8765
+    },
+    {
+      "id": 2,
+      "area_km2": 3.59,
+      "mean_smoothed_dB": -0.88,
+      "min_smoothed_dB": -1.55,
+      "lat": 40.4348,
+      "lon": -4.5831
+    },
+    {
+      "id": 4,
+      "area_km2": 2.38,
+      "mean_smoothed_dB": -0.69,
+      "min_smoothed_dB": -1.13,
+      "lat": 40.4117,
+      "lon": -4.5871
+    },
+    {
+      "id": 6,
+      "area_km2": 1.6,
+      "mean_smoothed_dB": -0.8,
+      "min_smoothed_dB": -1.4,
+      "lat": 40.3455,
+      "lon": -4.5938
+    }
+  ],
+  "score_vs_dNBR": {
+    "dNBR>0.27": {
+      "precision": 0.774264287388262,
+      "recall": 0.377630998840646,
+      "F1": 0.5076610690374274,
+      "IoU": 0.34017813145836856,
+      "burned_share_by_dNBR": 0.12293748337590774,
+      "detected_share": 0.059960152364510515
+    },
+    "dNBR>0.44": {
+      "precision": 0.5656031336837524,
+      "recall": 0.4444269065845895,
+      "F1": 0.4977460888011549,
+      "IoU": 0.33133286263434536,
+      "burned_share_by_dNBR": 0.07630872382175961,
+      "detected_share": 0.059960152364510515
+    },
+    "dNBR>0.66": {
+      "precision": 0.22056312564866584,
+      "recall": 0.40264026402640263,
+      "F1": 0.28500356903376517,
+      "IoU": 0.16618318492545972,
+      "burned_share_by_dNBR": 0.032845693293652986,
+      "detected_share": 0.059960152364510515
+    }
+  }
+}
