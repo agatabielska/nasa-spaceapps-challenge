@@ -14,28 +14,33 @@ export class LMStudio {
     if(!['127.0.0.1','localhost','[::1]'].includes(url.hostname)||!['http:','https:'].includes(url.protocol)||url.username||url.password)throw new Error('LMSTUDIO_BASE_URL must be a loopback URL');
     this.model=env.LMSTUDIO_MODEL??'';this.token=env.LMSTUDIO_API_KEY??'';
   }
-  async request(path:string, body?:unknown, timeout=5000) {
+  async request(path:string, body?:unknown, timeout=5000, signal?:AbortSignal) {
     let response:Response;
-    try {response=await fetch(this.base+path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(this.token?{Authorization:'Bearer '+this.token}:{})},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(timeout),redirect:'error'});}
-    catch {throw new ServiceError(503,'MODEL_UNREACHABLE','LM Studio nie odpowiada. Uruchom lokalny serwer na porcie 1234 i załaduj model.');}
+    const limit=AbortSignal.timeout(timeout);
+    try {response=await fetch(this.base+path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(this.token?{Authorization:'Bearer '+this.token}:{})},body:body?JSON.stringify(body):undefined,signal:signal?AbortSignal.any([signal,limit]):limit,redirect:'error'});}
+    catch {
+      if(signal?.aborted)throw new ServiceError(499,'CANCELLED','The request was cancelled.');
+      if(limit.aborted)throw new ServiceError(504,'MODEL_TIMEOUT','LM Studio did not answer in time. Try a shorter question or check the model load.');
+      throw new ServiceError(503,'MODEL_UNREACHABLE','LM Studio is not responding. Start its local server on port 1234 and load a model.');
+    }
     if(!response.ok) {
-      if(response.status===401)throw new ServiceError(503,'MODEL_AUTH','LM Studio wymaga tokenu. Ustaw LMSTUDIO_API_KEY w .env.local.');
-      throw new ServiceError(502,'MODEL_ERROR',`LM Studio odrzuciło żądanie (HTTP ${response.status}). Sprawdź model i jego obsługę narzędzi w LM Studio.`);
+      if(response.status===401)throw new ServiceError(503,'MODEL_AUTH','LM Studio requires a token. Set LMSTUDIO_API_KEY in .env.local.');
+      throw new ServiceError(502,'MODEL_ERROR',`LM Studio rejected the request (HTTP ${response.status}). Check the model and its tool support in LM Studio.`);
     }
     return response.json();
   }
   async status(){
     try {const data=await this.request('/models');const models=(data.data??[]).map((m:{id:string})=>m.id).filter((id:unknown)=>typeof id==='string');
       const selected=this.model|| (models.length===1?models[0]:null);
-      return {available:!!selected&&models.includes(selected),model:selected,models,message:!models.length?'Załaduj model w LM Studio.':!selected?'Wybierz model w .env.local (LMSTUDIO_MODEL).':!models.includes(selected)?'Skonfigurowany model nie jest dostępny.':'Lokalny model gotowy'};
-    }catch(e){return {available:false,model:null,models:[] as string[],message:e instanceof Error?e.message:'LM Studio niedostępne'};}
+      return {available:!!selected&&models.includes(selected),model:selected,models,message:!models.length?'Load a model in LM Studio.':!selected?'Choose a model in .env.local (LMSTUDIO_MODEL).':!models.includes(selected)?'The configured model is not available.':'Local model ready'};
+    }catch(e){return {available:false,model:null,models:[] as string[],message:e instanceof Error?e.message:'LM Studio unavailable'};}
   }
-  async complete(model:string,messages:Message[],tools:unknown[]){
-    const data=await this.request('/chat/completions',{model,messages,tools,tool_choice:'auto',temperature:0.1,max_tokens:1600,stream:false},90000);
+  async complete(model:string,messages:Message[],tools:unknown[],signal?:AbortSignal){
+    const data=await this.request('/chat/completions',{model,messages,tools,tool_choice:'auto',temperature:0.1,max_tokens:1600,stream:false},90000,signal);
     const choice=data.choices?.[0];
-    if(!choice?.message||choice.finish_reason==='length')throw new ServiceError(502,'MODEL_OUTPUT','Model nie ukończył odpowiedzi. Spróbuj krótszego pytania lub zwiększ limit kontekstu.');
+    if(!choice?.message||choice.finish_reason==='length')throw new ServiceError(502,'MODEL_OUTPUT','The model did not finish its answer. Try a shorter question or increase the context length.');
     const parsed=outputSchema.safeParse(choice.message);
-    if(!parsed.success)throw new ServiceError(502,'MODEL_OUTPUT','Model zwrócił niepoprawny format odpowiedzi lub narzędzi. Sprawdź szablon czatu w LM Studio.');
+    if(!parsed.success)throw new ServiceError(502,'MODEL_OUTPUT','The model returned an invalid answer or tool format. Check the chat template in LM Studio.');
     return {...parsed.data,content:parsed.data.content??null} as Message;
   }
 }

@@ -49,7 +49,8 @@ Standard macOS CLI location: `~/.lmstudio/bin/lms`. For model load keys/settings
 
 ## Troubleshooting
 
-- **LM Studio nie odpowiada:** start the server and check port 1234.
+- **LM Studio is not responding:** start the server and check port 1234.
+- **Orbit is still answering the previous question:** wait for the answer or press Cancel in the chat.
 - **Model not configured:** copy the exact ID into `.env.local` and restart the app. Auto-selection works only when exactly one model is advertised.
 - **HTTP 401:** set the local API token.
 - **HTTP error/no tools:** check model support, chat template and LM Studio logs.

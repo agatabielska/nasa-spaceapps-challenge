@@ -27,20 +27,23 @@ type Session={messages:Message[];resultIds:string[];lastSearch:unknown;updated:n
 export class Orbit {
   catalog:Catalog;lm:LMStudio;sessions=new Map<string,Session>();
   constructor(catalog:Catalog,lm:LMStudio){this.catalog=catalog;this.lm=lm;}
-  async chat(raw:ChatInput):Promise<OrbitReply>{
+  async chat(raw:ChatInput,signal?:AbortSignal):Promise<OrbitReply>{
     const input=chatSchema.parse(raw),now=Date.now();
-    for(const [id,s] of this.sessions)if(now-s.updated>3600000)this.sessions.delete(id);
+    for(const [id,s] of this.sessions)if(now-s.updated>3600000&&!s.busy)this.sessions.delete(id);
     const sessionId=input.sessionId??randomUUID();
     let session=this.sessions.get(sessionId);
-    if(input.sessionId&&!session)throw new ServiceError(409,'SESSION_EXPIRED','Sesja Orbita wygasła. Rozpocznij nową rozmowę.');
-    if(!session){if(this.sessions.size>=100)throw new ServiceError(429,'SESSION_LIMIT','Zbyt wiele sesji. Spróbuj później.');session={messages:[],resultIds:[],lastSearch:null,updated:now,busy:false};this.sessions.set(sessionId,session);}
-    if(session.busy)throw new ServiceError(409,'CHAT_BUSY','Orbit odpowiada jeszcze na poprzednie pytanie.');
+    if(input.sessionId&&!session)throw new ServiceError(409,'SESSION_EXPIRED','The Orbit conversation expired. Please ask again to start a new one.');
+    if(!session){if(this.sessions.size>=100)throw new ServiceError(429,'SESSION_LIMIT','Too many conversations. Please try again later.');session={messages:[],resultIds:[],lastSearch:null,updated:now,busy:false};this.sessions.set(sessionId,session);}
+    if(session.busy)throw new ServiceError(409,'CHAT_BUSY','Orbit is still answering the previous question.');
     session.busy=true;session.updated=now;
     try {
       const status=await this.lm.status();
       if(!status.available||!status.model)throw new ServiceError(503,'MODEL_UNAVAILABLE',status.message);
       const selected=input.context.selectedEventId?this.catalog.get(input.context.selectedEventId):null;
-      const system=`You are Orbit, an EarthSignal map navigator. Reply in the user's language. Reasoning: low.
+      // The browser reports what it really lists. Results whose navigation was skipped must not be treated as shown.
+      const listed=input.context.listedIds??session.resultIds;
+      const synced=listed.length===session.resultIds.length&&session.resultIds.every(id=>listed.includes(id));
+      const system=`You are Orbit, an EarthSignal map navigator. Always reply in the language of the user's latest message (Polish or English), even if earlier messages used another language. Reasoning: low.
 You MUST query tools for event facts and search results. You navigate a LOCAL database, not the web or a live disaster service.
 Never claim an event is absent in the real world just because the catalog has no results.
 Never invent event IDs, dates, measurements or completed processing. Analysis availability must be read from actual database records.
@@ -52,18 +55,20 @@ If user requests 'this area', use withinView=true. Event dates differ from satel
 After one unambiguous search result, focus_event is appropriate. For multiple results keep the list and offer selection. 'second one' refers to the ordered previous results.
 For questions about selected events call get_event. For interpretation requests call get_event/start_guide and explain actual available observations and limitations, without pretending to see rasters.
 No inference from a change in SAR backscatter to burned area, casualties, ice volume or vertical displacement without a supporting analysis.
-Keep replies concise and use plain text, not Markdown formatting. Explain provenance in ordinary language; do not print internal field names such as catalogVerified. Cite sources using supplied source URLs only. Do not expose reasoning or tool syntax.
+Keep replies concise and use plain text, not Markdown formatting. Explain provenance in ordinary language; do not print internal field names such as catalogVerified. Quote event titles exactly as stored; do not translate them. Cite sources using supplied source URLs only. Do not expose reasoning or tool syntax.
+When you focus an event while the chat is open, its summary appears at the top of the chat panel; say that it is shown there rather than claiming a separate card opened.
 Catalog places: ${JSON.stringify(this.catalog.facets())}
-Current UI: ${JSON.stringify({...input.context,selectedEvent:selected})}
-Previous ordered search results: ${JSON.stringify(session.resultIds)}
-Previous search arguments: ${JSON.stringify(session.lastSearch)}`;
+Current UI: ${JSON.stringify({...input.context,listedIds:undefined,selectedEvent:selected})}
+Events currently listed in the sidebar, in display order (use for 'the second one'): ${JSON.stringify(listed)}
+Previous search arguments: ${synced?JSON.stringify(session.lastSearch):'null (the user is not viewing the results of the previous search)'}`;
       const conversation:Message[]=[{role:'system',content:system},...session.messages.slice(-10),{role:'user',content:input.message}];
       const actions:UIAction[]=[],records=new Map<string,CatalogEvent>(),used:string[]=[];
-      let lastIds=[...session.resultIds],lastSearch:unknown=session.lastSearch;
+      let lastIds=[...listed],lastSearch:unknown=synced?session.lastSearch:null;
       for(let round=0;round<6;round++){
-        const message=await this.lm.complete(status.model,conversation,tools);
+        if(signal?.aborted)throw new ServiceError(499,'CANCELLED','The request was cancelled.');
+        const message=await this.lm.complete(status.model,conversation,tools,signal);
         if(message.tool_calls?.length){
-          if(message.tool_calls.length>6)throw new ServiceError(502,'TOOL_LIMIT','Model zażądał zbyt wielu operacji.');
+          if(message.tool_calls.length>6)throw new ServiceError(502,'TOOL_LIMIT','The model requested too many operations.');
           conversation.push({role:'assistant',content:message.content??null,tool_calls:message.tool_calls});
           for(const call of message.tool_calls){
             let result:unknown;
@@ -93,7 +98,7 @@ Previous search arguments: ${JSON.stringify(session.lastSearch)}`;
           continue;
         }
         const text=message.content?.trim();
-        if(!text)throw new ServiceError(502,'EMPTY_REPLY','Model nie zwrócił odpowiedzi. Sprawdź szablon modelu i obsługę narzędzi.');
+        if(!text)throw new ServiceError(502,'EMPTY_REPLY','The model returned no answer. Check its chat template and tool support.');
         // Only commit navigation after the entire tool cycle completed successfully.
         session.messages.push({role:'user',content:input.message},{role:'assistant',content:text});
         session.messages=session.messages.slice(-10);session.resultIds=lastIds;
@@ -102,7 +107,7 @@ Previous search arguments: ${JSON.stringify(session.lastSearch)}`;
         const uniqueActions=actions.filter((a,i)=>i===0||JSON.stringify(a)!==JSON.stringify(actions[i-1]));
         return {sessionId,text,actions:uniqueActions,events:[...records.values()],sources,model:status.model,revision:input.context.revision,toolsUsed:used};
       }
-      throw new ServiceError(502,'TOOL_LIMIT','Model nie zakończył wyszukiwania. Spróbuj bardziej precyzyjnego pytania.');
+      throw new ServiceError(502,'TOOL_LIMIT','The model did not finish searching. Try a more specific question.');
     }finally{session.busy=false;session.updated=Date.now();}
   }
 }

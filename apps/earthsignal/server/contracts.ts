@@ -36,6 +36,8 @@ export const chatSchema = z.object({
     filters: z.object({search:z.string().max(300), kinds:z.array(z.enum(kinds)).max(5),
       from:day, to:day, documentedOnly:z.boolean(), viewOnly:z.boolean()}).strict(),
     revision: z.number().int().nonnegative(),
+    // Ordered IDs currently listed in the sidebar: what the user actually sees.
+    listedIds: z.array(z.string().max(100)).max(100).optional(),
   }).strict(),
 }).strict();
 export type ChatInput = z.infer<typeof chatSchema>;

@@ -26,7 +26,32 @@ test('model failure cannot commit a partially prepared navigation',async()=>{
 });
 test('expired conversation is explicit and remote model endpoints are forbidden',async()=>{
   const c=new Catalog(':memory:',readSeed());try{
-    const orbit=new Orbit(c,model([]));await assert.rejects(orbit.chat({message:'test',sessionId:'2ddf521e-1b4c-4df4-883f-40b570f48436',context}),/wygasła/);
+    const orbit=new Orbit(c,model([]));await assert.rejects(orbit.chat({message:'test',sessionId:'2ddf521e-1b4c-4df4-883f-40b570f48436',context}),/expired/);
     assert.throws(()=>new LMStudio({LMSTUDIO_BASE_URL:'https://example.com/v1'}),/loopback/);
+  }finally{c.close();}
+});
+test('results the browser never displayed are not used as the ordered list',async()=>{
+  const c=new Catalog(':memory:',readSeed());try{
+    const prompts:string[]=[];const lm=model([call('search_events',{...search,kinds:['volcano'],countries:null,region:'Europe'}),{role:'assistant',content:'Two volcanoes.'},{role:'assistant',content:'Which one?'},{role:'assistant',content:'Which one?'}]);
+    const complete=lm.complete;lm.complete=async(m,messages,t)=>{prompts.push(String(messages[0].content));return complete.call(lm,m,messages,t);};
+    const orbit=new Orbit(c,lm);const first=await orbit.chat({message:'volcanoes in Europe',context});
+    const shown=first.actions.find(a=>a.type==='show_results');assert.ok(shown&&shown.type==='show_results'&&shown.eventIds.length===2);
+    // When the browser shows those results (in any order), the previous search remains available for refinements.
+    await orbit.chat({message:'only the first',sessionId:first.sessionId,context:{...context,listedIds:[...shown.eventIds].reverse()}});
+    assert.match(prompts.at(-1)!,/Previous search arguments: \{/);
+    // Navigation was skipped in the browser, which lists only Mozambique: the stale search must not be reused.
+    await orbit.chat({message:'open the second one',sessionId:first.sessionId,context:{...context,listedIds:['mozambique']}});
+    assert.match(prompts.at(-1)!,/display order[^\n]*\["mozambique"\]/);assert.match(prompts.at(-1)!,/Previous search arguments: null/);
+  }finally{c.close();}
+});
+test('cancelling a request stops the model call and frees the conversation',async()=>{
+  const c=new Catalog(':memory:',readSeed());try{
+    const lm=model([{role:'assistant',content:'Ready again.'}]);const complete=lm.complete;let calls=0,started=()=>{};
+    const waiting=new Promise<void>(resolve=>{started=resolve;});
+    lm.complete=async(m,messages,t,signal)=>{if(calls++===0){started();return new Promise((_,reject)=>signal!.addEventListener('abort',()=>reject(new Error('aborted'))));}return complete.call(lm,m,messages,t);};
+    const orbit=new Orbit(c,lm),controller=new AbortController();
+    const first=orbit.chat({message:'slow',context},controller.signal);await waiting;controller.abort();await assert.rejects(first);
+    const [sessionId]=orbit.sessions.keys();assert.equal(orbit.sessions.get(sessionId)!.busy,false);
+    assert.equal((await orbit.chat({message:'again',sessionId,context})).text,'Ready again.');
   }finally{c.close();}
 });

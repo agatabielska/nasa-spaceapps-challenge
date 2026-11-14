@@ -12,7 +12,7 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const catalog=new Catalog(resolve(root,process.env.EARTHSIGNAL_DB_PATH??'.local/earthsignal.sqlite'),readSeed());
 const lm=new LMStudio(),orbit=new Orbit(catalog,lm);
 const port=Number(process.env.API_PORT??8787);
-function json(res:ServerResponse,status:number,data:unknown){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));}
+function json(res:ServerResponse,status:number,data:unknown){if(res.destroyed)return;res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));}
 async function body(req:IncomingMessage){let content='';for await(const chunk of req){content+=chunk;if(Buffer.byteLength(content)>16000)throw new ServiceError(413,'BODY_LIMIT','Message too large');}try{return JSON.parse(content);}catch{throw new ServiceError(400,'INVALID_JSON','Invalid JSON body');}}
 const origins=new Set(['http://127.0.0.1:5173','http://localhost:5173',`http://127.0.0.1:${port}`,`http://localhost:${port}`]);
 const server=createServer(async(req,res)=>{
@@ -30,7 +30,12 @@ const server=createServer(async(req,res)=>{
     }
     if(req.method==='GET'&&url.pathname==='/api/health')return json(res,200,{ok:true,database:'sqlite',events:catalog.search({}).total});
     if(req.method==='GET'&&url.pathname==='/api/orbit/status')return json(res,200,await lm.status());
-    if(req.method==='POST'&&url.pathname==='/api/orbit/chat')return json(res,200,await orbit.chat(chatSchema.parse(await body(req))));
+    if(req.method==='POST'&&url.pathname==='/api/orbit/chat'){
+      const input=chatSchema.parse(await body(req)),controller=new AbortController();
+      // Stop the model call when the browser cancels or disconnects, so the session is free again.
+      res.on('close',()=>{if(!res.writableFinished)controller.abort();});
+      return json(res,200,await orbit.chat(input,controller.signal));
+    }
     if(url.pathname.startsWith('/api/'))throw new ServiceError(404,'NOT_FOUND','Endpoint not found');
     if(req.method!=='GET'&&req.method!=='HEAD')throw new ServiceError(405,'METHOD','Method not allowed');
     const dist=resolve(root,'dist');let file=resolve(dist,'.'+decodeURIComponent(url.pathname));

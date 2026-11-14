@@ -69,7 +69,7 @@ Examples are suggestions, not a fixed list of supported prompts:
 - „Pokaż tylko wydarzenia z gotową analizą NISAR”.
 - „Otwórz drugie wydarzenie z ostatniej listy”.
 
-Conversation state is in API memory, expires after an hour of inactivity, and resets on server restart. Expiration is explicit. Delayed navigation is skipped if the user changes the map/filters while waiting. When LM Studio is unavailable, the catalog still works and chat shows an error; no keyword or cloud fallback is used.
+Conversation state is in API memory, expires after an hour of inactivity, and resets on server restart. Expiration is explicit. Delayed navigation is skipped if the user changes the map/filters while waiting; the browser sends the ordered list it actually shows, so follow-ups such as "the second one" never refer to results that were not displayed. A pending answer shows its elapsed time and can be cancelled, which also stops the model call on the API (including through the Vite dev proxy). Orbit answers in the language of the latest message and keeps catalog titles unchanged. When LM Studio is unavailable, the catalog still works and chat shows an error; no keyword or cloud fallback is used.
 
 ## API
 
