@@ -1,0 +1,21 @@
+[project]
+name = "nisar-event-atlas"
+version = "0.1.0"
+description = "Before/after NISAR images for a bounding box and event date"
+requires-python = ">=3.10"
+dependencies = [
+    "asf_search",
+    "h5py",
+    "numpy",
+    "pyproj",
+    "matplotlib",
+    "fsspec",
+    "aiohttp",
+    "shapely",
+]
+
+[dependency-groups]
+# only needed for the InSAR displacement script (venezuela_pipeline.py)
+insar = ["rasterio", "nisar-pytools"]
+# optical ground truth for validate_fire.py
+validate = ["rasterio", "pystac-client", "planetary-computer"]
