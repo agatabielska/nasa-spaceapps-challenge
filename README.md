@@ -12,8 +12,9 @@ npm run dev
 ```
 
 Run `npm test` and `npm run build` from that directory to verify the application.
-The current version contains the event catalog and local Orbit navigator; database,
-live LLM integration and a processed NISAR case study are subsequent work.
+The current version uses a local SQLite catalog and LM Studio for Orbit's natural-language
+search and navigation. See the application README for local model/API configuration.
+A processed NISAR case study remains subsequent work. No external hosting is required.
 
 Reproducible research code for bi-temporal change detection: a model zoo, two data
 modules (OSCD optical, NISAR SAR), Optuna tuning, full Weights & Biases tracking and

@@ -7,3 +7,14 @@ dist/
 # Generated TypeScript state and hosting-specific metadata
 *.tsbuildinfo
 .openai/
+
+# Local catalog and SQLite journal files
+.local/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Track the small, reviewable seed despite the research repo data/ ignore rule
+!/data/
+/data/*
+!/data/events.seed.json

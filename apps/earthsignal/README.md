@@ -1,50 +1,100 @@
-# EarthSignal
+# EarthSignal — local catalog and Orbit
 
-Pierwsza wersja interfejsu do eksploracji wydarzeń i przyszłych analiz NISAR. React, TypeScript, Vite i MapLibre GL JS. Aplikacja statyczna, bez kluczy i serwera API.
+React/TypeScript/MapLibre frontend, local Node.js API, SQLite and a local LM Studio model. No hosted database, paid inference provider or cloud API key is required. Map geometry, fonts and worker are served from this project.
 
-## Uruchomienie
+## Start
 
-Wymagany Node.js 22.12+ (testy TypeScript bez kompilacji: Node 22.18+ lub 24+).
+Requirements: Node.js **22.18+** (tested with 26.13.1) and LM Studio with a downloaded tool-capable model.
 
 ```sh
+cd apps/earthsignal
 npm ci
+cp .env.example .env.local   # first setup only; preserve an existing config
+```
+
+Set the exact LM Studio model identifier in `.env.local`. Tested local configuration:
+
+```dotenv
+LMSTUDIO_BASE_URL=http://127.0.0.1:1234/v1
+LMSTUDIO_MODEL=google/gemma-4-26b-a4b-qat
+LMSTUDIO_API_KEY=
+API_PORT=8787
+EARTHSIGNAL_DB_PATH=.local/earthsignal.sqlite
+```
+
+Start LM Studio's API on `127.0.0.1:1234`, then:
+
+```sh
 npm run dev
 ```
+
+Open **http://127.0.0.1:5173/**. This starts API and Vite, watches code changes and stops both with Ctrl+C. Restart after editing `.env.local`. LM Studio CORS and LAN sharing are unnecessary: the browser uses the app's local API, which connects to LM Studio.
+
+Local production mode:
+
+```sh
+npm run build
+npm start
+```
+
+Open **http://127.0.0.1:8787/**. The API serves the built frontend. A standalone static `dist/` upload is no longer a complete app. Internet is needed only for initial dependency/model downloads and optional reference links; normal catalog search and inference stay local.
+
+Model setup: [LM_STUDIO.md](LM_STUDIO.md).
+
+## Persistent events
+
+First startup creates `.local/earthsignal.sqlite` from `data/events.seed.json`. Subsequent starts preserve database edits and do not overwrite records from the seed. Schema version: `PRAGMA user_version`; full-text index: FTS5. The frontend no longer embeds event records.
+
+Add/update records with a JSON array matching the seed schema:
+
+```sh
+npm run db:import -- /absolute/path/to/events.json
+```
+
+The entire import is validated, rejects duplicate IDs and runs as a transactional upsert. Missing records are not deleted. Explicitly restore/update seed records with `npm run db:import`. Refresh the sidebar catalog after importing. Import is preferable to direct SQL edits because payloads and indexed fields stay consistent.
+
+SQLite files, journals and `.env.local` are ignored by Git. The seed and schema are versioned. Back up a live WAL database with SQLite's backup facility, not just a copy of its main file during writes.
+
+## Orbit
+
+The local model receives the message, recent conversation and map context. It requests typed tools; the backend validates arguments and queries SQLite. UI actions use existing event IDs. No arbitrary SQL or code execution is exposed.
+
+Tools: `search_events`, `get_event`, `focus_event`, `start_guide`, `reset_map`. Search supports category, country/ISO2, continent, dates, text, provenance, available analysis and viewport bounds. A single result opens its card; multiple results remain on the map.
+
+Examples are suggestions, not a fixed list of supported prompts:
+
+- „Wskaż pożary w Hiszpanii”.
+- „A teraz pokaż takie zdarzenia w Kanadzie”.
+- „Znajdź powodzie w Afryce”.
+- „Pokaż tylko wydarzenia z gotową analizą NISAR”.
+- „Otwórz drugie wydarzenie z ostatniej listy”.
+
+Conversation state is in API memory, expires after an hour of inactivity, and resets on server restart. Expiration is explicit. Delayed navigation is skipped if the user changes the map/filters while waiting. When LM Studio is unavailable, the catalog still works and chat shows an error; no keyword or cloud fallback is used.
+
+## API
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/health` | API and SQLite status |
+| GET | `/api/events` | Catalog |
+| POST | `/api/events/search` | Validated database search |
+| GET | `/api/events/:id` | Event record |
+| GET | `/api/orbit/status` | Local endpoint/model availability |
+| POST | `/api/orbit/chat` | Model/tool cycle, sources and navigation |
+
+## Checks
 
 ```sh
 npm test
 npm run build
+# With API and LM Studio running:
+npm run test:live
 ```
 
-Build znajduje się w `dist/`. Serwować jako statyczną stronę. Worker MapLibre jest pakowany lokalnie przez Vite; dane granic państw znajdują się w `public/countries.geojson`.
+Unit tests cover persistence, atomic imports, filters, validation, fabricated IDs, partial model failures and sessions. The live test calls the configured real model and checks Polish search, conversational refinement, IDs/navigation and no-result behavior. Re-run it after changing models or their chat templates.
 
-## Funkcje
+## Data and licenses
 
-- Przesuwana i przybliżana mapa z kategoriami i klikalnymi hotspotami.
-- Wyszukiwanie, filtry kategorii i dat, kandydatów udokumentowanych oraz zasięgu widoku.
-- Karty wydarzeń, źródła i dostępne daty obserwacji kandydatów.
-- Statystyki katalogu i wykres miesięczny dla widocznych punktów; kliknięcie miesiąca filtruje katalog.
-- Animowany astronauta, lokalny czat PL/EN i trzyetapowy przewodnik.
-- Obsługa małych ekranów, klawiatury, ograniczenia animacji i pustych wyników.
+Four documented candidate studies and nine fictional scenarios are seeded. Scenarios do not establish that a disaster occurred. No case study has been processed; no measured NISAR impact, computed rasters or live alerts are shown. The bottom chart represents catalog entries.
 
-## Status danych i ograniczenia v0.1
-
-Katalog zawiera 4 udokumentowane kandydatury studiów oraz 9 fikstur demonstracyjnych. Wpisy scenariuszowe nie są potwierdzeniem wystąpienia katastrofy. Daty obserwacji kandydatów pochodzą z wcześniejszego researchu w katalogu ASF/CMR.
-
-Zgodnie z ustalonym zakresem rzeczywiste studium ma być wybrane w kolejnym etapie. Nie ma jeszcze rastrów NISAR, porównania pikselowego before/after, pomiarów skutków, przetwarzania HDF5 ani danych czasu rzeczywistego. Dolny wykres przedstawia **wpisy katalogu**, nie szereg pomiarów satelitarnych.
-
-Orbit jest lokalnym nawigatorem opartym na rozpoznawaniu słów i aliasów. Nie korzysta z LLM ani z sieci. Przykłady: „Wskaż pożary w Hiszpanii”, „Floods in Mozambique”, „Earthquakes in Japan”, „Guide me”. Nie jest to pełny parser języka naturalnego; nie obsługuje każdego miejsca i dowolnej odmiany nazw.
-
-## Podłączenie rzeczywistego przypadku
-
-1. Wybrać AOI, produkt, daty, metodę i referencję walidacyjną.
-2. Przygotować numeryczne rastry/COG, maski i warstwy wizualne.
-3. Rozszerzyć `EventRecord` o manifest analizy i wdrożyć komponent porównania oraz API statystyk rastrowych.
-4. Zastąpić metryki katalogowe metrykami studium wyłącznie w jego kontekście.
-5. Dodać backend FastAPI i kontrolowane narzędzia LLM. Klucz API pozostaje po stronie serwera.
-
-## Źródła
-
-Granice: Natural Earth, public domain, skala 1:110m. Źródłowy plik: https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_admin_0_countries.geojson . Zachowano geometrię, ograniczono właściwości do nazwy kraju. Granice są poglądowe i nie służą do precyzyjnych pomiarów.
-
-Źródła wydarzeń znajdują się w `src/domain.ts`. Ilustracja astronauty: własny SVG. Fonty DM Sans i Manrope ładowane z Google Fonts; systemowy fallback działa bez tego połączenia. MapLibre: BSD-3-Clause; pozostałe zależności zachowują własne licencje.
+Natural Earth borders: public domain, 1:110m, source https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_admin_0_countries.geojson . Borders are illustrative. Event references are stored in the database. Astronaut: original SVG. Bundled DM Sans/Manrope fonts include SIL Open Font License texts in `public/fonts/`. MapLibre: BSD-3-Clause; dependencies retain their licenses.

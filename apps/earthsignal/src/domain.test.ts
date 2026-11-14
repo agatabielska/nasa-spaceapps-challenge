@@ -1,4 +1,4 @@
-import {test} from 'node:test';import assert from 'node:assert/strict';import {inBounds,parseQuery,filterEvents,events} from './domain.ts';
+import {test} from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {inBounds,filterEvents,type EventRecord} from './domain.ts';
+const events:EventRecord[]=JSON.parse(readFileSync(new URL('../data/events.seed.json',import.meta.url),'utf8'));
 test('viewport handles antimeridian and repeated worlds',()=>{assert.ok(inBounds([179,0],[170,-10,190,10]));assert.ok(inBounds([-179,0],[170,-10,190,10]));assert.ok(!inBounds([0,0],[170,-10,190,10]));assert.ok(inBounds([0,0],[-200,-10,200,10]));});
-test('Polish location and category intent',()=>assert.deepEqual(parseQuery('Wskaż pożary w Hiszpanii'),{kind:'wildfire',place:'Spain'}));
 test('filter does not imply analysis availability',()=>{const found=filterEvents(events,'Spain',['wildfire'],'2025-01-01','2026-12-31',false,null);assert.equal(found.length,1);assert.equal(found[0].analysisAvailable,false);assert.equal(filterEvents(events,'Spain',['wildfire'],'2025-01-01','2026-12-31',true,null).length,0);});
