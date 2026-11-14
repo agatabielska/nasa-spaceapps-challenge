@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Rasuwa glacier-collapse flood, Nepal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>html,body,#map{height:100%;margin:0}.ctl{position:absolute;z-index:1000;bottom:24px;left:12px;background:#fff;padding:6px 10px;border-radius:6px;font:13px sans-serif;max-width:340px}</style></head>
+<body><div id="map"></div><div class="ctl"><b>Rasuwa glacier-collapse flood, Nepal</b><br>event 2026-08-26<br>
+Overlay opacity <input id="op" type="range" min="0" max="1" step="0.05" value="0.8"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const B=[[28.045766557401194, 85.21394202824146], [28.42435886588809, 85.6046327193295]], BBOX=[85.22, 28.05, 85.6, 28.42], LAYERS=[["Radar BEFORE (HH)", "map/00.png"], ["Radar AFTER (HH)", "map/01.png"], ["HH change, dB (blue = darker, red = brighter)", "map/02.png"], ["HV change, dB (blue = darker, red = brighter)", "map/03.png"], ["Coherence loss (bright = signal destroyed)", "map/04.png"], ["Ground displacement, cm in line of sight (colour scale +/-4 cm)", "map/05.png"], ["Change: BOTH methods (high confidence)", "map/06.png"], ["Change: backscatter method", "map/07.png"], ["Change: coherence method", "map/08.png"]], DEFAULT=["Radar AFTER (HH)", "Change: BOTH methods (high confidence)", "Change: backscatter method", "Change: coherence method"];
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,attribution:'Tiles &copy; Esri'});
+const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'});
+const map=L.map('map',{layers:[sat]}).fitBounds(B);
+const over={}; LAYERS.forEach(([k,src],i)=>{over[k]=L.imageOverlay(src,B,{opacity:0.8,zIndex:10+i}); if(DEFAULT.includes(k)) over[k].addTo(map);});
+L.control.layers({'Esri satellite (basemap)':sat,'OpenStreetMap (names/roads)':osm},over,{collapsed:false}).addTo(map);
+L.rectangle([[BBOX[1],BBOX[0]],[BBOX[3],BBOX[2]]],{color:'#ffff00',weight:1,fill:false}).addTo(map);
+document.getElementById('op').oninput=e=>Object.values(over).forEach(l=>l.setOpacity(+e.target.value));
+map.on('click',e=>L.popup().setLatLng(e.latlng).setContent(e.latlng.lat.toFixed(5)+', '+e.latlng.lng.toFixed(5)).openOn(map));
+</script></body></html>

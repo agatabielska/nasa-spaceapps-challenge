@@ -12,6 +12,7 @@ dependencies = [
     "fsspec",
     "aiohttp",
     "shapely",
+    "scipy>=1.15.3",
 ]
 
 [dependency-groups]

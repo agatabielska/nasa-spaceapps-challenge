@@ -1,0 +1,54 @@
+{
+  "case": "etna",
+  "kind": "volcano",
+  "title": "Etna eruption, August 2026",
+  "event_date": "2026-08-06",
+  "bbox_lonlat": [
+    14.85,
+    37.6,
+    15.2,
+    37.9
+  ],
+  "methods": {
+    "backscatter": {
+      "what": "log-ratio HH+HV, both direction, 5x5 filter, threshold 3.5 sigma",
+      "area_km2": 3.73,
+      "reliable_fraction": 0.9544247159781141,
+      "mean_change_db_in_mask": {
+        "HHHH": 1.0264513492584229,
+        "HVHV": 1.4926189184188843
+      },
+      "scene_noise_db": {
+        "HHHH": 0.39801353216171265,
+        "HVHV": 0.4457007348537445
+      }
+    },
+    "coherence": {
+      "what": "coherence drop >= 0.3 versus a quiet pair of the same track",
+      "area_km2": 6.236800000000001,
+      "usable_fraction": 0.9538921445717562,
+      "mean_coherence_event": 0.6124701499938965,
+      "mean_coherence_reference": 0.6267451047897339
+    },
+    "displacement": {
+      "what": "unwrapped phase - ionosphere screen -> line-of-sight cm, plane removed, relative to scene median",
+      "valid_fraction": 0.9533641423176307,
+      "p99_abs_cm": 7.810857772827148,
+      "min_cm": -12.024870872497559,
+      "max_cm": 12.956009864807129,
+      "wavelength_cm": 24.393202441008953
+    }
+  },
+  "agreement": {
+    "iou_backscatter_vs_coherence": 0.030053741215378255,
+    "area_both_km2": 0.2908,
+    "area_backscatter_km2": 3.4392,
+    "area_coherence_km2": 5.946000000000001
+  },
+  "granules": {
+    "gcov_before": "NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_029_043_A_021_2005_DHDH_A_20260828T040828_20260828T040903_P05023_N_F_J_001",
+    "gunw": "NISAR_L2_PR_GUNW_026_043_A_021_028_2000_SH_20260723T040829_20260723T040904_20260816T040828_20260816T040903_P05023_N_F_J_001",
+    "gunw_ref": "NISAR_L2_PR_GUNW_024_043_A_021_026_2000_SH_20260629T040831_20260629T040905_20260723T040829_20260723T040904_P05023_N_F_J_001"
+  }
+}
