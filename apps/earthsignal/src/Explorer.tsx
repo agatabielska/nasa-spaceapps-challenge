@@ -49,8 +49,8 @@ function fitPadding(){
   if(legend)p.bottom=Math.max(p.bottom,box.bottom-legend.top+14);
   if(controls)p.left=Math.max(p.left,controls.right-box.left+14);
   if(astro)p.right=Math.max(p.right,box.right-astro.left+8);
-  if(p.top+p.bottom>box.height-80){const k=(box.height-80)/(p.top+p.bottom);p.top*=k;p.bottom*=k;}
-  if(p.left+p.right>box.width-80){const k=(box.width-80)/(p.left+p.right);p.left*=k;p.right*=k;}
+  if(p.top+p.bottom>box.height-80){const k=Math.max(0,box.height-80)/(p.top+p.bottom);p.top*=k;p.bottom*=k;}
+  if(p.left+p.right>box.width-80){const k=Math.max(0,box.width-80)/(p.left+p.right);p.left*=k;p.right*=k;}
   return p;
 }
 // Keep the selected hotspot clear of the side panel and the guide card.
