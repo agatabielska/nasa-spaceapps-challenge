@@ -1,0 +1,11 @@
+# Baseline: early-fusion CNN, RGB, plain BCE (extreme class imbalance -> expect weak F1)
+experiment: oscd
+data:
+  bands: [B04, B03, B02]
+  train_sampling: random
+  val_positive_only: false
+model: {name: early_fusion, base_channels: 16}
+loss: {name: bce}
+optim: {lr: 0.001, scheduler: none}
+trainer: {patience: 20}
+logging: {tags: [baseline, rgb]}

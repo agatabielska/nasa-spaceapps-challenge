@@ -1,0 +1,11 @@
+# Siamese U-Net, RGB, focal loss (alpha weights the change class)
+experiment: oscd
+data:
+  bands: [B04, B03, B02]
+  train_sampling: random
+  val_positive_only: false
+model: {name: siamese_unet, base_channels: 16}
+loss: {name: focal, focal_alpha: 0.75, focal_gamma: 2.0}
+optim: {lr: 0.0001, scheduler: none}
+trainer: {patience: 30}
+logging: {tags: [siamese, rgb, focal]}

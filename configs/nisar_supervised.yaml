@@ -1,0 +1,17 @@
+# NISAR with a ground-truth (or pseudo-label) mask aligned to the cropped GeoTIFFs.
+experiment: nisar
+data:
+  name: nisar
+  patch_size: 256
+  batch_size: 8
+  num_workers: 2
+  nisar:
+    # Keep in acquisition order (earliest = T1, latest = T2).
+    granules:
+      - NISAR_L2_PR_GCOV_024_043_A_002_2005_DHDH_A_20260629T035753_20260629T035828_P05023_N_F_J_001
+      - NISAR_L2_PR_GCOV_032_043_A_002_2005_DHDH_A_20261003T035750_20261003T035825_P05023_N_F_J_001
+    label_path: data/nisar/ground_truth_mask.tif
+model: {name: siamese_unet, base_channels: 32}
+loss: {name: bce_dice}
+trainer: {run_test: false}   # no separate test scene
+logging: {project: nisar-change-detection}
