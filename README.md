@@ -107,6 +107,43 @@ formatted with `{model} {loss} {dataset} {seed} {experiment} {timestamp}`. Tunin
   add it to `DATAMODULES` in `data/__init__.py`.
 * **New config option:** add a field to the dataclass in `config.py` (typos in YAML/CLI then fail loudly).
 
+### Spain wildfire workflow (multi-sensor and explainability)
+
+The temporal pipeline is source-independent: ASF/NISAR, Copernicus/Sentinel or another
+downloader only needs to emit a CSV manifest with rows
+`date,source,band_file_1.tif,band_file_2.tif,...`. Files must already be co-registered.
+Use adjacent acquisitions to increase temporal density:
+
+```bash
+python scripts/explain.py -c configs/wildfire_spain.yaml --ckpt outputs/model.ckpt \
+  --manifest data/wildfires/spain/sentinel1.csv --method gradient
+
+# Directly from the two configured NISAR HDF5 granules. CROMA weights are downloaded
+# into outputs/foundation_models/ on first run:
+pip install -e ".[nisar,foundation]"
+python scripts/explain.py -c configs/nisar_unlabeled.yaml --nisar --model croma
+```
+
+CROMA uses only the configured two related NISAR SAR bands (`HHHH`, `HVHV`).
+Inference uses overlapping 120 px local areas, weighted toward each area's centre to
+reduce border artefacts. The default GPU batch is 64; lower it with `--batch-size 16`
+if CUDA memory is insufficient. Increase overlap with `--tile-stride 64` if tile
+boundaries remain visible. Independent temporal pairs can run in parallel; each
+`--workers N` process loads its own model onto the selected device, for example:
+
+```bash
+python scripts/explain.py -c configs/nisar_unlabeled.yaml --nisar --model croma \
+  --workers 31
+```
+
+Each worker holds a full model copy, so reduce `--workers` if GPU memory is insufficient.
+
+`LocalRasterProvider` can be replaced without changing models. The example config
+documents NISAR L-band (HHHH/HVHV), Sentinel-1 C-band (VV/VH), and Sentinel-2 optical
+bands. `gradient` creates per-channel and combined pixel attribution maps; `occlusion`
+is slower but model-agnostic. Attribution shows which pixels drove a detected change,
+not fire-probability ground truth.
+
 ## Reproducibility
 
 Seeds set for python/numpy/torch/workers (`seed`), `trainer.deterministic=true`, per-worker RNG

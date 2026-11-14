@@ -1,0 +1,24 @@
+# Modular multi-sensor setup for Spanish wildfires. Downloaders populate manifests;
+# changing the geographic area only requires changing the manifest files.
+experiment: wildfire_spain
+data:
+  name: temporal
+  patch_size: 256
+  batch_size: 4
+  bands: [VV, VH]
+  sources:
+    - name: nisar
+      manifest: data/wildfires/spain/nisar.csv
+      bands: [HHHH, HVHV]
+    - name: sentinel1
+      manifest: data/wildfires/spain/sentinel1.csv
+      bands: [VV, VH]
+    - name: sentinel2
+      manifest: data/wildfires/spain/sentinel2.csv
+      bands: [B04, B08, B11, B12]
+model:
+  name: siamese_unet_diff
+  base_channels: 32
+loss: {name: bce_dice}
+explainability: {method: gradient, occlusion_patch: 16, occlusion_stride: 8}
+logging: {mode: disabled, project: wildfire-change-detection}

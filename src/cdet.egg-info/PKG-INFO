@@ -1,0 +1,24 @@
+Metadata-Version: 2.4
+Name: cdet
+Version: 0.1.0
+Summary: Change detection on satellite imagery: OSCD (optical) and NISAR (SAR)
+Requires-Python: >=3.10
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: pytorch-lightning>=2.2
+Requires-Dist: torchmetrics>=1.3
+Requires-Dist: optuna>=3.5
+Requires-Dist: wandb>=0.17
+Requires-Dist: rasterio
+Requires-Dist: matplotlib
+Requires-Dist: omegaconf>=2.3
+Requires-Dist: tqdm
+Provides-Extra: nisar
+Requires-Dist: asf_search; extra == "nisar"
+Requires-Dist: h5py; extra == "nisar"
+Requires-Dist: python-dotenv; extra == "nisar"
+Provides-Extra: foundation
+Requires-Dist: einops; extra == "foundation"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"

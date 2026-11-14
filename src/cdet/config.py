@@ -41,6 +41,22 @@ class NisarConfig:
 
 
 @dataclass
+class ExplainabilityConfig:
+    method: str = "gradient"  # gradient | occlusion
+    occlusion_patch: int = 16
+    occlusion_stride: int = 8
+
+
+@dataclass
+class SourceConfig:
+    """One local export; catalogue-specific downloaders produce these files."""
+
+    name: str = "sentinel1"
+    manifest: str = ""
+    bands: List[str] = field(default_factory=lambda: ["VV", "VH"])
+
+
+@dataclass
 class DataConfig:
     name: str = "oscd"  # oscd | nisar
     data_dir: str = "data/oscd"
@@ -57,6 +73,7 @@ class DataConfig:
         default_factory=lambda: ["abudhabi", "beihai", "bordeaux", "paris"]
     )
     nisar: NisarConfig = field(default_factory=NisarConfig)
+    sources: List[SourceConfig] = field(default_factory=list)
 
 
 @dataclass
@@ -151,6 +168,7 @@ class Config:
     trainer: TrainerConfig = field(default_factory=TrainerConfig)
     logging: LoggingConfig = field(default_factory=LoggingConfig)
     tune: TuneConfig = field(default_factory=TuneConfig)
+    explainability: ExplainabilityConfig = field(default_factory=ExplainabilityConfig)
 
 
 def load_config(config_paths: Sequence[str] = (), overrides: Sequence[str] = ()) -> DictConfig:
