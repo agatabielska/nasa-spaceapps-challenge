@@ -97,4 +97,6 @@ Unit tests cover persistence, atomic imports, filters, validation, fabricated ID
 
 Four documented candidate studies and nine fictional scenarios are seeded. Scenarios do not establish that a disaster occurred. No case study has been processed; no measured NISAR impact, computed rasters or live alerts are shown. The bottom chart shows catalog entries per month for the selected date range, not satellite measurements. The statistics panel can be collapsed to a summary bar; that choice and the open filter groups are remembered per browser.
 
+Presentation: text and controls use a projector-friendly scale (12px minimum, 15px reading text, ≥7:1 contrast). Panels enlarge automatically on screens from 1680×940 (120%) and 2300×1250 (140%); the **Aa** button in the top bar forces Large (120%) or XL (140%) on any projector. Only the panels are scaled, so map pointer coordinates stay exact.
+
 Natural Earth borders: public domain, 1:110m, source https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_admin_0_countries.geojson . Borders are illustrative. Event references are stored in the database. Astronaut: original SVG. Bundled DM Sans/Manrope fonts include SIL Open Font License texts in `public/fonts/`. MapLibre: BSD-3-Clause; dependencies retain their licenses.
