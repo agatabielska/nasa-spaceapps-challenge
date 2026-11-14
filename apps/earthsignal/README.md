@@ -95,6 +95,6 @@ Unit tests cover persistence, atomic imports, filters, validation, fabricated ID
 
 ## Data and licenses
 
-Four documented candidate studies and nine fictional scenarios are seeded. Scenarios do not establish that a disaster occurred. No case study has been processed; no measured NISAR impact, computed rasters or live alerts are shown. The bottom chart represents catalog entries.
+Four documented candidate studies and nine fictional scenarios are seeded. Scenarios do not establish that a disaster occurred. No case study has been processed; no measured NISAR impact, computed rasters or live alerts are shown. The bottom chart shows catalog entries per month for the selected date range, not satellite measurements. The statistics panel can be collapsed to a summary bar; that choice and the open filter groups are remembered per browser.
 
 Natural Earth borders: public domain, 1:110m, source https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_admin_0_countries.geojson . Borders are illustrative. Event references are stored in the database. Astronaut: original SVG. Bundled DM Sans/Manrope fonts include SIL Open Font License texts in `public/fonts/`. MapLibre: BSD-3-Clause; dependencies retain their licenses.
