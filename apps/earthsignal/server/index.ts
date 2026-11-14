@@ -42,7 +42,7 @@ const server=createServer(async(req,res)=>{
     if(!file.startsWith(dist+sep))file=resolve(dist,'index.html');
     try {if(!(await stat(file)).isFile())file=resolve(dist,'index.html');}catch{file=resolve(dist,'index.html');}
     let content:Buffer;try{content=await readFile(file);}catch{throw new ServiceError(404,'BUILD_MISSING','Run npm run build, or npm run dev for development.');}
-    const mime:Record<string,string>={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.geojson':'application/geo+json','.json':'application/json'};
+    const mime:Record<string,string>={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.geojson':'application/geo+json','.json':'application/json','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.webp':'image/webp','.ttf':'font/ttf'};
     res.writeHead(200,{'Content-Type':mime[extname(file)]??'application/octet-stream','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:content);
   }catch(e){
     if(e instanceof ZodError)return json(res,400,{error:{code:'VALIDATION',message:'Invalid request parameters',details:e.issues.map(i=>({path:i.path,message:i.message}))}});

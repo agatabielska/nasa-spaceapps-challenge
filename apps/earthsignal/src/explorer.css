@@ -1,0 +1,151 @@
+/* The observatory shares the landing page's midnight / mineral / mint palette.
+   Scoped overrides preserve the established map geometry and text-size controls. */
+.app{
+  --bg:#080f16;--surface:#101c25;--surface-2:#182832;--panel:#101f2bed;
+  --border:#2b3e49;--border-strong:#415966;
+  --text:#f2f6f4;--text-2:#c9d6da;--text-3:#a8bbc2;
+  --mint:#b4f5d3;--mint-strong:#d5ffe8;--mint-soft:#b4f5d31a;
+  background:var(--bg);
+}
+.app .topbar{height:74px;padding-inline:28px;background:#080f16;border-color:#25333d}
+.app .brand{font-size:23px;letter-spacing:-1px}
+.app .brand-mark{width:36px;height:36px;background:#b4f5d30b;border-color:#608a79}
+.app .brand i{padding:4px 7px;border-color:#3c5248;border-radius:5px;color:#b4cbbd;font-size:12px}
+.app .topbar nav{height:auto;gap:5px;margin-left:0;padding:4px;border:1px solid #2b3a44;border-radius:30px;background:#101a23}
+.app .topbar nav button,.app .topbar nav a{display:flex;align-items:center;justify-content:center;gap:10px;min-height:38px;padding:0 19px;border-radius:24px;font-size:14px;font-weight:500;color:var(--text-3);transition:background .18s,color .18s}
+.app .topbar nav button:hover,.app .topbar nav a:hover{background:#ffffff08;color:var(--text)}
+.app .topbar nav .nav-active{background:#2b443c;color:#dcf6e7}
+.app .nav-active:after{display:none}
+.app .top-right{font-size:12px;letter-spacing:1.3px}
+.app .top-right .status-dot{width:6px;height:6px}
+.app .text-size{background:#14232d;border-color:#324854}
+.app .workspace{gap:12px;padding:12px;padding-top:0}
+.app .sidebar{width:324px;gap:12px;padding:20px 18px 0;border:1px solid #2b3f4a;border-radius:18px;background:linear-gradient(165deg,#172832 0%,#101c26 45%);box-shadow:0 10px 35px #0002}
+.app .sb-head{align-items:flex-start;padding-bottom:5px}
+.app .sb-head>.icon-button{margin-top:-5px;margin-right:-5px}
+.app .sb-head .eyebrow{display:flex;align-items:center;gap:7px;font-size:12px;letter-spacing:1.5px;color:#bbd5c8}
+.app .catalog-orbit{width:7px;height:7px;border:1px solid #b4f5d3;border-radius:50%;box-shadow:0 0 0 3px #b4f5d312}
+.app .sb-head h1{margin-top:10px;font-size:25px;letter-spacing:-.8px;font-weight:550}
+.app .sb-intro{margin:6px 0 0;font-size:13px;color:var(--text-3)}
+.app .search-box{height:46px;background:#091820;box-shadow:inset 0 1px 3px #0002;border-color:#405863;border-radius:11px}
+.app .search-box input{font-size:14px}
+.app .filter-group{border-top-color:#2e414b}
+.app .group-toggle{min-height:44px;font-size:14px}
+.app .group-toggle small{font-size:13px}
+.app .category-list{gap:4px}
+.app .category{min-height:40px;padding:4px 8px;border:1px solid transparent;border-radius:9px;font-size:14px}
+.app .category.active{background:#ffffff04;border-color:#ffffff06}
+.app .category:hover{background:#ffffff0b;border-color:#4c665c}
+.app .category-symbol{width:30px;height:30px;border-radius:8px}
+.app .checkbox{width:17px;height:17px;border-width:1px;border-radius:5px}
+.app .category.active .checkbox{border-color:#8dc2aa;background:#b4f5d31c;color:#c5f6dc}
+.app .category-count{font-size:12px;font-variant-numeric:tabular-nums}
+.app .list-head{padding-top:14px}
+.app .list-head h2{font-size:14px}
+.app .list-head .count{background:#2a4037;border:1px solid #446250;color:#d6f6e3}
+.app .event-list{padding-bottom:10px}
+.app .event-row{gap:10px;margin:3px 0;padding:10px 7px;border:1px solid transparent;border-radius:10px;transition:background .18s,border-color .18s}
+.app .event-row:hover{border-color:#405763;background:#1d313d}
+.app .event-row.active{border-color:#58836f;background:#223b32;box-shadow:none}
+.app .row-text strong{font-size:14px;font-weight:550;letter-spacing:-.1px}
+.app .row-text small{gap:0;font-size:13px}
+.app .row-badge{padding:1px 6px;font-size:12px;letter-spacing:.2px;border-color:#7d6b50;color:#edd4ac}
+.app .row-badge.documented{border-color:#537b65;color:#c7ecd7}
+.app .sidebar-foot{background:#111f29;border-top-color:#30464f;padding-block:15px}
+.app .sidebar-foot>svg:first-child{color:var(--mint)}
+.app .sidebar-foot span{font-size:14px}
+.app .sidebar-foot small{font-size:12px}
+.app .main{border:1px solid #2b3f4a;border-radius:18px;overflow:hidden;background:#091b24}
+.app .map:after{box-shadow:inset 0 0 150px 28px #020e1b55}
+.app .panel{border:1px solid #536a775e;border-radius:15px;box-shadow:0 12px 36px #0004,inset 0 1px 0 #ffffff05;background:var(--panel);backdrop-filter:blur(18px)}
+.app .map-heading{left:18px;top:18px;gap:7px;padding:12px 16px;border-radius:12px;background:#0c1c27e8}
+.app .live-label{font-size:12px;letter-spacing:1.5px}
+.app .map-breadcrumb{font-size:14px}
+.app .map-status{font-size:13px;color:#c2d2d8}
+.app .amber-dot{width:6px;height:6px}
+.app .map-controls{left:18px;padding:5px;border-radius:13px;background:#0c1c27e8}
+.app .map-controls button{width:36px;height:36px;border-radius:8px}
+.app .map-legend{left:18px;bottom:18px;gap:3px;padding:5px;border-radius:11px;background:#0c1c27eb}
+.app .map-legend button{font-size:12px;gap:6px;padding:6px 8px;border-radius:7px}
+.app .map-marker{background:#112532;border-width:1.5px;box-shadow:0 0 0 5px color-mix(in srgb,var(--marker) 13%,transparent),0 5px 18px #0008}
+.app .map-marker:hover,.app .map-marker.selected{background:var(--marker);box-shadow:0 0 0 2px #f4fff8,0 0 0 9px color-mix(in srgb,var(--marker) 24%,transparent),0 5px 20px #0007}
+.app .detail{padding:23px;right:18px;top:18px}
+.app .detail h2{font-weight:550;font-size:27px;letter-spacing:-.8px}
+.app .detail-top{padding-bottom:13px;border-bottom:1px solid #304750}
+.app .data-badge{border-radius:10px}
+.app .obs-date{background:#20323b;border-color:#46606b;border-radius:10px}
+.app .primary-button{border-radius:10px;box-shadow:0 3px 16px #b4f5d30c}
+.app .chat{right:18px;top:18px;bottom:18px}
+.app .chat-header{padding:16px 18px;background:linear-gradient(115deg,#203b38,#152733)}
+.app .chat-avatar{width:43px;height:47px;border-radius:50%;background:#b4f5d310}
+.app .chat-avatar svg{width:43px;height:51px}
+.app .chat-header strong{font-size:19px;font-weight:550}
+.app .chat-notice{background:#0c1c26;font-size:12px}
+.app .message{border-color:#3b536354;border-radius:13px 13px 13px 3px;background:#1c303e}
+.app .message.user{border-color:#557663;border-radius:13px 13px 3px 13px;background:#2c463a}
+.app .chat form{margin:4px 14px 14px;border-color:#4f6973;border-radius:12px;background:#0c1c26}
+.app .astronaut-widget>button>svg{filter:drop-shadow(0 12px 18px #0007)}
+.app .astronaut-widget button>span{padding:9px 15px;background:#b4f5d3;color:#142d23;border-color:#d0f8e3;box-shadow:0 6px 22px #0004}
+.app .guide{background:#132731f5}
+.app .bottom-panel{padding-inline:20px;background:linear-gradient(135deg,#152832,#101e29);border-top-color:#35505c}
+.app .bottom-bar{height:46px}
+.app .bottom-toggle{font-size:14px;font-weight:600}
+.app .bottom-link{font-size:12px;color:#c6d7dd}
+.app .bottom-content{gap:18px;padding:0 0 14px}
+.app .stats{gap:8px}
+.app .stat{gap:10px;padding:10px 12px;border:1px solid #344e5b;border-radius:10px;background:#0d1f29}
+.app .stat:first-child{padding-left:12px;border-left:1px solid #344e5b}
+.app .stat>strong{font-size:30px;letter-spacing:-1px;color:#d8fae7}
+.app .stat .muted-number{color:#9bb5bf}
+.app .stat b{font-size:13px;font-weight:500;line-height:1.4;color:#d1e0e4}
+.app .stat>span>small{font-size:12px;color:#a8bbc2}
+.app .timeline{justify-content:center;padding-left:18px;border-left-color:#37505b;width:29%}
+.app .timeline-title{font-size:12px}
+.app .bars{height:37px}
+.app .bars .has-data i{background:#a4d8bf}
+
+@media(max-width:1200px){
+  .app .topbar{padding-inline:22px}
+  .app .sidebar{width:295px;padding-inline:16px}
+  .app .sidebar-foot{width:calc(100% + 32px);margin-inline:-16px;padding-inline:16px}
+  .app .topbar nav button,.app .topbar nav a{padding-inline:15px}
+  .app .detail{width:360px}
+  .app .stat{padding-inline:10px}
+}
+@media(max-width:900px){
+  .app .topbar{height:62px;padding-inline:18px}
+  .app .topbar nav{display:none}
+  .app .workspace{gap:8px;padding:8px;padding-top:0}
+  .app .sidebar{width:278px;border-radius:14px}
+  .app .main{border-radius:14px}
+  .app .map-heading{left:12px;top:12px;padding:10px 12px}
+  .app .map-controls,.app .map-legend{left:12px}
+  .app .map-legend{bottom:12px}
+  .app .detail,.app .chat{top:100px;right:12px;width:340px}
+  .app .bottom-panel{padding-inline:12px}
+  .app .bottom-content{padding-bottom:12px}
+  .app .bottom-bar{gap:10px}
+}
+@media(max-width:640px){
+  .app .topbar{padding-inline:14px}
+  .app .brand{font-size:21px}
+  .app .brand-mark{width:32px;height:32px}
+  .app .workspace{padding:0;gap:0}
+  .app .main{border:0;border-radius:0}
+  .app .sidebar{top:70px;bottom:10px;left:10px;width:min(330px,calc(100% - 20px));border-radius:15px;box-shadow:15px 0 50px #0008}
+  .app .map-heading{padding:9px 11px}
+  .app .map-status{font-size:12px}
+  .app .map-breadcrumb{font-size:13px}
+  .app .map-legend{max-width:calc(100% - 110px)}
+  .app .map-legend button{font-size:12px;padding:5px 7px}
+  .app .detail,.app .chat{left:10px;right:10px;top:92px;bottom:12px;width:auto}
+  .app .detail{padding:17px}
+  .app .detail h2{font-size:24px}
+  .app .stat{padding:8px;gap:4px}
+  .app .stat:first-child{padding-left:8px}
+  .app .stat>strong{font-size:24px}
+  .app .stat b{font-size:12px}
+  .app .bottom-toggle{font-size:13px}
+  .app .bottom-link{font-size:12px}
+  .app .bottom-panel{padding-inline:12px}
+}

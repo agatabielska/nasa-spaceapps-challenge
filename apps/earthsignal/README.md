@@ -1,4 +1,4 @@
-# EarthSignal — local catalog and Orbit
+# EarthSignal — NISAR stories, local catalog and Orbit
 
 React/TypeScript/MapLibre frontend, local Node.js API, SQLite and a local LM Studio model. No hosted database, paid inference provider or cloud API key is required. Map geometry, fonts and worker are served from this project.
 
@@ -28,7 +28,7 @@ Start LM Studio's API on `127.0.0.1:1234`, then:
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173/**. This starts API and Vite, watches code changes and stops both with Ctrl+C. Restart after editing `.env.local`. LM Studio CORS and LAN sharing are unnecessary: the browser uses the app's local API, which connects to LM Studio.
+Open **http://127.0.0.1:5173/** for the landing page or **http://127.0.0.1:5173/explore** for the event explorer. This starts API and Vite, watches code changes and stops both with Ctrl+C. Restart after editing `.env.local`. LM Studio CORS and LAN sharing are unnecessary: the browser uses the app's local API, which connects to LM Studio.
 
 Local production mode:
 
@@ -40,6 +40,14 @@ npm start
 Open **http://127.0.0.1:8787/**. The API serves the built frontend. A standalone static `dist/` upload is no longer a complete app. Internet is needed only for initial dependency/model downloads and optional reference links; normal catalog search and inference stay local.
 
 Model setup: [LM_STUDIO.md](LM_STUDIO.md).
+
+## Landing and explorer
+
+`/` introduces the project through a rotating NASA Blue Marble globe, Orbit’s three-stage briefing, NISAR technology and a before/during comparison of the January 2026 Mozambique flood. `/explore` opens the existing map, SQLite catalog and local LM Studio assistant. The two routes are loaded separately, so MapLibre is not downloaded for the landing page. The explorer brand returns home; its mission link opens `/#mission`.
+
+Landing imagery is bundled in `public/media/`; there are no runtime third-party image requests, embeds, cloud inference calls or analytics. The globe is a native WebGL shader with a static fallback. It pauses offscreen and in hidden tabs; the page respects reduced motion and provides a pause control. The image divider supports pointer drag, touch and a labelled native range input for keyboard control. Phase tabs support arrow, Home and End keys.
+
+The landing is educational: Orbit’s briefing there is authored explanatory content, while the explorer chat uses the real local model. The NASA comparison is a published visualization, not a new EarthSignal analysis. Credits, evidence, derivation of web assets and additional recommended NASA material are documented in [LANDING_RESEARCH.md](LANDING_RESEARCH.md) and linked in the landing footer.
 
 ## Persistent events
 
@@ -95,8 +103,8 @@ Unit tests cover persistence, atomic imports, filters, validation, fabricated ID
 
 ## Data and licenses
 
-Four documented candidate studies and nine fictional scenarios are seeded. Scenarios do not establish that a disaster occurred. No case study has been processed; no measured NISAR impact, computed rasters or live alerts are shown. The bottom chart shows catalog entries per month for the selected date range, not satellite measurements. The statistics panel can be collapsed to a summary bar; that choice and the open filter groups are remembered per browser.
+Four documented candidate studies and nine fictional scenarios are seeded. Scenarios do not establish that a disaster occurred. No EarthSignal case study has been processed; the explorer does not show measured NISAR impacts, computed change rasters or live alerts. The landing separately displays a credited, pre-existing NASA visualization. The bottom chart shows catalog entries per month for the selected date range, not satellite measurements. The statistics panel can be collapsed to a summary bar; that choice and the open filter groups are remembered per browser.
 
-Presentation: text and controls use a projector-friendly scale (12px minimum, 15px reading text, ≥7:1 contrast). Panels enlarge automatically on screens from 1680×940 (120%) and 2300×1250 (140%); the **Aa** button in the top bar forces Large (120%) or XL (140%) on any projector. Only the panels are scaled, so map pointer coordinates stay exact.
+Explorer presentation: text and controls retain a projector-oriented scale (12px minimum labels, 15px reading text). Panels enlarge automatically on screens from 1680×940 (120%) and 2300×1250 (140%); the **Aa** button in the top bar forces Large (120%) or XL (140%) on any projector. Only the panels are scaled, so map pointer coordinates stay exact.
 
 Natural Earth borders: public domain, 1:110m, source https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_admin_0_countries.geojson . Borders are illustrative. Event references are stored in the database. Astronaut: original SVG. Bundled DM Sans/Manrope fonts include SIL Open Font License texts in `public/fonts/`. MapLibre: BSD-3-Clause; dependencies retain their licenses.
