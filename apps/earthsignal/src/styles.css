@@ -16,6 +16,8 @@
   font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);font-synthesis:none;font-weight:400;
 }
 *{box-sizing:border-box}
+/* Shown by main.tsx while a lazily loaded page (landing or explorer) arrives. */
+.page-loading{min-height:100dvh;display:grid;place-items:center;background:#030814;color:#d3ddf2;font:600 20px Manrope,sans-serif}
 body{margin:0;background:var(--bg)}
 button,input,a{-webkit-tap-highlight-color:transparent}
 button,input{font:inherit}

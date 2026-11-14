@@ -1,5 +1,7 @@
 # Landing page: research, imagery and scientific wording
 
+> **Note (15 November 2026).** The landing page was redesigned as a scroll-driven journey built on our own case studies (see README, “Landing and explorer”). Of the assets below only `earth-blue-marble.jpg` is still used; the Limpopo comparison and the spacecraft illustration were removed from `public/media/`. The research notes are kept for reference.
+
 Verified against official NASA, NASA/JPL and ISRO sources on 14 November 2026. This document records the editorial decisions behind the EarthSignal landing page. It is not a description of an implemented SAR processing pipeline.
 
 ## Assets included in the project

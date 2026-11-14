@@ -43,11 +43,22 @@ Model setup: [LM_STUDIO.md](LM_STUDIO.md).
 
 ## Landing and explorer
 
-`/` introduces the project through a rotating NASA Blue Marble globe, Orbit’s three-stage briefing, NISAR technology and a before/during comparison of the January 2026 Mozambique flood. `/explore` opens the existing map, SQLite catalog and local LM Studio assistant. The two routes are loaded separately, so MapLibre is not downloaded for the landing page. The explorer brand returns home; its mission link opens `/#mission`.
+`/` is a scroll-driven journey, “Dancing with the SARs”, over an interactive starfield (stars shift with the pointer, move aside from the cursor and stretch while scrolling):
 
-Landing imagery is bundled in `public/media/`; there are no runtime third-party image requests, embeds, cloud inference calls or analytics. The globe is a native WebGL shader with a static fallback. It pauses offscreen and in hidden tabs; the page respects reduced motion and provides a pause control. The image divider supports pointer drag, touch and a labelled native range input for keyboard control. Phase tabs support arrow, Home and End keys.
+1. **Home** — the challenge title and the way in.
+2. **About** — a WebGL Earth with the five event types we detect orbiting it (forest wildfires, earthquakes, farming activities, glacier movement, volcanoes). Orbit the astronaut (`src/Astronaut.tsx`) drifts from one to the next; three of them link to a case study.
+3. **Case studies** — Spain (Ávila wildfire), Etna (eruption, plus optical-versus-radar under cloud) and Nepal (Rasuwa glacier-collapse flood). Each has a before/after divider, switchable detection layers and the numbers from `case.json`. Between Etna and Nepal a 3D “drone flight” follows the detected flood trace from its origin to Syabrubesi; scrolling moves the camera.
+4. **Discover more yourself** — the way into the dashboard.
 
-The landing is educational: Orbit’s briefing there is authored explanatory content, while the explorer chat uses the real local model. The NASA comparison is a published visualization, not a new EarthSignal analysis. Credits, evidence, derivation of web assets and additional recommended NASA material are documented in [LANDING_RESEARCH.md](LANDING_RESEARCH.md) and linked in the landing footer.
+`/explore` opens the map, SQLite catalog and local LM Studio assistant. Its path is defined once in `src/routes.ts`. The two pages load separately, so MapLibre is not downloaded for the landing page. Sections have anchors (`/#about`, `/#work`, `/#spain`, `/#etna`, `/#flight`, `/#nepal`, `/#discover`).
+
+**Media.** Everything is bundled; the page makes no third-party requests at runtime. Case-study images in `public/media/cases/<id>/` are WebP copies (longest side 1600 px) of `data/event_visualisation/` (that folder is not tracked in git); `src/cases.ts` lists each asset with its source file. If an asset is missing, the page shows a labelled placeholder naming the expected file and its source, so it can be dropped in later.
+
+**Drone flight.** `public/media/cases/nepal/flight/` holds 132 frames (1280 × 720) rendered once from `data/event_visualisation/Nepal/map3d.html`, so the flight works offline. To re-record: serve a copy of `map3d.html` locally with `preserveDrawingBuffer: true`, move the camera along the centreline of `nepal_flood/mask_high_confidence.png` with `map.jumpTo`, wait for `idle`, save the canvas for each step, and convert with `cwebp -q 62`. The frames show Esri World Imagery and AWS Terrain Tiles; both are credited on the page.
+
+**Readability and motion.** Text keeps at least 7:1 contrast (WCAG AAA) on the space background and on panels; the smallest label is 14 px and reading text starts at 17 px, scaling up on large screens. Dividers work with pointer, touch and a labelled range input; layers are toggle buttons with a text state. The top bar has a pause control; with “reduce motion” set in the system the starfield is static, sections appear without transitions and the flight becomes four still frames.
+
+The coloured areas are detections by our model, not validated damage maps, and the colour images are radar composites rather than natural-colour photographs; the page says so. Earlier research notes on NASA material are in [LANDING_RESEARCH.md](LANDING_RESEARCH.md).
 
 ## Persistent events
 
