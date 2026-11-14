@@ -13,7 +13,66 @@
     "gcov_before": "NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001",
     "gcov_after": "NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001",
     "gunw": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
-    "gunw_ref": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001"
+    "gunw_ref": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+    "title_pl": "Nepal: powódź po oberwaniu lodowca (Rasuwa)",
+    "tour": [
+      {
+        "lon": 85.41,
+        "lat": 28.235,
+        "zoom": 10.6,
+        "pitch": 50,
+        "bearing": 20,
+        "hold": 4500,
+        "text": "26 sierpnia 2026 w górach na północ od Langtangu oberwał się lodowiec. Fala wody i gruzu zeszła doliną rzeki Bhote Koshi."
+      },
+      {
+        "lon": 85.4952,
+        "lat": 28.3117,
+        "zoom": 12.0,
+        "name": "Początek śladu",
+        "hold": 5000,
+        "text": "Tu zaczyna się ślad. Różowe pole to miejsca, gdzie dwie niezależne metody radarowe zgodnie pokazały zmianę powierzchni."
+      },
+      {
+        "lon": 85.4422,
+        "lat": 28.3362,
+        "text": "Radar NISAR nie potrzebuje słońca ani czystego nieba: porównujemy obraz sprzed i po zdarzeniu."
+      },
+      {
+        "lon": 85.3778,
+        "lat": 28.2779,
+        "name": "Timure",
+        "hold": 5000,
+        "text": "Timure, przy granicy z Chinami. Wykryta zmiana układa się dokładnie w dnie doliny, tak jak płynęła fala."
+      },
+      {
+        "lon": 85.348,
+        "lat": 28.1892,
+        "text": "Żółty kolor: zmianę widzi tylko jedna z metod. To sygnał słabszy, pokazujemy go osobno."
+      },
+      {
+        "lon": 85.3408,
+        "lat": 28.1626,
+        "name": "Syabrubesi",
+        "hold": 5000,
+        "text": "Syabrubesi, blisko 30 km w dół rzeki od początku śladu. Zmiana jest nadal widoczna."
+      },
+      {
+        "lon": 85.2467,
+        "lat": 28.092,
+        "zoom": 12.0,
+        "text": "Ślad ciągnie się dalej doliną Trishuli, aż do krawędzi analizowanego obszaru."
+      },
+      {
+        "lon": 85.39,
+        "lat": 28.22,
+        "zoom": 10.8,
+        "pitch": 58,
+        "bearing": 35,
+        "hold": 6000,
+        "text": "Cały ślad ma około 40 km. Tak wygląda skutek katastrofy widziany z orbity, bez względu na chmury."
+      }
+    ]
   },
   "etna": {
     "kind": "volcano",
@@ -44,5 +103,39 @@
     "note": "Same granules as the first nisar_before_after.py run (track 023 descending, frame 068). Sentinel-2 dNBR is the ground truth (validate_fire.py).",
     "gcov_before": "NISAR_L2_PR_GCOV_026_023_D_068_2005_DHDH_A_20260721T191744_20260721T191819_P05023_N_F_J_001",
     "gcov_after": "NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001"
+  },
+  "silesia": {
+    "kind": "subsidence",
+    "title": "Mining subsidence, Upper Silesia, Poland",
+    "event_date": null,
+    "bbox": [
+      18.45,
+      49.95,
+      19.25,
+      50.42
+    ],
+    "note": "No single event: ground sinks continuously above active coal longwalls. Nine consecutive 12/24-day GUNW pairs per track, June-October 2026. Ascending track is the main one, descending is the independent cross-check.",
+    "gunw_series": [
+      "NISAR_L2_PR_GUNW_023_057_A_027_024_2000_SH_20260618T033018_20260618T033053_20260630T033017_20260630T033053_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_024_057_A_027_025_2000_SH_20260630T033017_20260630T033053_20260712T033017_20260712T033052_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_025_057_A_027_026_2000_SH_20260712T033017_20260712T033052_20260724T033016_20260724T033051_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_026_057_A_027_028_2000_SH_20260724T033016_20260724T033051_20260817T033015_20260817T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_028_057_A_027_029_2000_SH_20260817T033015_20260817T033050_20260829T033015_20260829T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_029_057_A_027_030_2000_SH_20260829T033015_20260829T033050_20260910T033014_20260910T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_030_057_A_027_031_2000_SH_20260910T033014_20260910T033050_20260922T033015_20260922T033054_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_031_057_A_027_032_2000_SH_20260922T033015_20260922T033054_20261004T033015_20261004T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_032_057_A_027_033_2000_SH_20261004T033015_20261004T033050_20261016T033015_20261016T033050_P05023_N_F_J_001"
+    ],
+    "gunw_series_check": [
+      "NISAR_L2_PR_GUNW_023_152_D_063_024_2000_SH_20260624T180001_20260624T180036_20260706T180000_20260706T180035_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_024_152_D_063_025_2000_SH_20260706T180000_20260706T180035_20260718T175959_20260718T180035_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_025_152_D_063_027_2000_SH_20260718T175959_20260718T180035_20260811T175958_20260811T180033_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_027_152_D_063_028_2000_SH_20260811T175958_20260811T180033_20260823T175957_20260823T180033_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_028_152_D_063_029_2000_SH_20260823T175957_20260823T180033_20260904T175957_20260904T180032_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_028_152_D_063_029_2000_SH_20260823T175957_20260823T180033_20260904T175957_20260904T180032_P05023_N_F_J_002",
+      "NISAR_L2_PR_GUNW_029_152_D_063_030_2000_SH_20260904T175957_20260904T180032_20260916T175957_20260916T180032_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_030_152_D_063_031_2000_SH_20260916T175957_20260916T180032_20260928T175957_20260928T180032_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_031_152_D_063_032_2000_SH_20260928T175957_20260928T180032_20261010T175957_20261010T180032_P05023_N_F_J_001"
+    ]
   }
 }

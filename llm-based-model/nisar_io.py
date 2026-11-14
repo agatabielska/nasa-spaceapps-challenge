@@ -107,8 +107,8 @@ def read_gcov(src, bbox, target_m=20.0):
     return {**out, "x": xx, "y": yy, "epsg": epsg, "pixel_m": dx * k}
 
 
-def read_gunw(src, bbox):
-    """Interferogram layers: 80 m unwrapped phase (+ quality layers) and 20 m coherence / wrapped phase."""
+def read_gunw(src, bbox, wrapped=True):
+    """Interferogram layers: 80 m unwrapped phase (+ quality layers) and, if wrapped=True, 20 m coherence / wrapped phase."""
     with open_h5(src) as f:
         out = {"wavelength_m": 299792458.0 / float(f[GUNW]["centerFrequency"][()])}
         u = f[GUNW]["unwrappedInterferogram"]; pol = sorted(k for k in u if k in ("HH", "VV"))[0]
@@ -116,6 +116,8 @@ def read_gunw(src, bbox):
         for name in ("unwrappedPhase", "coherenceMagnitude", "connectedComponents", "ionospherePhaseScreen"):
             a, yy = _north_up(u[pol][name][sy, sx], y); out["u_" + name] = a
         out.update(u_x=x, u_y=yy, epsg=epsg, u_pixel_m=float(abs(x[1] - x[0])))
+        out["pol"] = pol
+        if not wrapped: return out                               # time series need only the small 80 m layers
         w = f[GUNW]["wrappedInterferogram"]
         sy, sx, x, y, _ = _window(w[pol], bbox)
         coh, yy = _north_up(w[pol]["coherenceMagnitude"][sy, sx], y)
