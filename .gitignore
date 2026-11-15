@@ -8,3 +8,14 @@ outputs/
 wandb/
 *.ckpt
 lightning_logs/
+
+.deps/
+cdet.egg-info/
+Datasets/
+
+UCDFormer/UCDFormer/old/
+*.h5
+*.tif
+*.pt
+*.pth
+UCDFormer/UCDFormer/weights/

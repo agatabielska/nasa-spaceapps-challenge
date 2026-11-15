@@ -1,0 +1,293 @@
+[
+  {
+    "id": "indonesia",
+    "title": "Volcanic terrain · Indonesia",
+    "country": "Indonesia",
+    "countryCode": "ID",
+    "region": "Asia",
+    "aliases": [
+      "indonesia",
+      "indonezja"
+    ],
+    "kind": "volcano",
+    "date": "2026-10-08",
+    "coordinates": [
+      110,
+      -7
+    ],
+    "description": "Demonstration scenario illustrating the volcano category and regional navigation.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "brazil",
+    "title": "Forest change · Brazil",
+    "country": "Brazil",
+    "countryCode": "BR",
+    "region": "South America",
+    "aliases": [
+      "brazil",
+      "brazylia",
+      "amazon"
+    ],
+    "kind": "wildfire",
+    "date": "2026-09-04",
+    "coordinates": [
+      -58,
+      -8
+    ],
+    "description": "Demonstration catalog entry. This marker illustrates a future workflow, not an observed change or an assessment of forest loss.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "pakistan",
+    "title": "River flooding · Pakistan",
+    "country": "Pakistan",
+    "countryCode": "PK",
+    "region": "Asia",
+    "aliases": [
+      "pakistan"
+    ],
+    "kind": "flood",
+    "date": "2026-08-27",
+    "coordinates": [
+      69,
+      27
+    ],
+    "description": "Demonstration scenario for a flood-mapping workflow. The marker does not represent a validated inundation map.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "spain",
+    "title": "Forest fire · Spain",
+    "country": "Spain",
+    "countryCode": "ES",
+    "region": "Europe",
+    "aliases": [
+      "spain",
+      "hiszpania",
+      "españa",
+      "galicia"
+    ],
+    "kind": "wildfire",
+    "date": "2026-08-18",
+    "coordinates": [
+      -7.3,
+      42.4
+    ],
+    "description": "Illustrative catalog entry for testing location search and wildfire filters. The date and location are scenario data, not a verified disaster record.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "etna",
+    "title": "Etna · changing volcanic terrain",
+    "country": "Italy",
+    "countryCode": "IT",
+    "region": "Europe",
+    "aliases": [
+      "italy",
+      "włochy",
+      "etna",
+      "sicily",
+      "sycylia"
+    ],
+    "kind": "volcano",
+    "date": "2026-08-07",
+    "coordinates": [
+      15,
+      37.75
+    ],
+    "description": "Candidate study of radar backscatter changes around Etna. The observation interval covers multiple eruptive phases; the event marker is contextual, not a measured eruption onset.",
+    "observations": [
+      "2026-07-23",
+      "2026-08-16"
+    ],
+    "source": "https://ingvvulcani.com/2026/08/22/etna-la-calda-estate-del-2026/",
+    "catalogVerified": true,
+    "analysisAvailable": false
+  },
+  {
+    "id": "canada",
+    "title": "Forest fire · Canada",
+    "country": "Canada",
+    "countryCode": "CA",
+    "region": "North America",
+    "aliases": [
+      "canada",
+      "kanada"
+    ],
+    "kind": "wildfire",
+    "date": "2026-07-12",
+    "coordinates": [
+      -112,
+      56
+    ],
+    "description": "Demonstration scenario for the wildfire category. No NISAR analysis or burned-area estimate is available.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "venezuela",
+    "title": "Ground movement · Venezuela",
+    "country": "Venezuela",
+    "countryCode": "VE",
+    "region": "South America",
+    "aliases": [
+      "venezuela",
+      "wenezuela",
+      "catia"
+    ],
+    "kind": "earthquake",
+    "date": "2026-06-24",
+    "coordinates": [
+      -67.22,
+      10.6
+    ],
+    "description": "Candidate GUNW study of earthquake-related line-of-sight displacement. Phase corrections, reference selection and quality assessment are required before interpreting movement.",
+    "observations": [
+      "2026-06-13",
+      "2026-06-25"
+    ],
+    "source": "https://science.nasa.gov/earth/earth-observatory/where-venezuelas-earthquakes-shifted-the-ground/",
+    "catalogVerified": true,
+    "analysisAvailable": false
+  },
+  {
+    "id": "greenland",
+    "title": "Ice dynamics · Greenland",
+    "country": "Greenland",
+    "countryCode": "GL",
+    "region": "North America",
+    "aliases": [
+      "greenland",
+      "grenlandia"
+    ],
+    "kind": "ice",
+    "date": "2026-06-15",
+    "coordinates": [
+      -43,
+      69
+    ],
+    "description": "Demonstration scenario for ice observations. Radar surface change does not directly measure lost ice volume.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "iceland",
+    "title": "Volcanic terrain · Iceland",
+    "country": "Iceland",
+    "countryCode": "IS",
+    "region": "Europe",
+    "aliases": [
+      "iceland",
+      "islandia"
+    ],
+    "kind": "volcano",
+    "date": "2026-05-20",
+    "coordinates": [
+      -22,
+      64
+    ],
+    "description": "Demonstration scenario. A future study could compare radar observations of volcanic terrain with independent references.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "japan",
+    "title": "Ground movement · Japan",
+    "country": "Japan",
+    "countryCode": "JP",
+    "region": "Asia",
+    "aliases": [
+      "japan",
+      "japonia"
+    ],
+    "kind": "earthquake",
+    "date": "2026-04-11",
+    "coordinates": [
+      138,
+      37
+    ],
+    "description": "Demonstration scenario for finding earthquake-related studies. No earthquake occurrence or deformation measurement is asserted.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "australia",
+    "title": "Forest fire · Australia",
+    "country": "Australia",
+    "countryCode": "AU",
+    "region": "Oceania",
+    "aliases": [
+      "australia"
+    ],
+    "kind": "wildfire",
+    "date": "2026-02-09",
+    "coordinates": [
+      146,
+      -35
+    ],
+    "description": "Demonstration scenario. No burned area or radar classification has been computed.",
+    "catalogVerified": false,
+    "analysisAvailable": false
+  },
+  {
+    "id": "mozambique",
+    "title": "Flooding along the Limpopo",
+    "country": "Mozambique",
+    "countryCode": "MZ",
+    "region": "Africa",
+    "aliases": [
+      "mozambique",
+      "mozambik",
+      "limpopo",
+      "africa",
+      "afryka"
+    ],
+    "kind": "flood",
+    "date": "2026-01-17",
+    "coordinates": [
+      33,
+      -24.6
+    ],
+    "description": "NASA documents NISAR observations before and during flooding. A candidate for comparing open water and inundated vegetation. Our own pixel analysis has not been performed.",
+    "observations": [
+      "2026-01-05",
+      "2026-01-17"
+    ],
+    "source": "https://svs.gsfc.nasa.gov/5661",
+    "catalogVerified": true,
+    "analysisAvailable": false
+  },
+  {
+    "id": "hubbard",
+    "title": "Hubbard Glacier · surface deposits",
+    "country": "United States",
+    "countryCode": "US",
+    "region": "North America",
+    "aliases": [
+      "alaska",
+      "usa",
+      "united states",
+      "stany",
+      "hubbard"
+    ],
+    "kind": "ice",
+    "date": "2025-12-06",
+    "coordinates": [
+      -139.8,
+      60.45
+    ],
+    "description": "Candidate study of avalanche and landslide deposits following the Hubbard Glacier earthquake. Radar roughness, snow and glacier motion need to be distinguished.",
+    "observations": [
+      "2025-11-26",
+      "2025-12-08"
+    ],
+    "source": "https://science.nasa.gov/earth/earth-observatory/landslide-and-avalanche-debris-litter-hubbard-glacier/",
+    "catalogVerified": true,
+    "analysisAvailable": false
+  }
+]

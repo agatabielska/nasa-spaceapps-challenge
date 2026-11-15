@@ -1,0 +1,295 @@
+<!doctype html><meta charset="utf-8"><title>NISAR algorithm steps</title><style>body{font:16px system-ui;max-width:1400px;margin:32px auto;padding:0 20px;background:#fafafa;color:#222}img{max-width:100%;height:auto}figure,section{background:white;padding:16px;margin:18px 0;border:1px solid #ddd}pre{white-space:pre-wrap}h2{position:sticky;top:0;background:white;padding:10px}figcaption{font-size:12px}</style><h1>NISAR algorithm walkthrough</h1><p>Gray pixels are unsupported where a support mask is available. Continuous map displays use 1st/99th-percentile limits; paired before/after channels share limits. Exact unclipped values are in the downloadable NPZ files. Masks use 0/1; seeds use −1 uncertain, 0 unchanged, 1 changed; FCM labels use 0 low, 1 middle, 2 high. Spatial plots use raster pixel coordinates, not geographic axes. Changing color ranges is display-only.</p><p>Trace files may be partial if the run failed; see pipeline.log and run.jsonl. A smaller mask or lower loss does not establish better accuracy.</p><section><h2>00_physical_baseline</h2><p>Independent physical baseline: absolute HH/HV dB changes divided by their valid-area 75th-percentile scales (floor 0.1 dB), averaged across polarizations, then a global Otsu threshold. No VGG, FCM or random forest is used in this baseline.</p><figure><h3>physical_abs_db_change</h3><img loading="lazy" src="00_physical_baseline_physical_abs_db_change.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_abs_db_change&#x27;, &#x27;shape&#x27;: [2, 498, 500], &#x27;finite_count&#x27;: 497982, &#x27;minimum&#x27;: 5.7220458984375e-06, &#x27;maximum&#x27;: 18.53632164001465}</figcaption></figure><figure><h3>baseline_score</h3><img loading="lazy" src="00_physical_baseline_baseline_score.png"><figcaption>{&#x27;name&#x27;: &#x27;baseline_score&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248991, &#x27;minimum&#x27;: 0.0014306261235800166, &#x27;maximum&#x27;: 7.336208260620728}</figcaption></figure><figure><h3>baseline_mask</h3><img loading="lazy" src="00_physical_baseline_baseline_mask.png"><figcaption>{&#x27;name&#x27;: &#x27;baseline_mask&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248991, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>model_support</h3><img loading="lazy" src="00_physical_baseline_model_support.png"><figcaption>{&#x27;name&#x27;: &#x27;model_support&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>otsu_threshold</h3><img loading="lazy" src="00_physical_baseline_otsu_threshold.png"><figcaption>{&#x27;name&#x27;: &#x27;otsu_threshold&#x27;, &#x27;shape&#x27;: [1], &#x27;finite_count&#x27;: 1, &#x27;minimum&#x27;: 1.0758609436768731, &#x27;maximum&#x27;: 1.0758609436768731}</figcaption></figure></section><section><h2>Training</h2><p>Held-out translation objective selects the checkpoint; this is not detection accuracy.</p><img src="training.png"></section><section><h2>01_preprocessing</h2><p>Aligned frequency-A HH/HV gamma-0 power → masked linear-power mean → 10 log10(power) → HH dB, HV dB, HH−HV dB → shared per-channel 1st/99th percentile scaling → NISAR channel z-scores. Statistics use both dates on training support only. Alignment is grid reprojection when needed, not independently verified subpixel registration.</p><figure><h3>aligned_raw_power_pre distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_aligned_raw_power_pre_distribution.png"></figure><figure><h3>aligned_raw_power_pre</h3><img loading="lazy" src="01_preprocessing_aligned_raw_power_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;aligned_raw_power_pre&#x27;, &#x27;shape&#x27;: [2, 498, 500], &#x27;finite_count&#x27;: 497998, &#x27;minimum&#x27;: 0.0004519820213317871, &#x27;maximum&#x27;: 30.554443359375}</figcaption></figure><figure><h3>aligned_raw_power_post distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_aligned_raw_power_post_distribution.png"></figure><figure><h3>aligned_raw_power_post</h3><img loading="lazy" src="01_preprocessing_aligned_raw_power_post.png"><figcaption>{&#x27;name&#x27;: &#x27;aligned_raw_power_post&#x27;, &#x27;shape&#x27;: [2, 498, 500], &#x27;finite_count&#x27;: 497998, &#x27;minimum&#x27;: 0.0004473738372325897, &#x27;maximum&#x27;: 36.4150390625}</figcaption></figure><figure><h3>raw_valid</h3><img loading="lazy" src="01_preprocessing_raw_valid.png"><figcaption>{&#x27;name&#x27;: &#x27;raw_valid&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>filtered_power_pre distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_filtered_power_pre_distribution.png"></figure><figure><h3>filtered_power_pre</h3><img loading="lazy" src="01_preprocessing_filtered_power_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;filtered_power_pre&#x27;, &#x27;shape&#x27;: [2, 498, 500], &#x27;finite_count&#x27;: 497982, &#x27;minimum&#x27;: 0.0014231064124032855, &#x27;maximum&#x27;: 12.3529052734375}</figcaption></figure><figure><h3>filtered_power_post distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_filtered_power_post_distribution.png"></figure><figure><h3>filtered_power_post</h3><img loading="lazy" src="01_preprocessing_filtered_power_post.png"><figcaption>{&#x27;name&#x27;: &#x27;filtered_power_post&#x27;, &#x27;shape&#x27;: [2, 498, 500], &#x27;finite_count&#x27;: 497982, &#x27;minimum&#x27;: 0.0009946421487256885, &#x27;maximum&#x27;: 10.83401107788086}</figcaption></figure><figure><h3>filtered_valid</h3><img loading="lazy" src="01_preprocessing_filtered_valid.png"><figcaption>{&#x27;name&#x27;: &#x27;filtered_valid&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>physical_features_pre distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_physical_features_pre_distribution.png"></figure><figure><h3>physical_features_pre</h3><img loading="lazy" src="01_preprocessing_physical_features_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_features_pre&#x27;, &#x27;shape&#x27;: [3, 498, 500], &#x27;finite_count&#x27;: 746973, &#x27;minimum&#x27;: -28.467626571655273, &#x27;maximum&#x27;: 18.734209060668945}</figcaption></figure><figure><h3>physical_features_post distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_physical_features_post_distribution.png"></figure><figure><h3>physical_features_post</h3><img loading="lazy" src="01_preprocessing_physical_features_post.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_features_post&#x27;, &#x27;shape&#x27;: [3, 498, 500], &#x27;finite_count&#x27;: 746973, &#x27;minimum&#x27;: -30.023330688476562, &#x27;maximum&#x27;: 22.223529815673828}</figcaption></figure><figure><h3>percentile_scaled_pre distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_percentile_scaled_pre_distribution.png"></figure><figure><h3>percentile_scaled_pre</h3><img loading="lazy" src="01_preprocessing_percentile_scaled_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;percentile_scaled_pre&#x27;, &#x27;shape&#x27;: [3, 498, 500], &#x27;finite_count&#x27;: 746973, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>percentile_scaled_post distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_percentile_scaled_post_distribution.png"></figure><figure><h3>percentile_scaled_post</h3><img loading="lazy" src="01_preprocessing_percentile_scaled_post.png"><figcaption>{&#x27;name&#x27;: &#x27;percentile_scaled_post&#x27;, &#x27;shape&#x27;: [3, 498, 500], &#x27;finite_count&#x27;: 746973, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>vgg_input_pre distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_vgg_input_pre_distribution.png"></figure><figure><h3>vgg_input_pre</h3><img loading="lazy" src="01_preprocessing_vgg_input_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_input_pre&#x27;, &#x27;shape&#x27;: [3, 498, 500], &#x27;finite_count&#x27;: 746973, &#x27;minimum&#x27;: -2.5540257199254195, &#x27;maximum&#x27;: 3.1090722342683006}</figcaption></figure><figure><h3>vgg_input_post distributions over valid area</h3><p>These are whole valid-area summaries; fitted mean/std use training support only.</p><img loading="lazy" src="01_preprocessing_vgg_input_post_distribution.png"></figure><figure><h3>vgg_input_post</h3><img loading="lazy" src="01_preprocessing_vgg_input_post.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_input_post&#x27;, &#x27;shape&#x27;: [3, 498, 500], &#x27;finite_count&#x27;: 746973, &#x27;minimum&#x27;: -2.5540257199254195, &#x27;maximum&#x27;: 3.1090722342683006}</figcaption></figure><figure><h3>standardization_fit_support</h3><img loading="lazy" src="01_preprocessing_standardization_fit_support.png"><figcaption>{&#x27;name&#x27;: &#x27;standardization_fit_support&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure></section><section><h2>02_vgg_example_patch</h2><p>One inference patch only, at the saved pixel origin. Inputs are NISAR-normalized. VGG block means and first four activation channels are illustrative summaries, not complete feature tensors. Translated output is in normalized network coordinates, not measured backscatter. VGG weights remain frozen. Score inputs additionally show the first three upsampled activation channels after per-date, per-channel minimum/95th-percentile saturation. Their L2 difference across all feature channels yields the patch score; these activation percentiles are separate from input standardization.</p><figure><h3>normalized_patch_pre</h3><img loading="lazy" src="02_vgg_example_patch_normalized_patch_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;normalized_patch_pre&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: -2.554025650024414, &#x27;maximum&#x27;: 3.109072208404541}</figcaption></figure><figure><h3>normalized_patch_post</h3><img loading="lazy" src="02_vgg_example_patch_normalized_patch_post.png"><figcaption>{&#x27;name&#x27;: &#x27;normalized_patch_post&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: -2.554025650024414, &#x27;maximum&#x27;: 3.109072208404541}</figcaption></figure><figure><h3>translated_patch</h3><img loading="lazy" src="02_vgg_example_patch_translated_patch.png"><figcaption>{&#x27;name&#x27;: &#x27;translated_patch&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: -2.777029037475586, &#x27;maximum&#x27;: 4.171995162963867}</figcaption></figure><figure><h3>patch_valid</h3><img loading="lazy" src="02_vgg_example_patch_patch_valid.png"><figcaption>{&#x27;name&#x27;: &#x27;patch_valid&#x27;, &#x27;shape&#x27;: [256, 256], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 1.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>vgg_pre_block_0_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_0_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_0_channel_mean&#x27;, &#x27;shape&#x27;: [256, 256], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 0.17210349440574646, &#x27;maximum&#x27;: 1.3790030479431152}</figcaption></figure><figure><h3>vgg_pre_block_0_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_0_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_0_first_channels&#x27;, &#x27;shape&#x27;: [4, 256, 256], &#x27;finite_count&#x27;: 262144, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 6.69523286819458}</figcaption></figure><figure><h3>vgg_pre_block_1_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_1_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_1_channel_mean&#x27;, &#x27;shape&#x27;: [128, 128], &#x27;finite_count&#x27;: 16384, &#x27;minimum&#x27;: 0.35461995005607605, &#x27;maximum&#x27;: 2.7808046340942383}</figcaption></figure><figure><h3>vgg_pre_block_1_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_1_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_1_first_channels&#x27;, &#x27;shape&#x27;: [4, 128, 128], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 21.5557804107666}</figcaption></figure><figure><h3>vgg_pre_block_2_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_2_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_2_channel_mean&#x27;, &#x27;shape&#x27;: [64, 64], &#x27;finite_count&#x27;: 4096, &#x27;minimum&#x27;: 0.6456137299537659, &#x27;maximum&#x27;: 3.733281135559082}</figcaption></figure><figure><h3>vgg_pre_block_2_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_2_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_2_first_channels&#x27;, &#x27;shape&#x27;: [4, 64, 64], &#x27;finite_count&#x27;: 16384, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 33.40140151977539}</figcaption></figure><figure><h3>vgg_pre_block_3_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_3_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_3_channel_mean&#x27;, &#x27;shape&#x27;: [32, 32], &#x27;finite_count&#x27;: 1024, &#x27;minimum&#x27;: 0.3190223276615143, &#x27;maximum&#x27;: 2.034350872039795}</figcaption></figure><figure><h3>vgg_pre_block_3_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_pre_block_3_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_pre_block_3_first_channels&#x27;, &#x27;shape&#x27;: [4, 32, 32], &#x27;finite_count&#x27;: 4096, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 23.23586654663086}</figcaption></figure><figure><h3>vgg_post_block_0_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_0_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_0_channel_mean&#x27;, &#x27;shape&#x27;: [256, 256], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 0.17419491708278656, &#x27;maximum&#x27;: 1.5428636074066162}</figcaption></figure><figure><h3>vgg_post_block_0_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_0_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_0_first_channels&#x27;, &#x27;shape&#x27;: [4, 256, 256], &#x27;finite_count&#x27;: 262144, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 6.027534484863281}</figcaption></figure><figure><h3>vgg_post_block_1_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_1_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_1_channel_mean&#x27;, &#x27;shape&#x27;: [128, 128], &#x27;finite_count&#x27;: 16384, &#x27;minimum&#x27;: 0.3174590468406677, &#x27;maximum&#x27;: 2.797995090484619}</figcaption></figure><figure><h3>vgg_post_block_1_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_1_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_1_first_channels&#x27;, &#x27;shape&#x27;: [4, 128, 128], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 18.993671417236328}</figcaption></figure><figure><h3>vgg_post_block_2_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_2_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_2_channel_mean&#x27;, &#x27;shape&#x27;: [64, 64], &#x27;finite_count&#x27;: 4096, &#x27;minimum&#x27;: 0.7069624662399292, &#x27;maximum&#x27;: 4.463974475860596}</figcaption></figure><figure><h3>vgg_post_block_2_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_2_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_2_first_channels&#x27;, &#x27;shape&#x27;: [4, 64, 64], &#x27;finite_count&#x27;: 16384, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 29.732851028442383}</figcaption></figure><figure><h3>vgg_post_block_3_channel_mean</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_3_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_3_channel_mean&#x27;, &#x27;shape&#x27;: [32, 32], &#x27;finite_count&#x27;: 1024, &#x27;minimum&#x27;: 0.29405444860458374, &#x27;maximum&#x27;: 2.279669761657715}</figcaption></figure><figure><h3>vgg_post_block_3_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_vgg_post_block_3_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;vgg_post_block_3_first_channels&#x27;, &#x27;shape&#x27;: [4, 32, 32], &#x27;finite_count&#x27;: 4096, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 25.112157821655273}</figcaption></figure><figure><h3>score_block_0_saturated_translated_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_0_saturated_translated_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_0_saturated_translated_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_0_saturated_post_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_0_saturated_post_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_0_saturated_post_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_1_saturated_translated_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_1_saturated_translated_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_1_saturated_translated_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_1_saturated_post_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_1_saturated_post_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_1_saturated_post_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_2_saturated_translated_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_2_saturated_translated_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_2_saturated_translated_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_2_saturated_post_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_2_saturated_post_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_2_saturated_post_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_3_saturated_translated_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_3_saturated_translated_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_3_saturated_translated_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>score_block_3_saturated_post_first_channels</h3><img loading="lazy" src="02_vgg_example_patch_score_block_3_saturated_post_first_channels.png"><figcaption>{&#x27;name&#x27;: &#x27;score_block_3_saturated_post_first_channels&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>translated_patch_score</h3><img loading="lazy" src="02_vgg_example_patch_translated_patch_score.png"><figcaption>{&#x27;name&#x27;: &#x27;translated_patch_score&#x27;, &#x27;shape&#x27;: [256, 256], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 5.099050045013428, &#x27;maximum&#x27;: 13.649330139160156}</figcaption></figure></section><section><h2>02a_training_targets</h2><p>First fully valid training patch at initialization. Initial feature difference is min-max scaled to a mixing weight. The style target mixes normalized post and pre as (1−weight) × post + weight × pre; content features come from pre. These are fixed cached targets, not predictions of ground truth.</p><figure><h3>initial_feature_difference</h3><img loading="lazy" src="02a_training_targets_initial_feature_difference.png"><figcaption>{&#x27;name&#x27;: &#x27;initial_feature_difference&#x27;, &#x27;shape&#x27;: [256, 256], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 0.9999942183494568}</figcaption></figure><figure><h3>change_weight</h3><img loading="lazy" src="02a_training_targets_change_weight.png"><figcaption>{&#x27;name&#x27;: &#x27;change_weight&#x27;, &#x27;shape&#x27;: [256, 256], &#x27;finite_count&#x27;: 65536, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 0.9999942183494568}</figcaption></figure><figure><h3>normalized_training_pre</h3><img loading="lazy" src="02a_training_targets_normalized_training_pre.png"><figcaption>{&#x27;name&#x27;: &#x27;normalized_training_pre&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: -2.554025650024414, &#x27;maximum&#x27;: 3.109072208404541}</figcaption></figure><figure><h3>normalized_training_post</h3><img loading="lazy" src="02a_training_targets_normalized_training_post.png"><figcaption>{&#x27;name&#x27;: &#x27;normalized_training_post&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: -2.554025650024414, &#x27;maximum&#x27;: 3.109072208404541}</figcaption></figure><figure><h3>mixed_style_target</h3><img loading="lazy" src="02a_training_targets_mixed_style_target.png"><figcaption>{&#x27;name&#x27;: &#x27;mixed_style_target&#x27;, &#x27;shape&#x27;: [3, 256, 256], &#x27;finite_count&#x27;: 196608, &#x27;minimum&#x27;: -2.554025650024414, &#x27;maximum&#x27;: 3.109072208404541}</figcaption></figure><figure><h3>content_feature_channel_mean</h3><img loading="lazy" src="02a_training_targets_content_feature_channel_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;content_feature_channel_mean&#x27;, &#x27;shape&#x27;: [32, 32], &#x27;finite_count&#x27;: 1024, &#x27;minimum&#x27;: 0.3190223276615143, &#x27;maximum&#x27;: 2.034350872039795}</figcaption></figure></section><section><h2>03_detection</h2><p>Full-area blended VGG scores, FCM memberships, adaptive thresholds, seed agreement, RF votes, physical support gates and component removal. comparison_strict_* shows the older Gaussian rule score > 2 × masked Gaussian local mean, with high/low FCM agreement. It is a diagnostic comparison, not an additional gate in the refined detector. Refined thresholds use local median + k × 1.4826 × local residual MAD proxy, bounded below by the configured floor. FCM memberships and RF votes are not calibrated probabilities.</p><figure><h3>model_support</h3><img loading="lazy" src="03_detection_model_support.png"><figcaption>{&#x27;name&#x27;: &#x27;model_support&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>input_valid</h3><img loading="lazy" src="03_detection_input_valid.png"><figcaption>{&#x27;name&#x27;: &#x27;input_valid&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>guard_safe</h3><img loading="lazy" src="03_detection_guard_safe.png"><figcaption>{&#x27;name&#x27;: &#x27;guard_safe&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>overlap_weight_sum</h3><img loading="lazy" src="03_detection_overlap_weight_sum.png"><figcaption>{&#x27;name&#x27;: &#x27;overlap_weight_sum&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 249000, &#x27;minimum&#x27;: 0.01, &#x27;maximum&#x27;: 1.3301104257439558}</figcaption></figure><figure><h3>translated_score</h3><img loading="lazy" src="03_detection_translated_score.png"><figcaption>{&#x27;name&#x27;: &#x27;translated_score&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 4.862774848937988, &#x27;maximum&#x27;: 15.08819580078125}</figcaption></figure><figure><h3>no_translation_score</h3><img loading="lazy" src="03_detection_no_translation_score.png"><figcaption>{&#x27;name&#x27;: &#x27;no_translation_score&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 4.761465549468994, &#x27;maximum&#x27;: 14.669984817504883}</figcaption></figure><figure><h3>comparison_strict_fcm_center_history</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_center_history.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_center_history&#x27;, &#x27;shape&#x27;: [42, 3], &#x27;finite_count&#x27;: 126, &#x27;minimum&#x27;: 0.27189230348335275, &#x27;maximum&#x27;: 0.5286610835405513}</figcaption></figure><figure><h3>comparison_strict_fcm_clusters</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_clusters.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_clusters&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 2.0}</figcaption></figure><figure><h3>comparison_strict_fcm_high_binary</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_high_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_high_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_fcm_low_binary</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_low_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_low_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_fcm_membership_0</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_membership_0.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_membership_0&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 7.805052177484173e-14, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_fcm_membership_1</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_membership_1.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_membership_1&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 2.745795669827078e-13, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_fcm_membership_2</h3><img loading="lazy" src="03_detection_comparison_strict_fcm_membership_2.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_fcm_membership_2&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 2.0149432523961647e-13, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_normalized_feature_score</h3><img loading="lazy" src="03_detection_comparison_strict_normalized_feature_score.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_normalized_feature_score&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 0.9999955296516418}</figcaption></figure><figure><h3>comparison_strict_gaussian_local_mean</h3><img loading="lazy" src="03_detection_comparison_strict_gaussian_local_mean.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_gaussian_local_mean&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.3010751008987427, &#x27;maximum&#x27;: 0.46399107575416565}</figcaption></figure><figure><h3>comparison_strict_gaussian_threshold</h3><img loading="lazy" src="03_detection_comparison_strict_gaussian_threshold.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_gaussian_threshold&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.6021502017974854, &#x27;maximum&#x27;: 0.9279821515083313}</figcaption></figure><figure><h3>comparison_strict_gaussian_adaptive_raw</h3><img loading="lazy" src="03_detection_comparison_strict_gaussian_adaptive_raw.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_gaussian_adaptive_raw&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_gaussian_adaptive_clean</h3><img loading="lazy" src="03_detection_comparison_strict_gaussian_adaptive_clean.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_gaussian_adaptive_clean&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>comparison_strict_combined_seed_labels</h3><img loading="lazy" src="03_detection_comparison_strict_combined_seed_labels.png"><figcaption>{&#x27;name&#x27;: &#x27;comparison_strict_combined_seed_labels&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: -1.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>fcm_center_history</h3><img loading="lazy" src="03_detection_fcm_center_history.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_center_history&#x27;, &#x27;shape&#x27;: [42, 3], &#x27;finite_count&#x27;: 126, &#x27;minimum&#x27;: 0.27189230348335275, &#x27;maximum&#x27;: 0.5286610835405513}</figcaption></figure><figure><h3>fcm_clusters</h3><img loading="lazy" src="03_detection_fcm_clusters.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_clusters&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 2.0}</figcaption></figure><figure><h3>fcm_high_binary</h3><img loading="lazy" src="03_detection_fcm_high_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_high_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>fcm_low_binary</h3><img loading="lazy" src="03_detection_fcm_low_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_low_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>fcm_membership_0</h3><img loading="lazy" src="03_detection_fcm_membership_0.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_membership_0&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 7.805052177484173e-14, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>fcm_membership_1</h3><img loading="lazy" src="03_detection_fcm_membership_1.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_membership_1&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 2.745795669827078e-13, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>fcm_membership_2</h3><img loading="lazy" src="03_detection_fcm_membership_2.png"><figcaption>{&#x27;name&#x27;: &#x27;fcm_membership_2&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 2.0149432523961647e-13, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>physical_fcm_agreement_raw</h3><img loading="lazy" src="03_detection_physical_fcm_agreement_raw.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_fcm_agreement_raw&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>normalized_feature_score</h3><img loading="lazy" src="03_detection_normalized_feature_score.png"><figcaption>{&#x27;name&#x27;: &#x27;normalized_feature_score&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 0.9999955296516418}</figcaption></figure><figure><h3>physical_relative_per_pol</h3><img loading="lazy" src="03_detection_physical_relative_per_pol.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_relative_per_pol&#x27;, &#x27;shape&#x27;: [2, 498, 500], &#x27;finite_count&#x27;: 497566, &#x27;minimum&#x27;: -0.9723715782165527, &#x27;maximum&#x27;: 0.9124412536621094}</figcaption></figure><figure><h3>physical_score</h3><img loading="lazy" src="03_detection_physical_score.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_score&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.00030064693419262767, &#x27;maximum&#x27;: 0.8470803499221802}</figcaption></figure><figure><h3>physical_high_threshold</h3><img loading="lazy" src="03_detection_physical_high_threshold.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_high_threshold&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.13597047328948975, &#x27;maximum&#x27;: 0.8705012798309326}</figcaption></figure><figure><h3>physical_low_threshold</h3><img loading="lazy" src="03_detection_physical_low_threshold.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_low_threshold&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.09489133954048157, &#x27;maximum&#x27;: 0.6353270411491394}</figcaption></figure><figure><h3>physical_high_binary</h3><img loading="lazy" src="03_detection_physical_high_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_high_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>physical_weak_binary</h3><img loading="lazy" src="03_detection_physical_weak_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_weak_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>physical_fcm_agreement_clean</h3><img loading="lazy" src="03_detection_physical_fcm_agreement_clean.png"><figcaption>{&#x27;name&#x27;: &#x27;physical_fcm_agreement_clean&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>combined_seed_labels</h3><img loading="lazy" src="03_detection_combined_seed_labels.png"><figcaption>{&#x27;name&#x27;: &#x27;combined_seed_labels&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: -1.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>connected_candidate_support</h3><img loading="lazy" src="03_detection_connected_candidate_support.png"><figcaption>{&#x27;name&#x27;: &#x27;connected_candidate_support&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>rf_votes</h3><img loading="lazy" src="03_detection_rf_votes.png"><figcaption>{&#x27;name&#x27;: &#x27;rf_votes&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>rf_vote_binary</h3><img loading="lazy" src="03_detection_rf_vote_binary.png"><figcaption>{&#x27;name&#x27;: &#x27;rf_vote_binary&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>rf_raw_mask</h3><img loading="lazy" src="03_detection_rf_raw_mask.png"><figcaption>{&#x27;name&#x27;: &#x27;rf_raw_mask&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>final_mask</h3><img loading="lazy" src="03_detection_final_mask.png"><figcaption>{&#x27;name&#x27;: &#x27;final_mask&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>pseudo_labels</h3><img loading="lazy" src="03_detection_pseudo_labels.png"><figcaption>{&#x27;name&#x27;: &#x27;pseudo_labels&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: -1.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>morphology_removed</h3><img loading="lazy" src="03_detection_morphology_removed.png"><figcaption>{&#x27;name&#x27;: &#x27;morphology_removed&#x27;, &#x27;shape&#x27;: [498, 500], &#x27;finite_count&#x27;: 248783, &#x27;minimum&#x27;: 0.0, &#x27;maximum&#x27;: 1.0}</figcaption></figure><figure><h3>rf_feature_importance</h3><img loading="lazy" src="03_detection_rf_feature_importance.png"><figcaption>{&#x27;name&#x27;: &#x27;rf_feature_importance&#x27;, &#x27;shape&#x27;: [11], &#x27;finite_count&#x27;: 11, &#x27;minimum&#x27;: 1.7438989439958007e-05, &#x27;maximum&#x27;: 0.2946028175032632}</figcaption></figure></section><h3>overview.png</h3><img src="../overview.png"><h3>baseline/overview.png</h3><img src="../baseline/overview.png"><h3>no_translation/overview.png</h3><img src="../no_translation/overview.png"><h2>Configuration, fitted statistics and diagnostics</h2><pre>{
+  &quot;config&quot;: {
+    &quot;study_id&quot;: &quot;etna&quot;,
+    &quot;before&quot;: &quot;data/raw/NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001.h5&quot;,
+    &quot;after&quot;: &quot;data/raw/NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001.h5&quot;,
+    &quot;bbox&quot;: [
+      14.943194446669025,
+      37.70508444125045,
+      15.056805553330975,
+      37.79491555874955
+    ],
+    &quot;output&quot;: &quot;/home/marysia/Downloads/sar-change-detection/UCDFormer/UCDFormer/outputs/walkthroughs/etna_20261115_050734_826326&quot;,
+    &quot;vgg&quot;: &quot;weights/vgg16-397923af.pth&quot;,
+    &quot;generator&quot;: &quot;weights/gen_00794001.pt&quot;,
+    &quot;seed&quot;: 123,
+    &quot;max_updates&quot;: 2000,
+    &quot;max_train_seconds&quot;: 7200,
+    &quot;validate_every&quot;: 100,
+    &quot;patience&quot;: 5,
+    &quot;learning_rate&quot;: 0.0001,
+    &quot;inference_patch&quot;: 256,
+    &quot;inference_stride&quot;: 128,
+    &quot;morphology_min_area_m2&quot;: 3600,
+    &quot;adaptive_sigma_m&quot;: 1000,
+    &quot;reference_labels&quot;: null,
+    &quot;power_mean_filter_size&quot;: 3,
+    &quot;pseudo_method&quot;: &quot;physical_feature_v2&quot;,
+    &quot;rf_positive_vote&quot;: 0.8,
+    &quot;pseudo_local_window&quot;: 31,
+    &quot;pseudo_high_k&quot;: 3,
+    &quot;pseudo_high_floor&quot;: 0.1,
+    &quot;pseudo_low_k&quot;: 1.5,
+    &quot;pseudo_low_floor&quot;: 0.075,
+    &quot;pseudo_changed_membership&quot;: 0.6,
+    &quot;pseudo_unchanged_floor&quot;: 0.05,
+    &quot;invalid_context_guard&quot;: 8,
+    &quot;visualize_steps&quot;: true
+  },
+  &quot;pair_metadata&quot;: {
+    &quot;before&quot;: {
+      &quot;file&quot;: &quot;/home/marysia/Downloads/sar-change-detection/UCDFormer/UCDFormer/data/raw/NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001.h5&quot;,
+      &quot;channels&quot;: [
+        &quot;HH&quot;,
+        &quot;HV&quot;
+      ],
+      &quot;available&quot;: [
+        &quot;HH&quot;,
+        &quot;HV&quot;
+      ],
+      &quot;frequency&quot;: &quot;A&quot;,
+      &quot;crs&quot;: &quot;EPSG:32633&quot;,
+      &quot;transform&quot;: [
+        20.0,
+        0.0,
+        495000.0,
+        0.0,
+        -20.0,
+        4183060.0
+      ],
+      &quot;shape&quot;: [
+        498,
+        500
+      ],
+      &quot;native_window&quot;: [
+        13111,
+        9666,
+        13609,
+        10166
+      ],
+      &quot;pixel_spacing&quot;: [
+        20.0,
+        -20.0
+      ],
+      &quot;mask_attributes&quot;: {
+        &quot;_FillValue&quot;: &quot;255&quot;,
+        &quot;description&quot;: &quot;b&#x27;Mask indicating the subswath number associated with valid GCOV samples. A GCOV sample is only considered valid if it is generated from fully-focused radar samples. If at least one radar sample in the averaging set is partially focused or invalid, the corresponding mask pixel will contain the value 0. GCOV pixels outside of the radar acquisition extent are filled with the value 255&#x27;&quot;,
+        &quot;grid_mapping&quot;: &quot;b&#x27;projection&#x27;&quot;,
+        &quot;long_name&quot;: &quot;b&#x27;Valid samples subswath mask&#x27;&quot;,
+        &quot;valid_min&quot;: &quot;0&quot;
+      },
+      &quot;positive_valid_fraction&quot;: 0.999995983935743
+    },
+    &quot;after&quot;: {
+      &quot;file&quot;: &quot;/home/marysia/Downloads/sar-change-detection/UCDFormer/UCDFormer/data/raw/NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001.h5&quot;,
+      &quot;channels&quot;: [
+        &quot;HH&quot;,
+        &quot;HV&quot;
+      ],
+      &quot;available&quot;: [
+        &quot;HH&quot;,
+        &quot;HV&quot;
+      ],
+      &quot;frequency&quot;: &quot;A&quot;,
+      &quot;crs&quot;: &quot;EPSG:32633&quot;,
+      &quot;transform&quot;: [
+        20.0,
+        0.0,
+        495000.0,
+        0.0,
+        -20.0,
+        4183060.0
+      ],
+      &quot;shape&quot;: [
+        498,
+        500
+      ],
+      &quot;native_window&quot;: [
+        13111,
+        9666,
+        13609,
+        10166
+      ],
+      &quot;pixel_spacing&quot;: [
+        20.0,
+        -20.0
+      ],
+      &quot;mask_attributes&quot;: {
+        &quot;_FillValue&quot;: &quot;255&quot;,
+        &quot;description&quot;: &quot;b&#x27;Mask indicating the subswath number associated with valid GCOV samples. A GCOV sample is only considered valid if it is generated from fully-focused radar samples. If at least one radar sample in the averaging set is partially focused or invalid, the corresponding mask pixel will contain the value 0. GCOV pixels outside of the radar acquisition extent are filled with the value 255&#x27;&quot;,
+        &quot;grid_mapping&quot;: &quot;b&#x27;projection&#x27;&quot;,
+        &quot;long_name&quot;: &quot;b&#x27;Valid samples subswath mask&#x27;&quot;,
+        &quot;valid_min&quot;: &quot;0&quot;
+      },
+      &quot;positive_valid_fraction&quot;: 0.999995983935743
+    },
+    &quot;bbox_wgs84&quot;: [
+      14.943194446669025,
+      37.70508444125045,
+      15.056805553330975,
+      37.79491555874955
+    ],
+    &quot;transform&quot;: [
+      20.0,
+      0.0,
+      495000.0,
+      0.0,
+      -20.0,
+      4183060.0
+    ],
+    &quot;crs&quot;: &quot;EPSG:32633&quot;,
+    &quot;shape&quot;: [
+      498,
+      500
+    ],
+    &quot;reprojected_after&quot;: false,
+    &quot;registration_status&quot;: &quot;same-track geocoded grids; no independent subpixel registration truth&quot;,
+    &quot;feature_names&quot;: [
+      &quot;HH_dB&quot;,
+      &quot;HV_dB&quot;,
+      &quot;HH_dB_minus_HV_dB&quot;
+    ],
+    &quot;normalization_bounds&quot;: [
+      [
+        -13.528203010559082,
+        -1.623680830001831
+      ],
+      [
+        -21.769466400146484,
+        -7.180282115936279
+      ],
+      [
+        3.0868701934814453,
+        14.84044361114502
+      ]
+    ],
+    &quot;normalization_fit&quot;: &quot;both dates, training strip only&quot;,
+    &quot;split&quot;: {
+      &quot;train_rows&quot;: [
+        0,
+        256
+      ],
+      &quot;validation_rows&quot;: [
+        370,
+        498
+      ],
+      &quot;gap_pixels&quot;: 114,
+      &quot;train_patch_size&quot;: 256,
+      &quot;val_patch_size&quot;: 128,
+      &quot;train_windows&quot;: 5,
+      &quot;validation_windows&quot;: 3
+    },
+    &quot;vgg_standardization&quot;: {
+      &quot;method&quot;: &quot;nisar_pair_channel_zscore_v1&quot;,
+      &quot;input&quot;: &quot;percentile_scaled_0_1&quot;,
+      &quot;fit&quot;: &quot;both dates, training support only&quot;,
+      &quot;ddof&quot;: 0,
+      &quot;std_floor&quot;: 1e-06,
+      &quot;mean&quot;: [
+        0.5721434022676798,
+        0.5469867390870914,
+        0.3387366178835843
+      ],
+      &quot;std&quot;: [
+        0.22401630406618891,
+        0.25057455692084685,
+        0.21268833024461387
+      ]
+    },
+    &quot;visualize_steps&quot;: true,
+    &quot;valid_fraction&quot;: 0.9999638554216868,
+    &quot;train_windows&quot;: [
+      [
+        0,
+        0,
+        256
+      ],
+      [
+        0,
+        64,
+        256
+      ],
+      [
+        0,
+        128,
+        256
+      ],
+      [
+        0,
+        192,
+        256
+      ],
+      [
+        0,
+        244,
+        256
+      ]
+    ],
+    &quot;validation_windows&quot;: [
+      [
+        370,
+        0,
+        128
+      ],
+      [
+        370,
+        128,
+        128
+      ],
+      [
+        370,
+        256,
+        128
+      ]
+    ],
+    &quot;speckle_filter&quot;: &quot;3x3 masked linear-power mean, reflect crop boundary; incomplete interior support excluded&quot;,
+    &quot;power_mean_filter_size&quot;: 3
+  },
+  &quot;detection&quot;: {
+    &quot;pseudo_method&quot;: &quot;physical_local_and_feature_membership_v2&quot;,
+    &quot;fcm_centers&quot;: [
+      0.2749126214207804,
+      0.3933736968728486,
+      0.5286610835405513
+    ],
+    &quot;changed_seeds&quot;: 789,
+    &quot;unchanged_seeds&quot;: 12152,
+    &quot;uncertain&quot;: 235842,
+    &quot;samples_per_class&quot;: 789,
+    &quot;rf_features&quot;: [
+      &quot;pre_HH_dB&quot;,
+      &quot;pre_HV_dB&quot;,
+      &quot;post_HH_dB&quot;,
+      &quot;post_HV_dB&quot;,
+      &quot;signed_HH_dB_change&quot;,
+      &quot;signed_HV_dB_change&quot;,
+      &quot;absolute_HH_dB_change&quot;,
+      &quot;absolute_HV_dB_change&quot;,
+      &quot;HH_normalized_change&quot;,
+      &quot;HV_normalized_change&quot;,
+      &quot;VGG_score&quot;
+    ],
+    &quot;final_classifier&quot;: &quot;temporal-feature RF; uncertain positives require &gt;=0.8 vote and weak physical component connected to positive seed&quot;,
+    &quot;rf_positive_vote&quot;: 0.8,
+    &quot;local_window_pixels&quot;: 31,
+    &quot;threshold_statistic&quot;: &quot;local residual MAD proxy; uncalibrated&quot;,
+    &quot;pseudo_changed_membership&quot;: 0.6,
+    &quot;memberships_calibrated&quot;: false,
+    &quot;raw_positive_seeds&quot;: 789,
+    &quot;weak_connected_support_pixels&quot;: 2699,
+    &quot;modification&quot;: &quot;new pseudo-label generator, temporal RF descriptors and hysteresis support; not exact original UCDFormer&quot;,
+    &quot;rf_feature_importance_names&quot;: [
+      &quot;pre_HH_dB&quot;,
+      &quot;pre_HV_dB&quot;,
+      &quot;post_HH_dB&quot;,
+      &quot;post_HV_dB&quot;,
+      &quot;signed_HH_dB_change&quot;,
+      &quot;signed_HV_dB_change&quot;,
+      &quot;absolute_HH_dB_change&quot;,
+      &quot;absolute_HV_dB_change&quot;,
+      &quot;HH_normalized_change&quot;,
+      &quot;HV_normalized_change&quot;,
+      &quot;VGG_score&quot;
+    ]
+  }
+}</pre>

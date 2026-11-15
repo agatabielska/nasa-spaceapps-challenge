@@ -1,0 +1,30 @@
+{
+  "vgg": "weights/vgg16-397923af.pth",
+  "generator": "weights/gen_00794001.pt",
+  "loaded": "all original translator/decoder tensors, strict=True",
+  "skipped": [],
+  "reinitialized": [],
+  "input_features": [
+    "HH_dB",
+    "HV_dB",
+    "log_pol_ratio"
+  ],
+  "vgg_standardization": {
+    "method": "nisar_pair_channel_zscore_v1",
+    "input": "percentile_scaled_0_1",
+    "fit": "both dates, training support only",
+    "ddof": 0,
+    "std_floor": 1e-06,
+    "mean": [
+      0.5721434022676798,
+      0.5469867390870914,
+      0.3387366178835843
+    ],
+    "std": [
+      0.22401630406618891,
+      0.25057455692084685,
+      0.21268833024461387
+    ]
+  },
+  "original_content_loss": "raw-dot affinity as executed in utils.py; near-zero denominator guarded"
+}
