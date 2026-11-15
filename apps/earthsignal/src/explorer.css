@@ -63,66 +63,72 @@
 .app .mobile-menu{display:none}
 
 /* ===== Sidebar: search, event types, dates, more filters and results ===== */
-.app .sidebar{z-index:3;display:flex;flex-direction:column;gap:12px;flex-shrink:0;width:320px;padding:18px 16px 0;background:var(--surface);border-right:1px solid var(--line-soft);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#2c4670 transparent}
+.app .sidebar{z-index:20;display:flex;flex-direction:column;gap:12px;flex-shrink:0;width:320px;padding:18px 16px 0;background:var(--surface);border-right:1px solid var(--line-soft);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#2c4670 transparent}
 .app .sidebar>*{flex-shrink:0}
 .app .sb-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .app .sb-head h1{margin:0;font:800 21px/1.2 Manrope,sans-serif;letter-spacing:-.02em}
-.app .search-box{display:flex;align-items:center;gap:10px;height:46px;padding:0 8px 0 13px;border:1px solid #8fd6ff40;border-radius:var(--radius);background:var(--panel);color:var(--text-3)}
-.app .search-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px #8fd6ff26}
-.app .search-box input{flex:1;border:0;outline:0;background:transparent;font-size:15px;color:var(--text)}
-.app .search-box button{display:grid;place-items:center;width:30px;height:30px;padding:0;border-radius:6px;color:var(--text-3)}
-.app .search-box button:hover{background:#8fd6ff14}
-/* Event types: pill switches with the type's icon and colour, the name always next to it. */
-.app .kind-filter{display:flex;flex-wrap:wrap;gap:6px}
-.app .kind-chip{display:flex;align-items:center;gap:7px;min-height:36px;padding:6px 12px 6px 10px;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:600;color:var(--text-3)}
-.app .kind-chip svg{color:var(--kind);opacity:.6}
-.app .kind-chip:hover{border-color:color-mix(in srgb,var(--kind) 70%,transparent)}
-.app .kind-chip[aria-pressed=true]{border-color:color-mix(in srgb,var(--kind) 75%,transparent);background:color-mix(in srgb,var(--kind) 14%,transparent);color:var(--text)}
-.app .kind-chip[aria-pressed=true] svg{opacity:1}
-/* Dates: one compact select, with from/to fields for a custom range. */
-.app .date-range{display:flex;flex-direction:column;gap:8px}
-.app .date-select{position:relative;display:flex;align-items:center;gap:9px;height:42px;padding:0 12px;border:1px solid #8fd6ff40;border-radius:var(--radius);background:var(--panel);color:var(--text-3)}
-.app .date-select:focus-within{border-color:var(--accent)}
-.app .date-select select{flex:1;height:100%;padding-right:22px;border:0;outline:0;background:transparent;font-size:15px;font-weight:600;color:var(--text);appearance:none;cursor:pointer}
-.app .date-select select option{background:var(--panel);color:var(--text)}
-.app .date-select>svg:last-child{position:absolute;right:12px;pointer-events:none}
-.app .date-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.app .date-inputs label{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:13px;color:var(--text-3)}
-.app .date-inputs input{width:100%;height:38px;padding:0 8px;border:1px solid #8fd6ff40;border-radius:var(--radius);background:var(--panel);color:var(--text);font-size:14px;color-scheme:dark}
-.app .date-inputs input:focus{outline:0;border-color:var(--accent)}
-.app .more-filters{border-top:1px solid var(--line-soft)}
-.app .more-toggle{display:flex;align-items:center;gap:9px;width:100%;min-height:42px;padding:0 2px;text-align:left;font-size:14px;font-weight:600;color:var(--text-2)}
-.app .more-toggle>svg:last-child{margin-left:auto;color:var(--text-3);transition:transform .2s}
-.app .more-toggle[aria-expanded=false]>svg:last-child{transform:rotate(-90deg)}
-.app .more-count{padding:2px 8px;border:1px solid var(--accent);border-radius:999px;background:#8fd6ff1f;font-size:12px;font-weight:700;color:var(--accent)}
-.app .more-body{display:flex;flex-direction:column;gap:12px;padding:4px 0 12px}
-.app .switch-row{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer}
-.app .switch-row strong{display:block;font-size:14px;font-weight:600;color:var(--text)}
-.app .switch-row small{display:block;margin-top:2px;font-size:13px;color:var(--text-3)}
-.app .switch-row input{position:relative;flex-shrink:0;width:40px;height:22px;margin:0;border-radius:12px;background:#1d3358;appearance:none;cursor:pointer;transition:background .2s}
-.app .switch-row input:after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#c5d2ea;transition:transform .2s}
-.app .switch-row input:checked{background:#2f5f8c}
-.app .switch-row input:checked:after{background:var(--accent);transform:translateX(18px)}
+.app .search-box{display:flex;align-items:center;gap:9px;height:35px;padding:0 8px 0 12px;border:1px solid transparent;border-radius:999px;background:rgba(143,214,255,.04);color:#5d7599;transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,color .2s ease}
+.app .search-box:hover:not(:focus-within){background:rgba(143,214,255,.08);color:#7b97c2}
+.app .search-box:focus-within{border-color:rgba(143,214,255,.32);background:#0d1e3a;color:var(--accent);box-shadow:0 0 0 3px rgba(143,214,255,.1),0 4px 16px rgba(0,0,0,.4)}
+.app .search-box input{flex:1;border:0;outline:0;background:transparent;font-size:13.5px;color:var(--text)}
+.app .search-box input::placeholder{color:#5d7599;transition:color .2s ease}
+.app .search-box:focus-within input::placeholder{color:#7d96bd}
+.app .search-box button{display:grid;place-items:center;width:24px;height:24px;padding:0;border-radius:50%;color:var(--text-3)}
+.app .search-box button:hover{background:#8fd6ff14;color:var(--text)}
+/* Event types: bare SVG icon buttons with category color and hover tooltip, no card/box */
+.app .kind-filter{display:flex;align-items:center;gap:10px;padding:4px 0}
+.app .kind-chip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:0;background:transparent;cursor:pointer}
+.app .kind-chip svg{color:var(--kind);opacity:.35;transition:opacity .15s ease,transform .15s ease,filter .15s ease}
+.app .kind-chip:hover svg{opacity:.9;transform:scale(1.15)}
+.app .kind-chip[aria-pressed=true] svg{opacity:1;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--kind) 75%,transparent))}
+.app .kind-chip[aria-pressed=true]:hover svg{transform:scale(1.2)}
+/* Shared tooltip for category icons, catastrophes, and filter switches */
+.app [data-tooltip]{position:relative}
+.app [data-tooltip]:hover,.app [data-tooltip]:focus-within,.app [data-tooltip]:focus-visible{z-index:99999}
+.app [data-tooltip]::before{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%) translateY(4px);padding:4px 9px;border:1px solid #8fd6ff33;border-radius:6px;background:#0c182e;color:var(--text);font-size:12px;font-weight:600;letter-spacing:.01em;white-space:nowrap;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .15s ease,transform .15s ease;z-index:99999;box-shadow:0 4px 14px #00000088}
+.app [data-tooltip]::after{content:'';position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%) translateY(4px);border:5px solid transparent;border-top-color:#0c182e;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .15s ease,transform .15s ease;z-index:99999}
+.app [data-tooltip]:hover::before,.app [data-tooltip]:hover::after,.app [data-tooltip]:focus-visible::before,.app [data-tooltip]:focus-visible::after{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+
+/* Top row controls: tooltips point downwards into open space so they are never clipped by the top edge or topbar */
+.app .kind-filter [data-tooltip]::before{top:calc(100% + 7px);bottom:auto;transform:translateX(-50%) translateY(-4px)}
+.app .kind-filter [data-tooltip]::after{top:calc(100% + 2px);bottom:auto;border-top-color:transparent;border-bottom-color:#0c182e;transform:translateX(-50%) translateY(-4px)}
+.app .kind-filter [data-tooltip]:hover::before,.app .kind-filter [data-tooltip]:hover::after,.app .kind-filter [data-tooltip]:focus-visible::before,.app .kind-filter [data-tooltip]:focus-visible::after{transform:translateX(-50%) translateY(0)}
+
+.app .date-picker-anchor{position:relative;display:inline-flex;align-items:center}
+.app .filter-divider{width:1px;height:18px;margin:0 3px;background:rgba(143,214,255,.16);flex-shrink:0}
+.app .calendar-chip{--kind:#8fd6ff}
+.app .calendar-chip svg{color:#8fd6ff;opacity:.35;transition:opacity .15s ease,transform .15s ease,filter .15s ease}
+.app .calendar-chip:hover svg{opacity:.95;transform:scale(1.15)}
+.app .calendar-chip.active svg,.app .calendar-chip[aria-expanded=true] svg{opacity:1;filter:drop-shadow(0 0 6px rgba(143,214,255,.6))}
+.app .collapse-chip{margin-left:auto;color:var(--text-3);opacity:.6;transition:opacity .15s ease,transform .15s ease,color .15s ease}
+.app .collapse-chip:hover{opacity:1;color:var(--text);transform:scale(1.15)}
+.app .kind-filter .collapse-chip[data-tooltip]::before{left:auto;right:0;transform:translateY(-4px)}
+.app .kind-filter .collapse-chip[data-tooltip]:hover::before,.app .kind-filter .collapse-chip[data-tooltip]:focus-visible::before{transform:translateY(0)}
+.app .kind-filter .collapse-chip[data-tooltip]::after{left:auto;right:10px;transform:translateY(-4px)}
+.app .kind-filter .collapse-chip[data-tooltip]:hover::after,.app .kind-filter .collapse-chip[data-tooltip]:focus-visible::after{transform:translateY(0)}
+.app .date-popover{position:absolute;top:calc(100% + 8px);left:-60px;z-index:40;display:flex;flex-direction:column;gap:10px;width:230px;padding:12px;border:1px solid rgba(143,214,255,.2);border-radius:12px;background:#071230;box-shadow:0 12px 36px rgba(0,0,0,.65)}
+.app .date-preset-list{display:flex;flex-direction:column;gap:3px}
+.app .date-preset-list button{padding:6px 10px;border-radius:6px;text-align:left;font-size:13px;font-weight:600;color:var(--text-2);transition:background .15s,color .15s}
+.app .date-preset-list button:hover{background:rgba(143,214,255,.1);color:var(--text)}
+.app .date-preset-list button.active{background:rgba(143,214,255,.18);color:var(--accent)}
+.app .date-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:6px;border-top:1px solid rgba(143,214,255,.12)}
+.app .date-inputs label{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:12px;color:var(--text-3)}
+.app .date-inputs input{width:100%;height:32px;padding:0 8px;border:1px solid rgba(143,214,255,.16);border-radius:999px;background:var(--panel-2);color:var(--text);font-size:12px;color-scheme:dark}
+.app .date-inputs input:focus{outline:0;border-color:rgba(143,214,255,.38)}
 /* Results: one count, a reset that appears only when something narrows the list, and Orbit's limit. */
-.app .list-head{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--line-soft)}
-.app .list-head h2{margin:0;font-size:14px;font-weight:600;color:var(--text-2)}
-.app .list-head h2 b{font:800 16px Manrope,sans-serif;color:var(--text)}
-.app .reset-link{display:flex;align-items:center;gap:5px;padding:4px 6px;font-size:13px;font-weight:600;color:var(--accent)}
-.app .list-head .icon-button{margin-left:auto}
+.app .reset-link{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;padding:3px 6px;margin:2px 0;font-size:12.5px;font-weight:600;color:var(--accent)}
 .app .orbit-chip{display:flex;align-items:center;gap:7px;align-self:flex-start;max-width:100%;margin-top:-4px;padding:6px 10px;border:1px solid #c9b8ff80;border-radius:999px;background:#c9b8ff1a;font-size:13px;font-weight:600;color:#e4dbff}
 .app .orbit-chip span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .app .orbit-chip:hover{border-color:var(--es-accent-2)}
-.app .event-list{flex:1 0 170px;min-height:170px;margin:-6px -8px 0;padding:0 8px 10px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2c4670 transparent}
-.app .event-row{display:flex;align-items:flex-start;gap:11px;width:100%;margin:2px 0;padding:9px 8px;border:1px solid transparent;border-radius:var(--radius);text-align:left}
-.app .event-row:hover{border-color:var(--line-soft);background:#8fd6ff0d}
-.app .event-row.active{border-color:#8fd6ff80;background:var(--panel-2);box-shadow:inset 3px 0 0 var(--accent)}
-.app .row-icon{position:relative;display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;border-radius:var(--radius);background:color-mix(in srgb,var(--kind) 15%,transparent);color:var(--kind)}
-.app .row-text{flex:1;min-width:0}
-/* Names wrap to two lines instead of being cut off. */
-.app .row-text strong{display:-webkit-box;overflow:hidden;font-size:14.5px;font-weight:600;line-height:1.3;color:var(--text);-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.app .row-text small{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:3px;font-size:13px;color:var(--text-3)}
-.app .row-badge{padding:0 7px;border:1px solid #ffcf8a99;border-radius:999px;font-size:12px;font-weight:600;color:var(--es-demo)}
-.app .row-badge.documented{border-color:#9be7ff99;color:var(--es-documented)}
+.app .event-list{flex:1 0 170px;min-height:170px;margin:0 -8px 0;padding:4px 8px 10px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2c4670 transparent}
+.app .event-row{display:flex;align-items:center;gap:10px;width:100%;margin:2px 0;padding:7px 12px;border:1px solid transparent;border-radius:999px;text-align:left}
+.app .event-row:hover{border-color:rgba(143,214,255,.14);background:#8fd6ff0d;z-index:99999}
+.app .event-row.active{border-color:rgba(143,214,255,.35);background:var(--panel-2)}
+.app .row-icon{position:relative;display:grid;place-items:center;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(143,214,255,.05);color:#7e8ea6;transition:background .18s ease,color .18s ease,filter .18s ease}
+.app .event-row:hover .row-icon,.app .event-row.active .row-icon{background:color-mix(in srgb,var(--kind) 18%,transparent);color:var(--kind);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--kind) 50%,transparent))}
+.app .row-text{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:1;min-width:0}
+.app .row-text strong{overflow:hidden;font-size:13.5px;font-weight:600;line-height:1.2;color:var(--text);white-space:nowrap;text-overflow:ellipsis}
+.app .row-meta{flex-shrink:0;font-size:12px;color:#7e8ea6;white-space:nowrap}
 .app .empty-list{padding:18px 4px;font-size:14px;line-height:1.6;color:var(--text-2)}
 .app .empty-list button{display:block;margin-top:8px;padding:0;font-size:14px;font-weight:700;color:var(--accent)}
 .app .method-link{display:flex;align-items:center;gap:8px;margin:auto -16px 0;padding:12px 16px;border-top:1px solid var(--line-soft);font-size:13px;font-weight:600;color:var(--text-3)}
@@ -133,7 +139,7 @@
 /* maplibre-gl.css loads after this file; the doubled class keeps this rule ahead of its position:relative. */
 .app .map.maplibregl-map,.app .map{position:absolute;inset:0}
 .app .map:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 140px 26px #01040e80}
-.app .map-heading{position:absolute;left:18px;top:18px;z-index:2;display:flex;flex-direction:column;gap:6px;max-width:calc(100% - 36px);padding:11px 15px}
+.app .map-heading{position:absolute;left:18px;top:18px;z-index:2;display:flex;flex-direction:column;gap:6px;max-width:calc(100% - 36px);padding:11px 15px; display: none}
 .app .map-heading-row{display:flex;align-items:center;gap:14px;min-width:0}
 .app .live-label{display:flex;align-items:center;gap:8px;padding-right:14px;border-right:1px solid var(--line);font:800 12px Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#81e5ff}
 .app .live-label>span{width:7px;height:7px;border-radius:50%;background:#7dece6;box-shadow:0 0 10px #7dece6}
@@ -142,7 +148,9 @@
 .app .map-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2);white-space:nowrap}
 .app .map-status>span:nth-of-type(2){color:var(--text-3)}
 .app .amber-dot{width:7px;height:7px;border-radius:50%;background:var(--es-demo)}
-.app .reopen{position:absolute;left:18px;top:100px;z-index:4;display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:14px;font-weight:600}
+.app .reopen{position:absolute;left:18px;top:18px;z-index:4;display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#0c182e;box-shadow:none;cursor:pointer;transition:background .15s ease,transform .15s ease}
+.app .reopen svg{color:#ffffff}
+.app .reopen:hover{background:#172b4d;transform:scale(1.06)}
 .app .map-controls{position:absolute;left:18px;bottom:74px;z-index:2;padding:4px}
 .app .map-controls button{display:grid;place-items:center;width:38px;height:38px;border-radius:6px;color:var(--text-2)}
 .app .map-controls button:hover,.app .map-controls button.active{background:#8fd6ff1a;color:var(--accent)}
@@ -319,7 +327,7 @@
   .app .method-link{margin-inline:-14px;padding-inline:14px}
   .app .map-heading{left:12px;top:12px}
   .app .map-status{font-size:12px}
-  .app .reopen{left:12px;top:96px}
+  .app .reopen{left:12px;top:12px}
   .app .map-controls{left:12px;bottom:68px}
   .app .map-styles{left:66px;bottom:68px}
   .app .map-legend{left:12px;bottom:12px}
@@ -341,7 +349,7 @@
   .app .map-area{min-height:300px}
   .app .map-heading{top:12px;padding:8px 12px}
   .app .map-breadcrumb{font-size:14px}
-  .app .reopen{top:92px;padding:9px 12px}
+  .app .reopen{top:12px;padding:0}
   .app .map-legend{bottom:34px;max-width:calc(100% - 118px)}
   .app .map-controls{top:146px;bottom:auto}
   .app .map-styles{left:64px;top:146px;bottom:auto;width:min(260px,calc(100% - 76px))}
