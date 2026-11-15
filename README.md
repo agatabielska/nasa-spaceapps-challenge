@@ -1,166 +1,120 @@
-# cdet – satellite change detection (OSCD optical + NASA NISAR SAR)
+# EarthSignal — Dancing with the SARs
 
-## EarthSignal web application
+Our entry for the **NASA Space Apps Challenge 2026**, challenge **"Dancing with the SARs"**, by team **Blue Trust**.
 
-The current map explorer lives in [`apps/earthsignal`](apps/earthsignal/README.md).
-Application work is maintained on the `earthsignal-app` branch independently of `main`.
+**What it is.** A set of tools that take two NISAR radar acquisitions of the same place, one before and one after an event, and show what changed on the ground: a flood trace, a lava flow, a burn scar, or ground slowly sinking above a mine. The results are presented in a web app with a 3D globe, guided tours and a time slider.
 
-```bash
-cd apps/earthsignal
-npm ci
-npm run dev
-```
+**Why.** Radar sees through cloud, smoke and darkness, which is exactly when optical satellites fail and when a disaster is happening. NISAR's L-band data is new and freely available, but hard to read. We turn it into maps and numbers that a non-specialist can follow.
 
-Run `npm test` and `npm run build` from that directory to verify the application.
-The current version uses a local SQLite catalog and LM Studio for Orbit's natural-language
-search and navigation. See the application README for local model/API configuration.
-A processed NISAR case study remains subsequent work. No external hosting is required.
-
-Reproducible research code for bi-temporal change detection: a model zoo, two data
-modules (OSCD optical, NISAR SAR), Optuna tuning, full Weights & Biases tracking and
-data-understanding plots. Everything is driven by YAML configs plus command-line overrides.
-
-> **Status:** this refactor was written without executing any code. Run `pytest` and a
-> `trainer.fast_dev_run=true` smoke test first (see below), and check the assumptions
-> listed under *Things to verify*.
-
-## Repository layout
-
-```
-configs/                 experiment YAMLs (only differences from defaults) + tuned/ (Optuna output)
-scripts/                 thin CLIs: train, tune, evaluate, prepare_nisar, visualize
-src/cdet/
-  config.py              typed config dataclasses (defaults live here), YAML + CLI merging
-  cli.py                 shared argparse plumbing
-  logging_utils.py       run naming, W&B/CSV logger, model watching
-  baselines.py           label-free SAR log-ratio change detection
-  inference.py           load checkpoint, tiled full-scene prediction
-  evaluate.py            val-tuned threshold -> test evaluation
-  tuning.py              Optuna K-fold (over cities) search
-  data/                  base.py, oscd.py, nisar.py, nisar_preprocess.py, transforms.py
-  models/                registry.py, blocks.py, early_fusion.py, siamese_unet.py, losses.py,
-                         metrics.py, lightning_module.py (one generic LightningModule)
-  training/              runner.py (one training run), callbacks.py
-  viz/                   eda.py, predictions.py, common.py
-tests/                   shape / loss / metric / transform tests
-```
-
-## Setup
-
-```bash
-python3.12 -m venv .venv && source .venv/bin/activate
-pip install -e ".[nisar,dev]"      # or: pip install -r requirements.txt
-cp .env.example .env               # Earthdata + W&B credentials
-wandb login
-pytest -q
-```
+The coloured areas in our outputs are detections by our methods, not validated damage maps.
 
 ## Quick start
 
-The OSCD commands below assume the original dataset is extracted under `oscd_data/`,
-with the `Onera Satellite Change Detection dataset - Images` and label directories
-inside it.
+### The app
 
-```bash
-# smoke test, no W&B account needed (one batch of train/val)
-python -m scripts.train -c configs/oscd_siamese_bcedice.yaml logging.mode=disabled trainer.fast_dev_run=true data.data_dir=oscd_data
+Requires Node.js 22.18 or newer.
 
-# real run; the run name is a variable, never hardcoded
-python -m scripts.train -c configs/oscd_siamese_bcedice.yaml --run-name sunet_bcedice_nir_v2 data.data_dir=oscd_data
-python -m scripts.train -c configs/oscd_siamese_focal.yaml 'logging.run_name_template="{model}_{loss}_lr{timestamp}"' data.data_dir=oscd_data
-
-# any config value can be overridden
-python -m scripts.train -c configs/oscd_siamese_bcedice.yaml optim.lr=0.0003 model.base_channels=32 seed=7 data.data_dir=oscd_data
-
-# hyperparameter search, then train with the winner
-python -m scripts.tune -c configs/oscd_siamese_bcedice.yaml tune.n_trials=30 tune.study_name=bcedice_v1 data.data_dir=oscd_data
-python -m scripts.train -c configs/oscd_siamese_bcedice.yaml -c configs/tuned/bcedice_v1.yaml data.data_dir=oscd_data
-
-# evaluate a checkpoint (threshold chosen on validation, applied to test)
-python -m scripts.evaluate -c configs/oscd_siamese_bcedice.yaml --ckpt outputs/oscd/<run>/checkpoints/best-epoch042.ckpt data.data_dir=oscd_data
+```sh
+cd apps/earthsignal
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-### NISAR workflow
+Open http://127.0.0.1:5173/ for the landing page, `/explore` for the globe and `/show` for the 30-second presentation. The Orbit chat assistant needs a local LM Studio model; without it the rest of the app works and Orbit shows as offline. Details: [apps/earthsignal/README.md](apps/earthsignal/README.md).
 
-Edit `data.nisar.granules` in the NISAR YAML config you use to select the two
-acquisitions. They are sorted by acquisition time before conversion, with the
-earliest used as T1 and the latest as T2.
+### The change-detection pipeline
 
-```bash
-python -m scripts.prepare_nisar -c configs/nisar_unlabeled.yaml --download --extract \
-       "data.nisar.bbox=[699000,6168000,705000,6175000]"
-python -m scripts.visualize --plot nisar -c configs/nisar_unlabeled.yaml     # dB maps, log-ratio, histograms
+Requires [uv](https://docs.astral.sh/uv/) and a NASA Earthdata token in `~/.edl_token` or the `EDL_TOKEN` environment variable.
+
+```sh
+cd model
+uv sync
+uv run python fetch_case.py --only nepal_flood     # once; streams only the pixels inside the case's bounding box
+uv run python analyze_case.py --only nepal_flood   # offline; masks, pictures and stats.json
+uv run python make_map3d.py --only nepal_flood     # writes output/nepal_flood/map3d.html
 ```
-Without ground truth, `NISARDataModule` supports prediction and visualisation only; the
-log-ratio baseline gives a label-free change map. Once you have labels (or pseudo-labels from
-that baseline) aligned to the cropped GeoTIFFs, set `data.nisar.label_path` and train with
-`configs/nisar_supervised.yaml`. Train/val are split spatially (top rows / bottom rows) to
-avoid leakage between neighbouring patches.
 
-## Experiment tracking (Weights & Biases)
+Results that are already computed are in `model/output/<case>/` and can be opened without running anything.
 
-Every run logs: the full resolved config (also saved to `outputs/<experiment>/<run>/config.yaml`),
-data statistics (patch counts, change-pixel fraction per split), parameter count, git/code
-snapshot, gradient histograms (`logging.watch`), learning rate, and per stage `loss`, `f1`,
-`precision`, `recall`, `iou`. Validation and test also log `best_f1` / `best_threshold` from an exact
-threshold sweep. Extra panels: fixed validation patches with TP/FP/FN maps (`val/predictions`),
-test F1-vs-threshold and precision-recall curves, a confusion-matrix table, and the best
-checkpoint as an artifact (`logging.log_model`).
+### UCDFormer
 
-Naming: `--run-name` / `logging.run_name` wins; otherwise `logging.run_name_template` is
-formatted with `{model} {loss} {dataset} {seed} {experiment} {timestamp}`. Tuning runs use
-`tune.run_name_template` and are grouped per trial (`<study>_trial003`), one run per fold.
-`logging.mode=offline|disabled` works without internet / an account.
+See [UCDFormer/UCDFormer/NISAR_RUN_GUIDE.md](UCDFormer/UCDFormer/NISAR_RUN_GUIDE.md). Dependencies are in `UCDFormer/UCDFormer/requirements-nisar.txt`; GPU PyTorch is installed separately.
 
-## Extending
+### EDA notebook
 
-* **New model:** add a file in `src/cdet/models/`, decorate with `@register_model("name")`,
-  import it in `models/__init__.py`, run with `model.name=name`. Contract:
-  `forward(x1, x2) -> logits [B,1,H,W]`.
-* **New loss:** add a class in `models/losses.py`, register it in `LOSSES` and
-  `loss_params_from_config`.
-* **New dataset:** subclass `BaseChangeDataModule` (batches are dicts with `t1`, `t2`, `mask`),
-  add it to `DATAMODULES` in `data/__init__.py`.
-* **New config option:** add a field to the dataclass in `config.py` (typos in YAML/CLI then fail loudly).
+Open `EDA/data_analysis.ipynb` in Jupyter. It needs `h5py`, `numpy`, `matplotlib`, `pyproj`, `pandas` and `scipy`, and two NISAR GCOV files (14 July and 19 August 2026) in `EDA/data/raw/`. The data is not stored in the repository.
 
-## Reproducibility
+## Repository layout
 
-Seeds set for python/numpy/torch/workers (`seed`), `trainer.deterministic=true`, per-worker RNG
-for crops, fixed city splits, resolved config saved per run, Optuna study stored in SQLite with a
-seeded sampler, and `pip freeze > requirements.lock.txt` recommended after the first working install.
-If a CUDA op raises under `deterministic=true`, set `trainer.deterministic=false` and note it in the run.
-
-## What changed relative to the notebooks (bugs fixed)
-
-| Issue in notebooks | Fix |
+| Folder | Contents |
 |---|---|
-| `F_ALPHA=0.75,` (trailing comma -> tuple) | config floats; alpha is validated by types |
-| "Focal" run actually instantiated the BCE `SiameseUNet` | model and loss are chosen independently (`model.name`, `loss.name`) |
-| Focal alpha applied to both classes (no class weighting effect) | alpha_t = alpha for change, 1-alpha for background |
-| CV objective never passed fold cities to the datamodule | `OSCDDataModule(train_cities=..., val_cities=...)` |
-| Optuna returned the *last-epoch* val F1 | `BestMetric` callback -> best val F1 per fold |
-| `wandb.finsh()` typo, `SARDataModule` undefined | `finish_logger`, one datamodule registry |
-| Threshold was an Optuna hyperparameter although it only affects the metric | not searched; exact threshold sweep on val, applied to test |
-| Global `np.random` in dataloader workers (duplicate crops) | per-worker `Generator` seeded from `torch.initial_seed()` |
-| Hardcoded run names, `ckpt_path="best"` on a stale trainer | name template/`--run-name`; evaluate loads an explicit checkpoint |
-| Notebook listed the later NISAR granule first | granules are sorted by acquisition time (T1 = earliest) |
-| Class imbalance discovered late | `visualize.py --plot oscd-balance`, change fraction logged per split |
+| `apps/earthsignal/` | The web app: landing page, 3D globe explorer, event analyses, Orbit assistant |
+| `model/` | Numerical change detection on NISAR GCOV and GUNW products, plus map and timeline generators |
+| `UCDFormer/` | UCDFormer, an unsupervised deep-learning change-detection model, adapted to NISAR |
+| `EDA/` | Exploratory analysis of NISAR data for the Ávila wildfire |
 
-Old notebook experiments -> configs: `EarlyFusionCNN` = `oscd_early_fusion.yaml`; `SUNet_bce` =
-`oscd_siamese_bce.yaml`; `SUNet_FOCAL-a0.75g2` = `oscd_siamese_focal.yaml`; `SUNetBCEDICE` / paper =
-`oscd_siamese_bcedice.yaml`. The Optuna runs = `scripts/tune.py`.
+## The app (`apps/earthsignal/`)
 
-## Things to verify (not executed)
+A React, TypeScript and MapLibre frontend with a small local Node.js API and a SQLite event catalog. No hosted database or cloud API key is needed.
 
-1. NISAR GCOV HDF5 paths/attributes in `data/nisar_preprocess.py` (`h5ls -r file.h5`), especially the EPSG
-   lookup; override with `data.nisar.epsg=...` if needed.
-2. `asf_search` download call (`product.download(path=..., session=...)`) against your installed version.
-3. OSCD folder layout and label encoding (`<city>-cm.tif` background=1/change=2, or `cm.png`).
-4. Lightning / W&B API details for your installed versions (`WandbLogger.log_image`, `watch`, `log_model`).
-5. `trainer.deterministic=true` with your CUDA ops.
+- **Landing page (`/`).** A scroll-driven 3D camera journey that introduces the challenge and the event types, with an autopilot for presenting.
+- **Explorer (`/explore`).** A 3D globe with one marker per event, filters by event type and date, and search. Four events have a finished analysis: the Etna eruption, the Ávila wildfire, the Rasuwa flood in Nepal and mining subsidence in Poland. The remaining catalog entries are shown as "Coming soon".
+- **Full analysis.** A tabbed view with a guided 3D tour (or a time slider for Silesia), figures, and a short summary. The files come from the pipeline in `model/`.
+- **Orbit.** A chat assistant that runs on a local LM Studio model and searches the catalog through typed tools; it cannot run arbitrary SQL or code.
+- **`/show`.** A standalone 30-second presentation.
+- **`/about`.** The team page.
 
-## Suggested next steps
+## The change-detection pipeline (`model/`)
 
-Overlapping-tile blending in `predict_scene`; more models (UNet++, transformer-based, SAR-specific
-speckle filtering); weak labels for NISAR from the log-ratio baseline; GitHub Actions running `pytest`
-and a `fast_dev_run` on synthetic data.
+Standard SAR techniques, kept simple and measurable. No training is involved.
+
+**Methods** (`change_methods.py`, `analyze_case.py`):
+
+- **Backscatter.** Log-ratio of HH and HV between two dates, expressed as a robust z-score in units of the scene's own noise, then thresholded and cleaned up. Used for floods, lava and burn scars.
+- **Coherence loss.** Interferometric coherence across the event compared with a quiet reference pair of the same track.
+- **Displacement.** Unwrapped interferometric phase converted to line-of-sight ground motion in centimetres.
+
+**Cases** (`cases.json`):
+
+| Case | Type | Data |
+|---|---|---|
+| `nepal_flood` | Rasuwa glacier-collapse flood, Nepal, 26 August 2026 | GCOV pair, GUNW pair and reference |
+| `etna` | Etna eruption, August 2026 | GCOV pair, GUNW pair and reference |
+| `spain_fire_v2` | Ávila wildfire near Burgohondo, Spain, 22 July 2026 | GCOV pair |
+| `silesia` | Mining subsidence, Upper Silesia, Poland, June to October 2026 | GUNW series on two tracks |
+| `krzyzowice` | Krzyżowice, Pniówek and Zofiówka at 20 m detail | GUNW series on two tracks |
+
+**Subsidence time series** (`subsidence_series.py`, `subsidence_detail.py`). A chain of 12- and 24-day interferograms is summed into a cumulative subsidence map. A sinking area ("bowl") is kept only if it sinks steadily and a second satellite track sees it too. In Upper Silesia, 25 of 26 candidates were confirmed, covering 11.1 km². `gis_check.py` compares the bowls with official mining-area polygons from the Polish Geological Institute.
+
+**Validation.** `validate_case.py` scores the wildfire mask against an independent optical burn map (Sentinel-2 dNBR) and compares method variants; the best variant reaches an IoU of about 0.30, so the fire mask is a rough indication, not a burn-area product. `compare_optical.py` builds picture pairs of what Sentinel-2 and NISAR saw on the same grid.
+
+**Outputs** (`make_map.py`, `make_map3d.py`, `make_timeline.py`). An interactive Leaflet map, a 3D terrain view with a guided tour, and a time-slider page. Each is written to `output/<case>/`; the 3D and timeline pages are single HTML files that need an internet connection for the basemap and terrain.
+
+**Data access** (`nisar_io.py`, `fetch_case.py`, `fetch_series.py`). A NISAR granule is 1.5 to 8 GB. We open it over HTTPS and read only the chunks inside the bounding box, then cache the window in `model/data/` (not tracked in git).
+
+## UCDFormer (`UCDFormer/`)
+
+An adaptation of UCDFormer, an unsupervised change-detection model, to NISAR GCOV imagery. It uses HH, HV and their difference in dB, combines translation features with physical change thresholds, and trains a random forest on pseudo-labels derived from the pair itself. All locations share one processing policy (`configs/pipeline.json`); the per-location files only name the acquisitions and the area.
+
+The saved Etna result is in `UCDFormer/UCDFormer/final/`. Accuracy has not been independently validated. Start with [UCDFormer/UCDFormer/README.md](UCDFormer/UCDFormer/README.md) and the [pipeline walkthrough](UCDFormer/UCDFormer/PIPELINE_WALKTHROUGH.md).
+
+## EDA (`EDA/`)
+
+`data_analysis.ipynb` explores NISAR L-band data for the Ávila wildfire near Burgohondo: file structure, cropping to the area of interest, data quality, HH and HV backscatter patterns, change between the two dates, and smoothing to bring out the affected area.
+
+## Data and credits
+
+- NISAR L2 GCOV and GUNW products from NASA and ISRO, accessed through the Alaska Satellite Facility.
+- Sentinel-2 imagery (Copernicus) through Microsoft Planetary Computer, used for validation and comparison.
+- Mining-area polygons from the MIDAS database of the Polish Geological Institute (PIG-PIB).
+- Basemap and terrain in the map pages: Esri World Imagery and AWS Terrain Tiles.
+
+## Team Blue Trust
+
+- Agata Bielska
+- Michał Leszczyński
+- Maria Musiał
+- Oliwier Necelman
+- Jakub Radziejewski
+- Martyna Stasiak
