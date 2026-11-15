@@ -404,14 +404,18 @@
 .app .an-title .tag{margin:0}
 .app .an-title h1{margin:0;font:800 22px/1.2 Manrope,sans-serif;letter-spacing:-.02em}
 .app .an-title small{font-size:14px;color:var(--text-3)}
-.app .an-tabs{display:flex;gap:6px;flex-shrink:0}
-.app .an-tabs button{padding:9px 16px;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:700;color:var(--text-2);white-space:nowrap}
+/* View switcher: a full-width row of large, numbered tabs, so it is obvious there is more than one view. */
+.app .an-tabs{display:flex;align-items:stretch;gap:8px;flex-shrink:0;padding:10px 20px 0;border-bottom:2px solid var(--accent);background:var(--surface)}
+.app .an-tabs-hint{align-self:center;margin-right:6px;font:800 12px Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.app .an-tabs button{display:flex;align-items:center;gap:9px;padding:11px 20px;border:1px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;background:#8fd6ff0d;font:800 16px Manrope,sans-serif;color:var(--text-2);white-space:nowrap}
+.app .an-tabs button b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#8fd6ff26;font-size:12.5px;color:var(--text)}
+.app .an-tabs button:hover{background:#8fd6ff1f;border-color:var(--accent)}
 .app .an-tabs button[aria-selected=true]{border-color:var(--accent);background:var(--accent);color:var(--ink)}
-.app .an-summary{display:flex;align-items:center;gap:24px;flex-shrink:0;padding:12px 20px;border-bottom:1px solid var(--line-soft)}
-.app .an-summary p{flex:1;min-width:0;margin:0;font-size:17px;line-height:1.45;color:var(--text)}
-.app .an-summary .facts{display:flex;flex:none;gap:8px;margin:0}
-.app .an-summary .facts li{flex-direction:column;gap:2px;max-width:190px;padding:7px 12px}
-.app .an-summary .facts span{font-size:12.5px}
+.app .an-tabs button[aria-selected=true] b{background:var(--ink);color:var(--accent)}
+.app .an-intro{max-width:1200px;margin:0 auto 40px;padding:20px 22px;border:1px solid var(--line);border-radius:var(--radius);background:#8fd6ff0a}
+.app .an-intro h2{margin:0 0 6px;font:800 12px Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#81e5ff}
+.app .an-intro p{margin:0;font-size:19px;line-height:1.5;color:var(--text)}
+.app .an-intro .facts{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .app .an-frame{flex:1;width:100%;min-height:0;border:0;background:#0b1420}
 .app .an-figures{flex:1;min-height:0;padding:24px 20px 60px;overflow:auto}
 .app .an-figures figure{max-width:1200px;margin:0 auto 44px}
@@ -421,8 +425,8 @@
 .app .an-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .app .an-pair a{position:relative;display:block}
 .app .an-pair span{position:absolute;left:10px;top:10px;padding:5px 10px;border-radius:6px;background:#030814d9;font-size:14px;font-weight:700;color:var(--text)}
-@media(max-width:1000px){.app .an-head{flex-wrap:wrap;gap:10px}.app .an-summary{flex-direction:column;align-items:stretch;gap:10px}.app .an-summary .facts{flex-wrap:wrap}}
-@media(max-width:640px){.app .an-pair{grid-template-columns:1fr}.app .an-summary p{font-size:15px}.app .an-title h1{font-size:18px}}
+@media(max-width:1000px){.app .an-head{flex-wrap:wrap;gap:10px}}
+@media(max-width:640px){.app .an-pair{grid-template-columns:1fr}.app .an-title h1{font-size:18px}.app .an-tabs{padding:8px 10px 0;overflow-x:auto}.app .an-tabs-hint{display:none}.app .an-tabs button{padding:9px 12px;font-size:14px}.app .an-intro p{font-size:16px}}
 /* Orbit chat, minimal: a small card with messages and one input. */
 .app .chat{top:auto;width:340px;height:min(460px,calc(100% - 36px))}
 .app .chat-header{padding:9px 12px}
