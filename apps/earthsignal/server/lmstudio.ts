@@ -1,12 +1,8 @@
 import { ServiceError } from './contracts.ts';
-import { z } from 'zod';
+import { outputSchema, type Message, type OrbitModel } from './model.ts';
+export type { Message, ToolCall } from './model.ts';
 
-export type Message = {role:string;content:string|null;tool_calls?:ToolCall[];tool_call_id?:string};
-export type ToolCall = {id:string;type:'function';function:{name:string;arguments:string}};
-const outputSchema=z.object({role:z.literal('assistant'),content:z.string().nullable().optional(),tool_calls:z.array(z.object({
-  id:z.string().min(1).max(200),type:z.literal('function'),function:z.object({name:z.string().max(100),arguments:z.string().max(16000)}),
-})).max(6).optional()});
-export class LMStudio {
+export class LMStudio implements OrbitModel {
   base:string; model:string; token:string;
   constructor(env:NodeJS.ProcessEnv=process.env) {
     this.base=(env.LMSTUDIO_BASE_URL??'http://127.0.0.1:1234/v1').replace(/\/$/,'');

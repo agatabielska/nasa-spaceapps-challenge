@@ -26,11 +26,11 @@ async function request(path:string,body?:unknown,signal?:AbortSignal){
   try {res=await fetch(path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:signal?anySignal([signal,limit]):limit});}
   catch{
     if(signal?.aborted)throw new APIError('Request cancelled.','CANCELLED');
-    if(limit.aborted)throw new APIError('The local API did not answer in time.','API_TIMEOUT');
-    throw new APIError('Cannot reach the local API. Start it with npm run dev.','API_UNAVAILABLE');
+    if(limit.aborted)throw new APIError('EarthSignal did not answer in time. Please try again.','API_TIMEOUT');
+    throw new APIError('Cannot reach EarthSignal. Please try again shortly.','API_UNAVAILABLE');
   }
-  let data;try{data=await res.json();}catch{throw new APIError('The local API returned an invalid response. Restart npm run dev.','API_UNAVAILABLE');}
-  if(!res.ok)throw new APIError(data.error?.message??'Local API error',data.error?.code??'API_ERROR');
+  let data;try{data=await res.json();}catch{throw new APIError('EarthSignal returned an invalid response. Please try again.','API_UNAVAILABLE');}
+  if(!res.ok)throw new APIError(data.error?.message??'EarthSignal API error',data.error?.code??'API_ERROR');
   return data;
 }
 export async function loadCatalog(){return z.object({events:z.array(eventSchema),total:z.number()}).parse(await request('/api/events'));}

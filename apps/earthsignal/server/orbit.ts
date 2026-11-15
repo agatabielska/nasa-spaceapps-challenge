@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import { Catalog } from './catalog.ts';
 import { chatSchema, searchSchema, ServiceError, type ChatInput, type UIAction, type OrbitReply, type CatalogEvent } from './contracts.ts';
-import { LMStudio, type Message } from './lmstudio.ts';
+import type { OrbitModel, Message } from './model.ts';
 
 const searchParameters={type:'object',additionalProperties:false,properties:{
   q:{type:['string','null'],description:'Optional keywords in names or descriptions. Use only for specific names or descriptive keywords, in the catalog language. Never repeat countries or category words here.'},
@@ -26,15 +26,15 @@ const definitions=[
 export const tools=definitions.map(([name,description,parameters])=>({type:'function',function:{name,description,parameters}}));
 // Keep database field names out of the conversational explanation while preserving their meaning.
 function eventForModel(e:CatalogEvent){
-  return {id:e.id,title:e.title,country:e.country,kind:e.kind,date:e.date,coordinates:e.coordinates,
+  return {id:e.id,title:e.title,country:e.country,kind:e.kind,date:e.date,coordinates:{latitude:e.coordinates[1],longitude:e.coordinates[0]},
     description:e.description.slice(0,700),observations:e.observations,source:e.source,
     provenance:e.catalogVerified?'Documented event':'Illustrative placeholder scenario (not a verified disaster record)',
     analysis:e.analysisAvailable?'Available: full analysis with a 3D tour and figures can be opened in the app':'Coming soon: not analysed yet'};
 }
 type Session={messages:Message[];resultIds:string[];lastSearch:unknown;updated:number;busy:boolean};
 export class Orbit {
-  catalog:Catalog;lm:LMStudio;sessions=new Map<string,Session>();
-  constructor(catalog:Catalog,lm:LMStudio){this.catalog=catalog;this.lm=lm;}
+  catalog:Catalog;lm:OrbitModel;sessions=new Map<string,Session>();
+  constructor(catalog:Catalog,lm:OrbitModel){this.catalog=catalog;this.lm=lm;}
   async chat(raw:ChatInput,signal?:AbortSignal):Promise<OrbitReply>{
     const input=chatSchema.parse(raw),now=Date.now();
     for(const [id,s] of this.sessions)if(now-s.updated>3600000&&!s.busy)this.sessions.delete(id);
@@ -77,7 +77,7 @@ Previous search arguments: ${synced?JSON.stringify(session.lastSearch):'null (th
         const message=await this.lm.complete(status.model,conversation,tools,signal,round===0?'required':'auto');
         if(message.tool_calls?.length){
           if(message.tool_calls.length>6)throw new ServiceError(502,'TOOL_LIMIT','The model requested too many operations.');
-          conversation.push({role:'assistant',content:message.content??null,tool_calls:message.tool_calls});
+          conversation.push({role:'assistant',content:message.content??null,tool_calls:message.tool_calls,providerParts:message.providerParts});
           for(const call of message.tool_calls){
             let result:unknown;
             try {
@@ -96,6 +96,7 @@ Previous search arguments: ${synced?JSON.stringify(session.lastSearch):'null (th
               }else if(['get_event','focus_event','start_guide'].includes(call.function.name)){
                 const {eventId}=z.object({eventId:z.string().max(100)}).strict().parse(args);
                 const e=this.catalog.get(eventId);if(!e)throw new Error('Event ID is not present in the database. Search for an existing event.');
+                if(call.function.name==='start_guide'&&!e.analysisAvailable)throw new Error('This event has no finished analysis. Explain that it is not analysed yet; do not open a guide.');
                 records.set(e.id,e);result=eventForModel(e);
                 if(call.function.name==='focus_event')actions.push({type:'focus_event',eventId:e.id});
                 if(call.function.name==='start_guide')actions.push({type:'start_guide',eventId:e.id});
@@ -110,7 +111,7 @@ Previous search arguments: ${synced?JSON.stringify(session.lastSearch):'null (th
           }
           // Prior assistant prose can anchor Qwen to the previous language. After planning,
           // retain the current request and verified tool results, not those old answers.
-          if(!historyRemoved){conversation.splice(1,history.length);historyRemoved=true;conversation[0].content+='\nFINAL ANSWER: Use only the language of the current user message (or their explicitly requested language). Follow STYLE exactly: title, then date and coordinates, then one short sentence; at most 60 words and no technical wording. If the event is not analysed yet, the sentence says so (coming soon).';}
+          if(!historyRemoved){conversation.splice(1,history.length);historyRemoved=true;conversation[0].content+='\nFINAL ANSWER: Use only the language of the current user message (or their explicitly requested language). Apply NO RESULTS or ANALYSES when applicable; otherwise follow STYLE (one event: title, date and latitude then longitude, one short sentence; several events: one line per event). Never apply the one-event format to greetings or clarification. At most 60 words unless more detail was explicitly requested. No technical wording.';}
           continue;
         }
         // Some local runtimes accept tool_choice=required but don't enforce it. Never trust an

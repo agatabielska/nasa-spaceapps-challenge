@@ -53,10 +53,10 @@ type Snapshot={center:[number,number];zoom:number;search:string;kinds:Kind[];fro
 
 export default function Explorer(){
 const [search,setSearch]=useState(''),[kinds,setKinds]=useState<Kind[]>(allKinds),[from,setFrom]=useState(DEFAULT_FROM),[to,setTo]=useState(DEFAULT_TO),[verified,setVerified]=useState(false),[viewOnly,setViewOnly]=useState(false),[bounds,setBounds]=useState<[number,number,number,number]|null>(null),[selected,setSelected]=useState<EventRecord|null>(null),[chat,setChat]=useState(false),[sidebar,setSidebar]=useState(false),[info,setInfo]=useState(false),[analysis,setAnalysis]=useState<EventRecord|null>(null),[tab,setTab]=useState(0),[guide,setGuide]=useState(-1),[input,setInput]=useState(''),[messages,setMessages]=useState<{role:string;text:string}[]>([{role:'assistant',text:'Hi, I’m Orbit. Ask me about a place or an event.'}]),[mapReady,setMapReady]=useState(false),[mapError,setMapError]=useState(false);
-const [events,setEvents]=useState<EventRecord[]>([]),[catalogLoading,setCatalogLoading]=useState(true),[catalogError,setCatalogError]=useState(''),[busy,setBusy]=useState(false),[chatError,setChatError]=useState(''),[sources,setSources]=useState<{title:string;url:string}[]>([]),[orbitIds,setOrbitIds]=useState<string[]|null>(null),[orbitStatus,setOrbitStatus]=useState<OrbitStatus>({available:false,model:null,models:[],message:'Checking LM Studio…'}),[mapLoaded,setMapLoaded]=useState(false),[basemap,setBasemap]=useState<Basemap>(()=>stored('earthsignal.basemap','satellite')),[borders,setBorders]=useState(()=>stored('earthsignal.borders',true)),[stylesOpen,setStylesOpen]=useState(false),[satelliteFailed,setSatelliteFailed]=useState(false),[busySince,setBusySince]=useState(0),[,setTick]=useState(0),[statsOpen,setStatsOpen]=useState(()=>stored('earthsignal.statsOpen',false)),[moreOpen,setMoreOpen]=useState(()=>stored('earthsignal.moreFilters',false)),[customDates,setCustomDates]=useState(false),[dateOpen,setDateOpen]=useState(false),[textSize,setTextSize]=useState<TextSize>(()=>stored('earthsignal.textSize','auto'));
+const [events,setEvents]=useState<EventRecord[]>([]),[catalogLoading,setCatalogLoading]=useState(true),[catalogError,setCatalogError]=useState(''),[busy,setBusy]=useState(false),[chatError,setChatError]=useState(''),[sources,setSources]=useState<{title:string;url:string}[]>([]),[orbitIds,setOrbitIds]=useState<string[]|null>(null),[orbitStatus,setOrbitStatus]=useState<OrbitStatus>({available:false,model:null,models:[],message:'Checking Orbit…'}),[mapLoaded,setMapLoaded]=useState(false),[basemap,setBasemap]=useState<Basemap>(()=>stored('earthsignal.basemap','satellite')),[borders,setBorders]=useState(()=>stored('earthsignal.borders',true)),[stylesOpen,setStylesOpen]=useState(false),[satelliteFailed,setSatelliteFailed]=useState(false),[busySince,setBusySince]=useState(0),[,setTick]=useState(0),[statsOpen,setStatsOpen]=useState(()=>stored('earthsignal.statsOpen',false)),[moreOpen,setMoreOpen]=useState(()=>stored('earthsignal.moreFilters',false)),[customDates,setCustomDates]=useState(false),[dateOpen,setDateOpen]=useState(false),[textSize,setTextSize]=useState<TextSize>(()=>stored('earthsignal.textSize','auto'));
 const revision=useRef(0),session=useRef<string|null>(null),snapshot=useRef<Snapshot|null>(null),abort=useRef<AbortController|null>(null),prevSelected=useRef<string|null>(null),initialFit=useRef(false),escape=useRef<()=>void>(()=>{});
 async function refreshCatalog(){setCatalogLoading(true);setCatalogError('');try{const result=await loadCatalog();setEvents(result.events);}catch(e){setCatalogError(e instanceof Error?e.message:'Catalog unavailable');}finally{setCatalogLoading(false);}}
-async function refreshModel(){try{setOrbitStatus(await loadOrbitStatus());}catch(e){setOrbitStatus({available:false,model:null,models:[],message:e instanceof Error?e.message:'Local API unavailable'});}}
+async function refreshModel(){try{setOrbitStatus(await loadOrbitStatus());}catch(e){setOrbitStatus({available:false,model:null,models:[],message:e instanceof Error?e.message:'EarthSignal unavailable'});}}
 useEffect(()=>{void refreshCatalog();void refreshModel();const timer=setInterval(()=>void refreshModel(),15000);return()=>clearInterval(timer);},[]);
 useEffect(()=>{revision.current++;},[search,kinds,from,to,verified,viewOnly,bounds,selected?.id]);
 const container=useRef<HTMLDivElement>(null),map=useRef<maplibregl.Map|null>(null),messagesEl=useRef<HTMLDivElement>(null);
@@ -159,7 +159,7 @@ try{
   const reply=await sendOrbit({message:text,sessionId:session.current??undefined,context:{selectedEventId:selected?.id??null,bounds,filters:{search,kinds,from,to,documentedOnly:verified,viewOnly},revision:started,listedIds:filtered.slice(0,100).map(e=>e.id)}},controller.signal);
   session.current=reply.sessionId;
   setMessages(m=>[...m,{role:'assistant',text:reply.text}]);setSources(reply.sources);
-  setOrbitStatus(p=>({...p,available:true,model:reply.model,message:'Local model ready'}));
+  setOrbitStatus(p=>({...p,available:true,model:reply.model,message:'Orbit ready'}));
   if(started!==revision.current){setChatError('The globe moved while Orbit was answering. Ask again.');return;}
   const known=new Map([...events,...reply.events].map(e=>[e.id,e]));
   setEvents([...known.values()]);
@@ -178,7 +178,7 @@ try{
   }
 }catch(e){
   if(e instanceof APIError&&e.code==='SESSION_EXPIRED')session.current=null;
-  setChatError(e instanceof APIError&&e.code==='CANCELLED'?'Cancelled.':e instanceof APIError&&e.code==='SESSION_EXPIRED'?'Please ask again.':'Orbit is offline right now.');
+  setChatError(e instanceof APIError&&e.code==='CANCELLED'?'Cancelled.':e instanceof APIError&&e.code==='SESSION_EXPIRED'?'Please ask again.':e instanceof APIError&&e.code==='MODEL_RATE_LIMIT'?'Orbit is busy. Please try again later.':e instanceof APIError&&e.code==='MODEL_TIMEOUT'?'Orbit took too long to answer. Please try again.':e instanceof APIError&&e.code==='MODEL_BLOCKED'?'Please rephrase your question around an event on the map.':'Orbit is offline right now.');
 }
 finally{setBusy(false);abort.current=null;}
 }

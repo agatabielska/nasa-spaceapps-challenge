@@ -29,10 +29,13 @@ Environment variables:
 | --- | --- |
 | `NODE_VERSION` | `24.22.1` |
 | `NODE_ENV` | `production` |
-| `ORBIT_ENABLED` | `false` |
+| `ORBIT_ENABLED` | `true` (`false` for a map-only deployment) |
+| `ORBIT_PROVIDER` | `gemini` |
+| `GEMINI_API_KEY` | the Google AI Studio key (secret; never in the repo or a `VITE_` variable) |
+| `GEMINI_MODEL` | `gemini-3.8-flash` |
 | `EARTHSIGNAL_DB_PATH` | `.local/earthsignal.sqlite` |
 
-Do not add a paid disk, database or model service. The catalog is seeded from the versioned JSON on startup. Render supplies `PORT`, `RENDER=true` and `RENDER_EXTERNAL_URL` automatically. The server binds to `0.0.0.0` on Render and accepts its specific external hostname/origin. For a custom domain, set `PUBLIC_URL` to its HTTPS origin.
+Do not add a paid disk or database. The catalog is seeded from the versioned JSON on startup. Render supplies `PORT`, `RENDER=true` and `RENDER_EXTERNAL_URL` automatically. The server binds to `0.0.0.0` on Render and accepts its specific external hostname/origin. For a custom domain, set `PUBLIC_URL` to its HTTPS origin.
 
 Choose **Create Web Service** and follow the build/deploy logs. Once the service is Live, open its assigned HTTPS URL.
 

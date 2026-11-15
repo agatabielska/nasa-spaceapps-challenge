@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
 import { ZodError } from 'zod';
 import type { Catalog } from './catalog.ts';
-import type { LMStudio } from './lmstudio.ts';
+import type { OrbitModel } from './model.ts';
 import type { Orbit } from './orbit.ts';
 import { chatSchema,searchSchema,ServiceError } from './contracts.ts';
 
@@ -16,7 +16,7 @@ async function body(req:IncomingMessage){let content='';for await(const chunk of
 function decode(part:string){try{return decodeURIComponent(part);}catch{throw new ServiceError(400,'BAD_PATH','Malformed URL encoding');}}
 
 /** The API plus built app. Only the configured deployment origin is added to the local allowlist. */
-export function createHandler({catalog,lm,orbit,root,port,publicUrl,orbitEnabled=true}:{catalog:Catalog;lm:LMStudio;orbit:Orbit;root:string;port:()=>number;publicUrl?:string;orbitEnabled?:boolean}){
+export function createHandler({catalog,lm,orbit,root,port,publicUrl,orbitEnabled=true}:{catalog:Catalog;lm:OrbitModel;orbit:Orbit;root:string;port:()=>number;publicUrl?:string;orbitEnabled?:boolean}){
   const external=publicUrl?new URL(publicUrl):null;
   if(external&&(!['http:','https:'].includes(external.protocol)||external.username||external.password))throw new Error('PUBLIC_URL must be an HTTP(S) URL without credentials');
   return async(req:IncomingMessage,res:ServerResponse)=>{
