@@ -4,9 +4,6 @@ __pycache__/
 .env
 .ipynb_checkpoints/
 data/
-# Keep the Python package whose name ends in "data"; generated datasets remain ignored.
-!src/cdet/data/
-!src/cdet/data/**
 outputs/
 wandb/
 *.ckpt

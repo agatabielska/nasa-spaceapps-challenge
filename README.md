@@ -47,49 +47,23 @@ Open http://127.0.0.1:5173/ for the landing page, `/explore` for the globe and `
 
 Requires [uv](https://docs.astral.sh/uv/) and a NASA Earthdata token in `~/.edl_token` or the `EDL_TOKEN` environment variable.
 
-```bash
-python -m scripts.prepare_nisar -c configs/nisar_unlabeled.yaml --download --extract \
-       "data.nisar.bbox=[699000,6168000,705000,6175000]"
-python -m scripts.visualize --plot nisar -c configs/nisar_unlabeled.yaml     # dB maps, log-ratio, histograms
+```sh
+cd model
+uv sync
+uv run python fetch_case.py --only nepal_flood     # once; streams only the pixels inside the case's bounding box
+uv run python analyze_case.py --only nepal_flood   # offline; masks, pictures and stats.json
+uv run python make_map3d.py --only nepal_flood     # writes output/nepal_flood/map3d.html
 ```
-Without ground truth, `NISARDataModule` supports prediction and visualisation only; the
-log-ratio baseline gives a label-free change map. Once you have labels (or pseudo-labels from
-that baseline) aligned to the cropped GeoTIFFs, set `data.nisar.label_path` and train with
-`configs/nisar_supervised.yaml`. Train/val are split spatially (top rows / bottom rows) to
-avoid leakage between neighbouring patches.
 
-## Experiment tracking (Weights & Biases)
+Results that are already computed are in `model/output/<case>/` and can be opened without running anything. Details: [model/README.md](model/README.md).
 
-Every run logs: the full resolved config (also saved to `outputs/<experiment>/<run>/config.yaml`),
-data statistics (patch counts, change-pixel fraction per split), parameter count, git/code
-snapshot, gradient histograms (`logging.watch`), learning rate, and per stage `loss`, `f1`,
-`precision`, `recall`, `iou`. Validation and test also log `best_f1` / `best_threshold` from an exact
-threshold sweep. Extra panels: fixed validation patches with TP/FP/FN maps (`val/predictions`),
-test F1-vs-threshold and precision-recall curves, a confusion-matrix table, and the best
-checkpoint as an artifact (`logging.log_model`).
+### UCDFormer
 
-Naming: `--run-name` / `logging.run_name` wins; otherwise `logging.run_name_template` is
-formatted with `{model} {loss} {dataset} {seed} {experiment} {timestamp}`. Tuning runs use
-`tune.run_name_template` and are grouped per trial (`<study>_trial003`), one run per fold.
-`logging.mode=offline|disabled` works without internet / an account.
+See [UCDFormer/UCDFormer/NISAR_RUN_GUIDE.md](UCDFormer/UCDFormer/NISAR_RUN_GUIDE.md). Dependencies are in `UCDFormer/UCDFormer/requirements-nisar.txt`; GPU PyTorch is installed separately.
 
-## Extending
+### EDA notebook
 
-* **New model:** add a file in `src/cdet/models/`, decorate with `@register_model("name")`,
-  import it in `models/__init__.py`, run with `model.name=name`. Contract:
-  `forward(x1, x2) -> logits [B,1,H,W]`.
-* **New loss:** add a class in `models/losses.py`, register it in `LOSSES` and
-  `loss_params_from_config`.
-* **New dataset:** subclass `BaseChangeDataModule` (batches are dicts with `t1`, `t2`, `mask`),
-  add it to `DATAMODULES` in `data/__init__.py`.
-* **New config option:** add a field to the dataclass in `config.py` (typos in YAML/CLI then fail loudly).
-
-## Reproducibility
-
-Seeds set for python/numpy/torch/workers (`seed`), `trainer.deterministic=true`, per-worker RNG
-for crops, fixed city splits, resolved config saved per run, Optuna study stored in SQLite with a
-seeded sampler, and `pip freeze > requirements.lock.txt` recommended after the first working install.
-If a CUDA op raises under `deterministic=true`, set `trainer.deterministic=false` and note it in the run.
+Open `EDA/data_analysis.ipynb` in Jupyter. It needs `h5py`, `numpy`, `matplotlib`, `pyproj`, `pandas` and `scipy`, and two NISAR GCOV files (14 July and 19 August 2026) in `EDA/data/raw/`. The data is not stored in the repository.
 
 ## Repository layout
 
