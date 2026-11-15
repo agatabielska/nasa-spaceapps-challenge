@@ -172,12 +172,13 @@ export class Journey{
         if(last){this.setAutopilot(false);return;}
         a.y=l.scenes[i+1].start;this.scrollTo(a.y);a.y=window.scrollY;a.phase='arrive';return;
       }
-      // The move ramps up and down gently, with a steady speed in between.
-      a.from=a.y;a.to=to;a.time=0;a.duration=(a.to-a.from)/(info.pace*l.h)+RAMP;a.phase='move';
+      // The move ramps up and down gently, with a steady speed in between; a scene that plays (the flight)
+      // runs at its own steady pace from start to end.
+      a.from=a.y;a.to=to;a.time=0;a.duration=(a.to-a.from)/(info.pace*l.h)+(info.steps?0:RAMP);a.phase='move';
     }
     a.time+=dt;
     const t=a.duration>0?clamp(a.time/a.duration):1;
-    a.y=a.from+(a.to-a.from)*easeMove(t,a.duration>0?Math.min(.3,RAMP/a.duration):0);this.scrollTo(a.y);
+    a.y=a.from+(a.to-a.from)*easeMove(t,a.duration>0&&!info.steps?Math.min(.3,RAMP/a.duration):0);this.scrollTo(a.y);
     if(t>=1){a.phase='rest';a.wait=info.steps?2.5:info.dwell;}
   }
   private onClick=(e:MouseEvent)=>{

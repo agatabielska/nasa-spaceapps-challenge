@@ -1,4 +1,3 @@
-import {flightDistance} from './flightRoute';
 // Landing-page case studies. Web assets live in public/media/cases/<id>/ and are derived from
 // data/event_visualisation/ (not tracked in git); `source` names the original file for each asset.
 export type CaseLayer={id:string;label:string;hint:string;color:string;src:string;source:string;on?:boolean};
@@ -61,13 +60,12 @@ export const nepal:CaseStudy={
   ],
 };
 
-// Pre-rendered fly-through of data/event_visualisation/Nepal/map3d.html, scrubbed by scroll. Playback time t
-// (0..1) maps to frames evenly; flightDistance says where along the trace each frame is.
+// Pre-rendered fly-through of data/event_visualisation/Nepal/map3d.html, scrubbed by scroll.
 export const flight={
-  count:flightDistance.length,width:1280,height:720,km:28.8,
+  count:132,width:1280,height:720,km:28.8,
   frame:(i:number)=>`/media/cases/nepal/flight/f_${String(i).padStart(3,'0')}.webp`,
   source:'data/event_visualisation/Nepal/map3d.html',
-  // Stop positions (`at`, as a fraction of the trace length) are measured along the recorded camera route, at the
+  // Stop positions are measured along the recorded camera route (frames are evenly spaced by distance), at the
   // points map3d.html captions: trace start, upper valley, Timure (0.54) and Syabrubesi; the one-method-only
   // (yellow) area lies just above Syabrubesi, at about 0.90.
   beats:[
@@ -77,17 +75,6 @@ export const flight={
     {from:.84,at:1,stop:'Syabrubesi',text:'Yellow marks change seen by one method only: a weaker signal, shown separately. About 29 km downstream, the change is still visible from orbit.'},
   ],
 };
-
-// Distance along the trace at playback time t, and the playback time at which the camera reaches distance u.
-export function flightDistanceAt(t:number){
-  const x=Math.max(0,Math.min(1,t))*(flight.count-1),i=Math.min(flight.count-2,Math.floor(x));
-  return flightDistance[i]+(flightDistance[i+1]-flightDistance[i])*(x-i);
-}
-export function flightTimeAt(u:number){
-  let i=0;while(i<flight.count-2&&flightDistance[i+1]<u)i++;
-  const a=flightDistance[i],b=flightDistance[i+1];
-  return Math.max(0,Math.min(1,(i+(b>a?(u-a)/(b-a):0))/(flight.count-1)));
-}
 
 // Event types on the About orbit; color tints each type's icon (fire orange, quake yellow, crops green, ice blue, lava red).
 export const detected=[
