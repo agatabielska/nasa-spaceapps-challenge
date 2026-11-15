@@ -11,8 +11,8 @@ import './landing.css';
 const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
 const chapters=[
   {id:'home',label:'Home',nav:'home'},{id:'about',label:'About',nav:'about'},{id:'work',label:'Case studies',nav:'work'},
-  {id:'spain',label:'Spain · wildfire',nav:'work'},{id:'etna',label:'Etna · eruption',nav:'work'},{id:'flight',label:'Nepal · flight',nav:'work'},
-  {id:'nepal',label:'Nepal · flood',nav:'work'},{id:'discover',label:'Discover',nav:'discover'},
+  {id:'spain',label:'Spain · wildfire',nav:'work'},{id:'etna',label:'Etna · eruption',nav:'work'},{id:'nepal',label:'Nepal · flood',nav:'work'},
+  {id:'flight',label:'Nepal · 3D flight',nav:'work'},{id:'discover',label:'Discover',nav:'discover'},
 ];
 const navLinks=[{id:'home',label:'Home'},{id:'about',label:'About'},{id:'work',label:'Work'},{id:'discover',label:'Discover'}];
 // Screens of scrolling the camera spends on the drone flight.
@@ -342,9 +342,9 @@ export default function Landing(){
         </div>
       </CaseSection>
 
-      <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='spain')}/>
-
       <CaseSection study={nepal}/>
+
+      <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='etna')}/>
 
       <Scene id="discover">
         <section className="sp-cta" aria-labelledby="discover-title">

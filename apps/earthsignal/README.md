@@ -47,10 +47,10 @@ Model setup: [LM_STUDIO.md](LM_STUDIO.md).
 
 1. **Home** — the challenge title and the way in.
 2. **About** — a WebGL Earth with the five event types we detect orbiting it (forest wildfires, earthquakes, farming activities, glacier movement, volcanoes). Orbit the astronaut (`src/Astronaut.tsx`) drifts from one to the next; three of them link to a case study.
-3. **Case studies** — Spain (Ávila wildfire), Etna (eruption, plus optical-versus-radar under cloud) and Nepal (Rasuwa glacier-collapse flood). Each has a before/after divider, switchable detection layers and the numbers from `case.json`. Between Etna and Nepal a 3D “drone flight” follows the detected flood trace from its origin to Syabrubesi; the journey camera rests on that scene for a few screens of scrolling, which plays the flight.
+3. **Case studies** — Spain (Ávila wildfire), Etna (eruption, plus optical-versus-radar under cloud) and Nepal (Rasuwa glacier-collapse flood). Each has a before/after divider, switchable detection layers and the numbers from `case.json`. After the Nepal case, just before the final call to action, a 3D “drone flight” follows the detected flood trace from its origin to Syabrubesi; the journey camera rests on that scene for a few screens of scrolling, which plays the flight.
 4. **Discover more yourself** — the way into the dashboard.
 
-`/explore` opens the map, SQLite catalog and local LM Studio assistant. Its path is defined once in `src/routes.ts`. The two pages load separately, so MapLibre is not downloaded for the landing page. Sections have anchors (`/#about`, `/#work`, `/#spain`, `/#etna`, `/#flight`, `/#nepal`, `/#discover`).
+`/explore` opens the map, SQLite catalog and local LM Studio assistant. Its path is defined once in `src/routes.ts`. The two pages load separately, so MapLibre is not downloaded for the landing page. Sections have anchors (`/#about`, `/#work`, `/#spain`, `/#etna`, `/#nepal`, `/#flight`, `/#discover`).
 
 **Media.** Everything is bundled; the page makes no third-party requests at runtime. Case-study images in `public/media/cases/<id>/` are WebP copies (longest side 1600 px) of `data/event_visualisation/` (that folder is not tracked in git); `src/cases.ts` lists each asset with its source file. If an asset is missing, the page shows a labelled placeholder naming the expected file and its source, so it can be dropped in later.
 
