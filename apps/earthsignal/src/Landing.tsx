@@ -412,7 +412,7 @@ export default function Landing(){
       <Scene id="about" close dwell={1}><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
-          <h2 id="about-title">One radar. Three events.</h2>
+          <h2 id="about-title">One radar. Plenty of events.</h2>
         </header>
         <AboutGlobe paused={paused} reduced={reduced}/>
       </section></Scene>
