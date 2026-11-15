@@ -426,3 +426,6 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
   .landing *,.landing *:before,.landing *:after{animation:none!important;transition:none!important}
   .sp-reveal{opacity:1;transform:none;filter:none}
 }
+
+/* The detection mask shows only on the 'after' side of the divider. */
+.sp-layer-after{clip-path:inset(0 0 0 var(--split))}

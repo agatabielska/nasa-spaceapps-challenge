@@ -6,6 +6,9 @@ export type CaseStudy={
   id:'spain'|'etna'|'nepal';index:string;kind:string;title:string;place:string;eventDate:string;
   summary:string;stats:{value:string;unit?:string;label:string}[];notes:string[];
   width:number;height:number;before:CaseImage;after:CaseImage;layers:CaseLayer[];look:CaseLook;
+  // What the landing page shows: an archive satellite photo (Esri World Imagery, resampled to the radar grid)
+  // and one mask on top of it, every place where our model detected change (either method).
+  photo?:CaseImage;mask?:string;
 };
 // How a case is dressed on the landing page (prototype style): big region word and sub-title, colour theme,
 // and the labels on the frame around its visualization.
@@ -27,9 +30,10 @@ export const spain:CaseStudy={
 
 export const etna:CaseStudy={
   look:{region:'Etna',sub:'Eruption',code:'IT',theme:'fire',panel:'Volcanic signal',status:'Change analysis',caption:'Volcanic activity analysis'},
-  id:'etna',index:'02',kind:'Volcanic eruption',title:'Etna eruption',place:'Sicily, Italy',eventDate:'6 August 2026',
-  summary:'Fresh lava and ash reshape a volcano’s surface. Between two NISAR passes the radar brightness changes and the signal loses coherence. Where both methods agree, the detection is at its most reliable.',
-  stats:[{value:'0.3',unit:'km²',label:'Change confirmed by both methods'},{value:'3.7',unit:'km²',label:'Radar-brightness change'},{value:'6.2',unit:'km²',label:'Coherence loss'}],
+  photo:{src:'/media/cases/etna/satellite.webp',source:'Esri World Imagery',label:'Satellite photo',alt:'Satellite photo of Mount Etna.'},mask:'/media/cases/etna/detected.webp',
+  id:'etna',index:'01',kind:'Volcanic eruption',title:'Etna eruption',place:'Sicily, Italy',eventDate:'6 August 2026',
+  summary:'Fresh lava and ash reshape a volcano’s surface. Comparing NISAR radar passes from before and after the eruption shows where the ground changed, marked in pink on the satellite photo.',
+  stats:[{value:'9.7',unit:'km²',label:'Changed surface detected by radar'},{value:'36',unit:'days',label:'Between passes: 23 Jul → 28 Aug 2026'}],
   notes:['Passes: 23 Jul → 28 Aug 2026.','Ground-motion layer is illustrative: movement along the radar line of sight, ±8 cm; red and blue are opposite directions.'],
   width:1485,height:1600,
   before:{src:'/media/cases/etna/before.webp',source:'data/event_visualisation/Etna/etna/BEFORE.jpg',label:'Before',date:'23 Jul 2026',alt:`Radar view of Mount Etna on 23 July 2026, before the eruption. ${composite}`},
@@ -51,9 +55,9 @@ export const etnaCloud={
 
 export const nepal:CaseStudy={
   look:{region:'Nepal',sub:'Flood',code:'NP',theme:'ice',panel:'Flood detection',status:'Terrain scan',caption:'Glacier outburst flood'},
-  id:'nepal',index:'03',kind:'Glacier outburst flood',title:'Rasuwa glacier-collapse flood',place:'Bhote Koshi valley, Nepal',eventDate:'26 August 2026',
-  summary:'A glacier collapse high above the Bhote Koshi valley sent water and debris downstream. Two independent radar methods trace the flood path along the valley floor, past Timure and on to Syabrubesi.',
-  stats:[{value:'6.0',unit:'km²',label:'Change confirmed by both methods'},{value:'10.3',unit:'km²',label:'Radar-brightness change'},{value:'15.9',unit:'km²',label:'Coherence loss'},{value:'≈29',unit:'km',label:'Trace from its origin to Syabrubesi'}],
+  id:'nepal',index:'02',kind:'Glacier outburst flood',title:'Rasuwa glacier-collapse flood',place:'Bhote Koshi valley, Nepal',eventDate:'26 August 2026',
+  summary:'A glacier collapse high above the Bhote Koshi valley sent water and debris downstream. NISAR radar traces the flood path along the valley floor, past Timure and on to Syabrubesi, marked in pink on the satellite photo.',
+  stats:[{value:'20.2',unit:'km²',label:'Changed surface detected by radar'},{value:'≈29',unit:'km',label:'Trace from its origin to Syabrubesi'}],
   notes:['Passes: 19 Aug → 31 Aug 2026.','Steep slopes and radar shadow (about 5% of the area) are blind spots: no colour there does not mean no damage.','Ground-motion layer is illustrative: movement along the radar line of sight, ±4 cm.'],
   width:1459,height:1600,
   before:{src:'/media/cases/nepal/before.webp',source:'data/event_visualisation/Nepal/nepal_flood/BEFORE.jpg',label:'Before',date:'19 Aug 2026',alt:`Radar view of the Rasuwa area on 19 August 2026, before the flood. ${composite}`},
@@ -86,9 +90,9 @@ export const flight={
 // place is where the camera flies for it (our case-study sites, example regions where we have no case yet);
 // picture is a radar composite from the matching case study, or null for a labelled placeholder.
 export const detected=[
-  {id:'wildfires',label:'Forest wildfires',color:'#ff9a3c',place:{lat:40.65,lon:-4.7,name:'Ávila, Spain',example:false},picture:{src:'/media/cases/spain/after.webp',caption:'NISAR radar composite of the Ávila burn area, Spain'},text:'Burn scars change how the surface scatters radar. Comparing passes before and after a fire outlines the affected area.',target:'spain',cta:'See the Spain case'},
+  {id:'wildfires',label:'Forest wildfires',color:'#ff9a3c',place:{lat:40.65,lon:-4.7,name:'Ávila, Spain',example:false},picture:{src:'/media/cases/spain/after.webp',caption:'NISAR radar composite of the Ávila burn area, Spain'},text:'Burn scars change how the surface scatters radar. Comparing passes before and after a fire outlines the affected area.',target:null,cta:'In the app'},
   {id:'earthquakes',label:'Earthquakes',color:'#ffd84d',place:{lat:38.3,lon:140.9,name:'Japan',example:true},picture:null,text:'Repeat radar passes can reveal ground shifts of a few centimetres along a fault.',target:null,cta:'Coming soon'},
   {id:'farming',label:'Farming activities',color:'#7ddc6f',place:{lat:41.9,lon:-93.1,name:'US Midwest',example:true},picture:null,text:'Radar brightness follows crops through the season: growth, harvest and changing soil moisture.',target:null,cta:'Coming soon'},
-  {id:'glaciers',label:'Glacier movement',color:'#9be7ff',place:{lat:28.2,lon:85.4,name:'Rasuwa, Nepal',example:false},picture:{src:'/media/cases/nepal/after.webp',caption:'NISAR radar composite of the Rasuwa flood area, Nepal'},text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'nepal',cta:'See the Nepal case'},
+  {id:'glaciers',label:'Glacier movement',color:'#9be7ff',place:{lat:28.2,lon:85.4,name:'Rasuwa, Nepal',example:false},picture:{src:'/media/cases/nepal/after.webp',caption:'NISAR radar composite of the Rasuwa flood area, Nepal'},text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'flight',cta:'See the Nepal flight'},
   {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',place:{lat:37.75,lon:15,name:'Etna, Italy',example:false},picture:{src:'/media/cases/etna/after.webp',caption:'NISAR radar composite of Mount Etna, Italy'},text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See the Etna case'},
 ] as const;

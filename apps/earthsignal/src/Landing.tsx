@@ -8,14 +8,14 @@ import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
 import {CLOSE_DEPTH} from './journey/path';
 import {sky} from './journey/sky';
 import {EXPLORER_PATH} from './routes';
-import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy} from './cases';
+import {detected,etna,etnaCloud,flight,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
 
 const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
 // label: the presenter bar and the rail tooltip · short: the rail's step name.
 const chapters=[
   {id:'home',label:'Home',short:'Home'},{id:'about',label:'About',short:'Earth'},
-  {id:'spain',label:'Spain · wildfire',short:'Spain'},{id:'etna',label:'Etna · eruption',short:'Etna'},{id:'nepal',label:'Nepal · flood',short:'Nepal'},
+  {id:'etna',label:'Etna · eruption',short:'Etna'},
   {id:'flight',label:'Nepal · 3D flight',short:'Flight'},{id:'discover',label:'Discover',short:'Discover'},
 ];
 // Screens of scrolling the camera spends on the drone flight.
@@ -112,23 +112,15 @@ function Panel({code,label,status,caption,note,tag,children}:{code:string;label:
   </div>;
 }
 
+// A case on the landing page, kept simple: an archive satellite photo, and on the right of the divider the same
+// photo with one mask on it, every place where our model detected change. Drag the divider to reveal the mask.
 function CaseViewer({study}:{study:CaseStudy}){
-  const [on,setOn]=useState(()=>study.layers.filter(layer=>layer.on).map(layer=>layer.id)),[missing,setMissing]=useState<string[]>([]);
-  return <Panel code={study.look.code} label={study.look.panel} status={study.look.status} caption={study.look.caption} note={study.notes.filter(note=>!note.startsWith('Passes')).join(' ')} tag="NISAR data"><div className="sp-case-visual">
-    <Compare name={study.title} before={study.before} after={study.after} width={study.width} height={study.height}>
-      {study.layers.filter(layer=>on.includes(layer.id)&&!missing.includes(layer.id)).map(layer=>
-        <img key={layer.id} className="sp-layer" src={layer.src} alt="" draggable={false} onError={()=>setMissing(list=>[...list,layer.id])}/>)}
+  const photo=study.photo??study.after;
+  const before={...photo,label:'Satellite photo',date:undefined},after={...photo,label:'NISAR detection',date:undefined,alt:`${photo.alt} Areas where NISAR detected change are marked in pink.`};
+  return <Panel code={study.look.code} label={study.look.panel} status={study.look.status} caption={study.look.caption} note="Pink: where our model detected change between two NISAR passes. Background: archive satellite photo, not from the day of the event." tag="NISAR + satellite"><div className="sp-case-visual">
+    <Compare name={study.title} before={before} after={after} width={study.width} height={study.height}>
+      {study.mask&&<img className="sp-layer sp-layer-after" src={study.mask} alt="" draggable={false}/>}
     </Compare>
-    <div className="sp-layers" role="group" aria-label={`${study.title}: detection layers`}>
-      {study.layers.map(layer=>{
-        const gone=missing.includes(layer.id),active=on.includes(layer.id)&&!gone;
-        return <button key={layer.id} type="button" aria-pressed={active} disabled={gone} onClick={()=>setOn(list=>list.includes(layer.id)?list.filter(id=>id!==layer.id):[...list,layer.id])}>
-          <i style={{background:layer.color}} aria-hidden="true"/>
-          <span><strong>{layer.label}</strong><small>{gone?`Asset pending · ${layer.source}`:layer.hint}</small></span>
-          <em>{gone?'N/A':active?'On':'Off'}</em>
-        </button>;
-      })}
-    </div>
   </div></Panel>;
 }
 
@@ -452,7 +444,6 @@ export default function Landing(){
         <AboutGlobe paused={paused} reduced={reduced}/>
       </section></Scene>
 
-      <CaseSection study={spain}/>
 
       <CaseSection study={etna}>
         <div className="sp-cloud sp-reveal" data-stop>
@@ -467,7 +458,6 @@ export default function Landing(){
         </div>
       </CaseSection>
 
-      <CaseSection study={nepal}/>
 
       <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='etna')}/>
 
