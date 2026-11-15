@@ -331,7 +331,7 @@ export default function Landing(){
     <header className="sp-nav">
       <a className="sp-brand" href="#home" aria-label="EarthSignal, back to the start"><span className="sp-logo" aria-hidden="true"/><span><b>EarthSignal</b><small>Dancing with the SARs</small></span></a>
       <div className="sp-nav-actions">
-        <span className="sp-signal" aria-hidden="true"><i/>NISAR · L- &amp; S-band radar</span>
+        <span className="sp-signal" aria-hidden="true"><i/>NISAR</span>
         <a className="sp-small-button" href={EXPLORER_PATH}><span className="sp-hide-sm">Open</span> Dashboard <ArrowUpRight size={16} aria-hidden="true"/></a>
       </div>
     </header>
