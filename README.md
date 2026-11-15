@@ -1,8 +1,28 @@
-# EarthSignal — Dancing with the SARs
+<h1 align="center">EarthSignal — Dancing with the SARs</h1>
 
-Our entry for the **NASA Space Apps Challenge 2026**, challenge **"Dancing with the SARs"**, by team **Blue Trust**.
+<p align="center">
+  Our entry for the <b>NASA Space Apps Challenge 2026</b>, challenge <b>"Dancing with the SARs"</b>, by team <b>Blue Trust</b>.
+</p>
 
-**What it is.** A set of tools that take two NISAR radar acquisitions of the same place, one before and one after an event, and show what changed on the ground: a flood trace, a lava flow, a burn scar, or ground slowly sinking above a mine. The results are presented in a web app with a 3D globe, guided tours and a time slider.
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white">
+  <img alt="NumPy" src="https://img.shields.io/badge/NumPy-013243?logo=numpy&logoColor=white">
+  <img alt="SciPy" src="https://img.shields.io/badge/SciPy-8CAAE6?logo=scipy&logoColor=white">
+  <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white">
+  <img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white">
+  <img alt="React" src="https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white">
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white">
+  <img alt="MapLibre" src="https://img.shields.io/badge/MapLibre-396CB2?logo=maplibre&logoColor=white">
+  <img alt="Node.js" src="https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white">
+  <img alt="SQLite" src="https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white">
+  <img alt="LM Studio" src="https://img.shields.io/badge/LM%20Studio-local%20LLM-6E56CF">
+  <img alt="NASA NISAR" src="https://img.shields.io/badge/NASA-NISAR-0B3D91?logo=nasa&logoColor=white">
+</p>
+
+**What it is.** EarthSignal is a complete application that opens NISAR radar data to everyone. It is made for everyday users and for scientists without a technical background alike. You explore the Earth on a 3D globe and open an analysis of an event: a guided 3D tour over real terrain, before-and-after comparisons, charts and a plain-language summary. It is not limited to two dates: acquisitions from many dates can be compared, so you can follow how a place changes over months on a time slider. It covers different kinds of disasters, from floods, wildfires and eruptions to ground slowly sinking above mines.
+
+**Where it is going.** Today the app presents four case studies we prepared ourselves, including a study of mining subsidence in Silesia, Poland. Our goal is that anyone can pick any part of the Earth and create such a study on their own, and discover changes that nobody has described yet.
 
 **Why.** Radar sees through cloud, smoke and darkness, which is exactly when optical satellites fail and when a disaster is happening. NISAR's L-band data is new and freely available, but hard to read. We turn it into maps and numbers that a non-specialist can follow.
 
