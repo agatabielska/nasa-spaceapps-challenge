@@ -144,7 +144,9 @@ function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
 }
 
 // The detected event types orbit the globe; Orbit the astronaut hops from one to the next.
-const SWITCH_MS=3600,HOP_MS=650;
+// Seconds per event and hop length: quick enough to show all five while the autopilot rests on About,
+// slow enough to read each short description.
+const SWITCH_MS=2500,HOP_MS=500;
 function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
   const stage=useRef<HTMLDivElement>(null),chips=useRef<(HTMLButtonElement|null)[]>([]),astronaut=useRef<HTMLDivElement>(null);
   const [active,setActive]=useState(0);
@@ -191,12 +193,12 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
       <div className="sp-orbit-ring" aria-hidden="true"/>
       <div className="sp-orbit-globe"><EarthGlobe paused={paused||reduced}/></div>
       <div className="sp-orbit-events" role="group" aria-label="Events EarthSignal detects">
-        {detected.map((event,i)=>{const Icon=eventIcons[event.id];return <button key={event.id} type="button" ref={node=>{chips.current[i]=node;}} className="sp-chip" aria-pressed={active===i}
+        {detected.map((event,i)=>{const Icon=eventIcons[event.id];return <button key={event.id} type="button" ref={node=>{chips.current[i]=node;}} className="sp-chip" style={{'--event':event.color} as CSSProperties} aria-pressed={active===i}
           aria-label={event.label} onClick={()=>pick(i)} onFocus={()=>pick(i)}><i><Icon size={20} aria-hidden="true"/></i><span>{event.label}</span></button>;})}
       </div>
       <div className="sp-orbit-astronaut" ref={astronaut} aria-hidden="true"><Astronaut/></div>
     </div>
-    <div className="sp-orbit-panel sp-frame" aria-live="polite">
+    <div className="sp-orbit-panel sp-frame" style={{'--event':current.color} as CSSProperties} aria-live="polite">
       <i><CurrentIcon size={26} aria-hidden="true"/></i>
       <div><span className="sp-orbit-count">Orbit points to {active+1} of {detected.length}</span><h3>{current.label}</h3><p>{current.text}</p></div>
       {current.target?<a className="sp-link" href={`#${current.target}`}>{current.cta} <ArrowDown size={18} aria-hidden="true"/></a>:<span className="sp-soon">{current.cta}</span>}
@@ -350,7 +352,7 @@ export default function Landing(){
         <a className="sp-scroll-cue" href="#about"><span>Scroll to fly</span><ChevronsDown size={22} aria-hidden="true"/></a>
       </section></Scene>
 
-      <Scene id="about"><section className="sp-section sp-about" aria-labelledby="about-title">
+      <Scene id="about" dwell={detected.length*SWITCH_MS/1000+1}><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
           <h2 id="about-title">One radar. Five kinds of change.</h2>
