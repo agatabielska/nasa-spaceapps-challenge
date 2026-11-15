@@ -6,7 +6,7 @@ import Starfield from './Starfield';
 import JourneyBar from './JourneyBar';
 import {Journey,JourneyContext} from './journey/engine';
 import {EXPLORER_PATH} from './routes';
-import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy} from './cases';
+import {detected,etna,etnaCloud,flight,flightDistanceAt,flightTimeAt,nepal,spain,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
 
 const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
@@ -173,10 +173,12 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
 }
 
 // Fly-through along the detected flood trace, rendered ahead of time so it works offline. The camera rests on
-// this scene for several screens of scrolling, and that hold progress picks the frame.
+// this scene for several screens of scrolling, and that hold progress is the playback time. Neighbouring frames
+// are cross-faded, so playback stays smooth between the recorded frames.
 function Flight({reduced,near}:{reduced:boolean;near:boolean}){
   const journey=useContext(JourneyContext);
   const canvas=useRef<HTMLCanvasElement>(null),startLoad=useRef<()=>void>(()=>{}),nearRef=useRef(near);
+  // progress: distance along the trace (0..1), for the caption, route bar and kilometres.
   const [progress,setProgress]=useState(0),[loaded,setLoaded]=useState(0),[failed,setFailed]=useState(false);
   nearRef.current=near;
   useEffect(()=>{if(near)startLoad.current();},[near]);
@@ -184,15 +186,23 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
     const cv=canvas.current,ctx=cv?.getContext('2d');
     if(reduced||!journey||!cv||!ctx)return;
     const images:(HTMLImageElement|undefined)[]=new Array(flight.count);
-    let drawn=-1,started=false,disposed=false,p=0;
+    let drawn='',started=false,disposed=false,p=0;
     const nearest=(i:number)=>{for(let d=0;d<flight.count;d++){if(images[i-d])return i-d;if(images[i+d])return i+d;}return -1;};
+    const paint=(img:HTMLImageElement,alpha:number)=>{
+      const scale=Math.max(cv!.width/img.width,cv!.height/img.height),w=img.width*scale,h=img.height*scale;
+      ctx!.globalAlpha=alpha;ctx!.drawImage(img,(cv!.width-w)/2,(cv!.height-h)/2,w,h);ctx!.globalAlpha=1;
+    };
     function render(){
-      const i=nearest(Math.round(p*(flight.count-1)));
-      if(i<0||i===drawn)return;
-      const img=images[i]!,scale=Math.max(cv!.width/img.width,cv!.height/img.height),w=img.width*scale,h=img.height*scale;
-      ctx!.drawImage(img,(cv!.width-w)/2,(cv!.height-h)/2,w,h);drawn=i;
+      const x=p*(flight.count-1),i=Math.floor(x),mix=Math.round((x-i)*32)/32;
+      const a=images[i],b=images[Math.min(flight.count-1,i+1)];
+      if(a&&b&&mix>0){
+        const key=`${i}+${mix}`;if(key===drawn)return;
+        paint(a,1);paint(b,mix);drawn=key;return;
+      }
+      const k=nearest(Math.round(x));if(k<0||`${k}`===drawn)return;
+      paint(images[k]!,1);drawn=`${k}`;
     }
-    const resize=()=>{const dpr=Math.min(window.devicePixelRatio||1,1.5);cv.width=Math.round(cv.clientWidth*dpr);cv.height=Math.round(cv.clientHeight*dpr);drawn=-1;render();};
+    const resize=()=>{const dpr=Math.min(window.devicePixelRatio||1,1.5);cv.width=Math.round(cv.clientWidth*dpr);cv.height=Math.round(cv.clientHeight*dpr);drawn='';render();};
     startLoad.current=()=>{
       if(started)return;started=true;
       // A coarse pass first, so scrubbing works before every frame has arrived.
@@ -211,7 +221,7 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
     if(nearRef.current)startLoad.current();
     const off=journey.subscribe(frame=>{
       const next=frame.hold.flight??0;if(next===p)return;
-      p=next;setProgress(prev=>Math.abs(prev-p)>.003||p===0||p===1?p:prev);render();
+      p=next;const u=flightDistanceAt(p);setProgress(prev=>Math.abs(prev-u)>.003||u===0||u===1?u:prev);render();
     });
     const observer=new ResizeObserver(resize);observer.observe(cv);
     return()=>{disposed=true;off();observer.disconnect();startLoad.current=()=>{};};
@@ -221,10 +231,10 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
   const legend=<div className="sp-flight-legend"><span><i style={{background:'#ff1459'}}/>Confirmed by both methods</span><span><i style={{background:'#ffb826'}}/>One method only</span></div>;
   if(reduced)return <Scene id="flight"><section className="sp-section sp-flight-static" aria-labelledby="flight-title">
     <header className="sp-heading"><span className="sp-index">Flight path / Rasuwa, Nepal</span><h2 id="flight-title">Follow the flood, from its origin to Syabrubesi</h2></header>
-    <div className="sp-stills">{flight.beats.map(beat=>Math.round(beat.at*(flight.count-1))).map((index,i)=><figure key={index}><img src={flight.frame(index)} width={flight.width} height={flight.height} loading="lazy" alt={`3D view of the flood trace: ${flight.beats[i].stop}`}/><figcaption><strong>{flight.beats[i].stop}</strong>{flight.beats[i].text}</figcaption></figure>)}</div>
+    <div className="sp-stills">{flight.beats.map(beat=>Math.round(flightTimeAt(beat.at)*(flight.count-1))).map((index,i)=><figure key={index}><img src={flight.frame(index)} width={flight.width} height={flight.height} loading="lazy" alt={`3D view of the flood trace: ${flight.beats[i].stop}`}/><figcaption><strong>{flight.beats[i].stop}</strong>{flight.beats[i].text}</figcaption></figure>)}</div>
     {legend}{credit}
   </section></Scene>;
-  return <Scene id="flight" hold={FLIGHT_HOLD} steps={flight.beats.slice(1).map(beat=>beat.at)} dwell={1.5} pace={.4}><section className="sp-flight" aria-labelledby="flight-title">
+  return <Scene id="flight" hold={FLIGHT_HOLD} steps={flight.beats.slice(1).map(beat=>flightTimeAt(beat.at))} dwell={1.5} pace={.3}><section className="sp-flight" aria-labelledby="flight-title">
     <div className="sp-flight-stage">
       <div className="sp-flight-window">
         <canvas ref={canvas} role="img" aria-label="Drone-style flight over a 3D map of the Bhote Koshi valley, following the detected flood trace from its origin to Syabrubesi"/>

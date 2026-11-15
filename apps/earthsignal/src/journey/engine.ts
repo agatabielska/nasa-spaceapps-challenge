@@ -6,7 +6,7 @@ export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;h
 // data-dwell: autopilot pause
 // in seconds · data-pace: autopilot speed through the scene, in screens per second.
 type Scene={el:HTMLElement;id:string;minHold:number;steps?:number[];dwell:number;pace:number};
-type Autopilot={phase:'arrive'|'rest'|'move'|'linger';wait:number;y:number};
+type Autopilot={phase:'arrive'|'rest'|'move'|'linger';wait:number;y:number;from:number;to:number;time:number;duration:number};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
 // Room left above a content block when the camera stops on it (top bar), and below it (presenter bar).
 const STOP_GAP=96,BAR_ROOM=96;
@@ -25,6 +25,16 @@ function contentBlocks(scene:HTMLElement){
   for(const mark of tops){blocks.push({top,bottom:mark.top-mark.margin});top=mark.top;}
   blocks.push({top,bottom:end});
   return blocks;
+}
+// Seconds an autopilot move takes to reach full speed, and to stop again.
+const RAMP=1.4;
+// Position along a move at time t (0..1): accelerate for the first r, glide, decelerate for the last r.
+export function easeMove(t:number,r:number){
+  if(r<=0)return t;
+  const v=1/(1-r);
+  if(t<r)return v*t*t/(2*r);
+  if(t>1-r)return 1-v*(1-t)*(1-t)/(2*r);
+  return v*(t-r/2);
 }
 const editable='input,textarea,select,[contenteditable=""],[contenteditable=true],[role=slider]';
 
@@ -88,7 +98,7 @@ export class Journey{
       if(y>=l.total-1)y=0;
       const sc=l.scenes[sceneAtScroll(l,y)];
       if(y<sc.start||y>sc.end)y=y>sc.end?l.scenes[Math.min(l.scenes.indexOf(sc)+1,l.scenes.length-1)].start:sc.start;
-      this.scrollTo(y);this.auto={phase:'arrive',wait:0,y};
+      this.scrollTo(y);this.auto={phase:'arrive',wait:0,y,from:y,to:y,time:0,duration:0};
     }else this.auto=null;
     this.events.onAutopilot(on);
   }
@@ -152,11 +162,17 @@ export class Journey{
     if(Math.abs(window.scrollY-a.y)>3){this.setAutopilot(false);return;}
     const i=sceneAtScroll(l,a.y),sc=l.scenes[i],info=this.scenes[i];
     if(a.phase==='arrive'){if(Math.abs(this.cam-a.y)<l.h*.01){a.phase='rest';a.wait=info.dwell;}return;}
-    if(a.phase==='rest'){a.wait-=dt;if(a.wait<=0)a.phase='move';return;}
+    if(a.phase==='rest'){
+      a.wait-=dt;if(a.wait>0)return;
+      // A camera move through the scene: ramps up and down gently, steady speed in between.
+      a.from=a.y;a.to=Math.max(a.y,info.steps||i===l.scenes.length-1?sc.end:sc.start+sc.pan);
+      a.time=0;a.duration=(a.to-a.from)/(info.pace*l.h)+RAMP;a.phase='move';
+    }
     if(a.phase==='move'){
-      const end=info.steps||i===l.scenes.length-1?sc.end:sc.start+sc.pan;
-      if(a.y<end-.5){a.y=Math.min(end,a.y+info.pace*l.h*dt);this.scrollTo(a.y);}
-      else{a.phase='linger';a.wait=end>sc.start+.5?2.5:0;}
+      a.time+=dt;
+      const t=a.duration>0?clamp(a.time/a.duration):1;
+      a.y=a.from+(a.to-a.from)*easeMove(t,a.duration>0?Math.min(.3,RAMP/a.duration):0);this.scrollTo(a.y);
+      if(t>=1){a.phase='linger';a.wait=a.to>a.from+.5?2.5:0;}
       return;
     }
     a.wait-=dt;if(a.wait>0)return;
