@@ -1,11 +1,12 @@
 import {lazy,Suspense} from 'react';
 import {createRoot} from 'react-dom/client';
 import './tokens.css';
-import {ABOUT_PATH,EXPLORER_PATH,SHOW_PATH} from './routes';
+import {ABOUT_PATH,EXPLORER_PATH,SHOW_PATH,SHOW2_PATH} from './routes';
 const Explorer=lazy(()=>import('./Explorer'));
 const Landing=lazy(()=>import('./Landing'));
 const Show=lazy(()=>import('./Show'));
+const Show2=lazy(()=>import('./Show2'));
 const About=lazy(()=>import('./About'));
 const path=window.location.pathname.replace(/\/$/,'');
 const exploring=path===EXPLORER_PATH;
-createRoot(document.getElementById('root')!).render(<Suspense fallback={<div className="page-loading" role="status">Opening EarthSignal…</div>}>{exploring?<Explorer/>:path===SHOW_PATH?<Show/>:path===ABOUT_PATH?<About/>:<Landing/>}</Suspense>);
+createRoot(document.getElementById('root')!).render(<Suspense fallback={<div className="page-loading" role="status">Opening EarthSignal…</div>}>{exploring?<Explorer/>:path===SHOW_PATH?<Show/>:path===SHOW2_PATH?<Show2/>:path===ABOUT_PATH?<About/>:<Landing/>}</Suspense>);

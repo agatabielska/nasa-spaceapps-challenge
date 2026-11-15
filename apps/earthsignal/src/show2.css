@@ -1,0 +1,73 @@
+/* /show2: what the second cut adds to show.css. */
+/* Title with the team */
+.show2 .sh-title h1{font-size:clamp(40px,6.6vw,112px)}
+.show2 .sh-title .sh-line{margin-top:1.6vh}
+.s2-team-name{margin:4.2vh 0 1.8vh;font:800 clamp(13px,1.15vw,19px) var(--es-display);letter-spacing:.24em;text-transform:uppercase;color:var(--es-text-2)}
+.s2-team-name b{color:#81e5ff}
+.s2-team{display:grid;grid-template-columns:repeat(3,auto);gap:2vh 3.4vw;margin:0;padding:0;list-style:none}
+.s2-team li{display:flex;flex-direction:column;align-items:center;gap:.9vh}
+.s2-team img{width:clamp(56px,10.5vh,118px);aspect-ratio:1;border-radius:50%;object-fit:cover;border:2px solid #8fd6ff;box-shadow:0 0 0 5px #8fd6ff1f,0 10px 30px #0008}
+.s2-team span{font:600 clamp(13px,1.05vw,18px) var(--es-body);color:var(--es-text)}
+.show2 .sh-start{position:absolute;left:0;right:0;bottom:3.5vh;margin:0}
+/* Why NISAR */
+.s2-why{display:grid;gap:1.5vh;margin:3.2vh 0 0;padding:0;list-style:none;font:600 clamp(17px,1.75vw,29px)/1.25 var(--es-body);color:var(--es-text)}
+.s2-why li{position:relative;padding-left:1.5em;opacity:0;transform:translateX(-18px)}
+.s2-why li::before{content:'';position:absolute;left:0;top:.52em;width:.8em;height:3px;background:linear-gradient(90deg,#8fd6ff,#c9b8ff)}
+.sh-why.on .s2-why li{opacity:1;transform:none;transition:opacity .45s ease,transform .45s ease;transition-delay:calc(.35s + var(--i)*.4s)}
+/* The app's globe */
+.sh-app{padding:0}
+.sh-app iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+.s2-head{position:absolute;left:0;right:0;top:10.5vh;display:grid;justify-items:center;text-align:center;pointer-events:none}
+.s2-head h2{grid-area:1/1;padding:.18em .5em;border-radius:14px;background:#030814b3;backdrop-filter:blur(6px);font-size:clamp(28px,4.2vw,70px);opacity:0;transform:translateY(-14px);transition:opacity .45s ease,transform .45s ease}
+.s2-head h2.on{opacity:1;transform:none}
+.s2-label{position:absolute;left:0;top:0;pointer-events:none}
+.s2-label strong{position:absolute;left:26px;top:0;padding:10px 18px;border:1px solid var(--c);border-radius:10px;background:#030814ee;font:800 clamp(20px,2.2vw,34px)/1.1 var(--es-display);white-space:nowrap;opacity:0;transform:translateY(-50%) scale(.8);transform-origin:left;transition:opacity .3s,transform .3s}
+.s2-label small{display:block;margin-top:3px;font:600 clamp(14px,1.2vw,19px) var(--es-body);color:var(--c)}
+.s2-label.on strong{opacity:1;transform:translateY(-50%)}
+/* Orbit: the astronaut rests in the corner, wakes up, and a chat card grows out of it */
+.s2-orbit{position:absolute;right:3.2vw;bottom:6vh;display:flex;align-items:flex-end;gap:1.2vw;pointer-events:none}
+.s2-astro{width:clamp(84px,9vw,150px);opacity:.85;transform-origin:50% 100%;animation:s2-bob 3.2s ease-in-out infinite;transition:opacity .4s}
+.s2-astro svg{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 22px #000a)}
+.s2-orbit.awake .s2-astro{opacity:1;animation:s2-wake .7s cubic-bezier(.3,1.6,.5,1) both,s2-bob 3.2s ease-in-out .7s infinite}
+@keyframes s2-bob{50%{transform:translateY(-8px) rotate(-2deg)}}
+@keyframes s2-wake{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-9deg) translateY(-14px)}100%{transform:scale(1.14)}}
+.s2-chat{width:min(34vw,560px);margin-bottom:3vh;padding:1.8vh 1.5vw 2vh;border:1px solid #8fd6ff80;border-radius:22px 22px 6px 22px;background:linear-gradient(160deg,#0d2148f2,#050c1ef2);box-shadow:0 30px 80px #000c,0 0 70px #2f7fff40;backdrop-filter:blur(10px);opacity:0;transform:translate(8%,14%) scale(.55);transform-origin:100% 100%;transition:opacity .35s ease,transform .5s cubic-bezier(.2,1.3,.4,1)}
+.s2-orbit.open .s2-chat{opacity:1;transform:none}
+.s2-chat p{margin:0}
+.s2-chat-head{display:flex;align-items:baseline;gap:.6em;font:800 clamp(15px,1.3vw,22px) var(--es-display);color:#fff}
+.s2-chat-head i{align-self:center;width:.6em;height:.6em;border-radius:50%;background:#5dffa9;box-shadow:0 0 10px #5dffa9}
+.s2-chat-head small{font:500 .72em var(--es-body);color:var(--es-text-2)}
+.s2-ask{min-height:2.5em;margin-top:1.5vh!important;padding:.55em .8em;border:1px solid #8fd6ff66;border-radius:14px;background:#030814cc;font:600 clamp(17px,1.7vw,28px)/1.35 var(--es-body);color:#fff;transition:background .3s,border-color .3s,color .3s}
+.s2-ask b{display:inline-block;width:2px;height:1.05em;margin-left:3px;vertical-align:-.15em;background:#8fd6ff;animation:s2-caret .7s steps(1) infinite}
+@keyframes s2-caret{50%{opacity:0}}
+.s2-ask.sent{border-color:transparent;background:var(--es-accent);color:var(--es-ink)}
+.s2-reply{display:flex;align-items:center;gap:.6em;max-height:0;overflow:hidden;font:600 clamp(15px,1.35vw,22px) var(--es-body);color:#bfe9ff;opacity:0;transition:opacity .35s ease .15s,max-height .35s ease,margin .35s ease}
+.s2-reply.on{max-height:3em;margin-top:1.3vh!important;opacity:1}
+.s2-reply::before{content:'';width:.9em;height:.9em;border:2px solid #8fd6ff;border-top-color:transparent;border-radius:50%;animation:s2-spin .8s linear infinite}
+@keyframes s2-spin{to{transform:rotate(1turn)}}
+/* Nepal: what the red area is */
+.s2-key{display:flex;align-items:center;gap:.7em;margin:1.4vh 0 0;font:600 clamp(16px,1.5vw,24px) var(--es-body);color:var(--es-text)}
+.s2-key i{flex:none;width:2em;height:1.1em;border-radius:4px;background:linear-gradient(90deg,#ff3b3b 50%,#ffb020 50%);box-shadow:0 0 12px #ff3b3b99}
+/* Silesia: the case-study headline sits at the bottom, the sinkhole is pointed out on the map */
+.show2 .sh-silesia .s2-case{left:4vw;bottom:6vh;max-width:min(58vw,1000px)}
+.show2 .sh-silesia .s2-case h2{white-space:normal;font-size:clamp(24px,3vw,48px)}
+.s2-hole{position:absolute;width:0;height:0;animation:s2-pop .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes s2-pop{from{opacity:0;transform:scale(.6)}}
+.s2-hole::before{content:'';position:absolute;left:-13px;top:-13px;width:26px;height:26px;border:4px solid #ff4d4d;border-radius:50%;background:#ff4d4d55;box-shadow:0 0 0 0 #ff4d4d;animation:s2-ping 1.2s ease-out infinite}
+@keyframes s2-ping{to{box-shadow:0 0 0 26px #ff4d4d00}}
+/* The arrow: a line from the callout down to the point, with a head at the point */
+.s2-hole i{position:absolute;left:9px;bottom:9px;width:min(9vw,150px);height:4px;background:#ff4d4d;transform-origin:0 50%;transform:rotate(-38deg);box-shadow:0 0 10px #000}
+.s2-hole i::before{content:'';position:absolute;left:-2px;top:-7px;border:9px solid transparent;border-right-color:#ff4d4d;border-left:0}
+.s2-hole>div{position:absolute;left:min(7.6vw,126px);bottom:min(5.6vw,92px);width:min(34vw,520px);padding:1.6vh 1.3vw;border:2px solid #ff4d4d;border-radius:14px;background:#1a0509f2;box-shadow:0 20px 60px #000c}
+.s2-hole strong{display:block;font:800 clamp(17px,1.7vw,28px)/1.2 var(--es-display);color:#fff}
+.s2-hole span{display:block;margin-top:.8vh;font:600 clamp(15px,1.35vw,22px) var(--es-body);color:#ffd0d0}
+.s2-hole span b{color:#fff}
+.s2-hole small{display:block;margin-top:.5vh;font:500 clamp(12px,.95vw,15px) var(--es-body);color:#ffb3b3b3}
+.s2-hole.left i{left:auto;right:9px;transform-origin:100% 50%;transform:rotate(38deg)}
+.s2-hole.left i::before{left:auto;right:-2px;border:9px solid transparent;border-left-color:#ff4d4d;border-right:0}
+.s2-hole.left>div{left:auto;right:min(7.6vw,126px)}
+@media(max-width:800px){.s2-chat{width:66vw}.s2-hole>div{width:70vw}.show2 .sh-silesia .s2-case{right:4vw;max-width:none}}
+@media(prefers-reduced-motion:reduce){.s2-astro,.s2-orbit.awake .s2-astro{animation:none}}
+/* Closing line */
+.sh-outro{flex-direction:column;gap:0;text-align:center;background:radial-gradient(1200px 800px at 50% 40%,#0b1f45 0,#030814 66%)}
+.sh-outro h2{font-size:clamp(30px,4.6vw,76px);line-height:1.12}

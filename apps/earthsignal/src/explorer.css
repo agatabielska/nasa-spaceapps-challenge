@@ -467,3 +467,6 @@
 /* The collapse-filters button is always bright; hovering only enlarges it. */
 .app .collapse-chip{opacity:1;color:var(--text);transform:none}
 .app .collapse-chip:hover{transform:scale(1.15)}
+/* ?embed (used by /show2): only the brand, the globe and its markers. */
+.app.embed :is(.top-right,.sidebar,.reopen,.map-heading,.map-controls,.map-styles,.map-legend,.bottom-panel,.astronaut-widget,.map-status,.map-warning,.detail,.chat,.guide,.mobile-menu){display:none!important}
+.app.embed .map-marker{pointer-events:none}
