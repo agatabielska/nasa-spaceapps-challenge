@@ -47,7 +47,7 @@ export default function JourneyBar({chapters,chapter,autopilot,paused,onPause}:{
   };
   const count=`${String(index+1).padStart(2,'0')} / ${String(chapters.length).padStart(2,'0')}`;
   return <div className="sp-bar" role="group" aria-label="Journey controls">
-    <p className="sp-bar-id" aria-hidden="true">NASA Space Apps Challenge<strong>One world · one continuous camera</strong></p>
+    <p className="sp-bar-id" aria-hidden="true">NASA Space Apps Challenge</p>
     <div className="sp-bar-center">
       <div className="sp-bar-row">
         <b className="sp-bar-count">{count}</b>
