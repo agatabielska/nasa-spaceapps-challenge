@@ -68,3 +68,6 @@
 /* Closing line */
 .sh-outro,.sh-local{flex-direction:column;gap:0;text-align:center;background:radial-gradient(1200px 800px at 50% 40%,#0b1f45 0,#030814 66%)}
 .sh-outro h2,.sh-local h2{font-size:clamp(30px,4.6vw,76px);line-height:1.12}
+/* Chromium stops painting a fully transparent scene and stalls for a moment when it comes back; the two scenes
+   with an embedded map stay painted at an opacity too low to see. */
+.show2 .sh-app:not(.on),.show2 .sh-silesia:not(.on){opacity:.004}

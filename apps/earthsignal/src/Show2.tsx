@@ -60,7 +60,22 @@ export default function Show2(){
       if(!appDone){
         const m=appMap(app.current);
         // The explorer turns to its overview once its catalog has loaded; that zoom is the base of this scene.
-        if((m&&m.loaded()&&m.areTilesLoaded()&&app.current?.contentDocument?.querySelector('.map-marker'))||late()){appDone=true;if(m)zoom0.current=m.getZoom()-.32;tick();}
+        if((m&&m.loaded()&&m.areTilesLoaded()&&app.current?.contentDocument?.querySelector('.map-marker'))||late()){
+          appDone=true;if(m)zoom0.current=m.getZoom()-.32;
+          // Visit every view of the scene once, so its imagery is already cached when the camera flies there.
+          void (async()=>{
+            if(m){
+              const top=window.innerHeight*.1,z=zoom0.current;
+              const views:[number,number,number,number][]=[[ETNA.lon,ETNA.lat,z,top],[SPAIN.lon,SPAIN.lat,z,top],...[.3,.5,.7,.85,1].map(u=>[mix(SPAIN.lon,NEPAL.lon,ease(clamp(u/.7))),mix(SPAIN.lat,NEPAL.lat,ease(clamp(u/.7))),mix(z,CLOSE_ZOOM,ease(u)),0] as [number,number,number,number]),[START.lon,START.lat,z,top]];
+              for(const [lon,lat,zoom,pad] of views){
+                if(cancelled)return;
+                m.jumpTo({center:[lon,lat],zoom,padding:{top:pad,bottom:0,left:0,right:0}});
+                for(let i=0;i<40;i++){await new Promise(r=>setTimeout(r,100));if(m.areTilesLoaded())break;}
+              }
+            }
+            tick();
+          })();
+        }
       }
       if(!lineDone){
         const f=frame.current,ok=inFrame<boolean>(f,'typeof map!=="undefined"&&map.loaded()&&map.areTilesLoaded()');
