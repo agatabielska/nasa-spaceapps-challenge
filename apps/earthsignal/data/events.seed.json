@@ -1,0 +1,370 @@
+[
+  {
+    "id": "etna",
+    "title": "Etna eruption",
+    "country": "Italy",
+    "aliases": [
+      "italy",
+      "włochy",
+      "etna",
+      "sicily",
+      "sycylia"
+    ],
+    "kind": "volcano",
+    "date": "2026-08-06",
+    "coordinates": [
+      15,
+      37.75
+    ],
+    "description": "Fresh lava and ash reshaped Etna's summit during the eruption of 6 to 21 August 2026. NISAR radar images from before and after show where the surface changed, even under the cloud that hid the summit from optical satellites.",
+    "observations": [
+      "2026-07-23",
+      "2026-08-28"
+    ],
+    "source": "https://ingvvulcani.com/2026/08/22/etna-la-calda-estate-del-2026/",
+    "catalogVerified": true,
+    "analysisAvailable": true,
+    "countryCode": "IT",
+    "region": "Europe"
+  },
+  {
+    "id": "spain",
+    "title": "Ávila wildfire",
+    "country": "Spain",
+    "aliases": [
+      "avila",
+      "burgohondo",
+      "españa",
+      "galicia",
+      "hiszpania",
+      "pożar",
+      "spain",
+      "wildfire",
+      "ávila"
+    ],
+    "kind": "wildfire",
+    "date": "2026-07-22",
+    "coordinates": [
+      -4.78,
+      40.41
+    ],
+    "description": "A forest wildfire broke out near Burgohondo in the province of Ávila. Burnt forest reflects radar more weakly, so the burn shows up between two NISAR passes; optical Sentinel-2 imagery is the independent check.",
+    "catalogVerified": true,
+    "analysisAvailable": true,
+    "countryCode": "ES",
+    "region": "Europe",
+    "observations": [
+      "2026-07-21",
+      "2026-08-26"
+    ]
+  },
+  {
+    "id": "nepal",
+    "title": "Rasuwa glacier-collapse flood",
+    "country": "Nepal",
+    "countryCode": "NP",
+    "region": "Asia",
+    "aliases": [
+      "nepal",
+      "rasuwa",
+      "langtang",
+      "timure",
+      "syabrubesi",
+      "bhote koshi",
+      "trishuli",
+      "glacier",
+      "lodowiec",
+      "powódź",
+      "flood"
+    ],
+    "kind": "flood",
+    "date": "2026-08-26",
+    "coordinates": [
+      85.38,
+      28.28
+    ],
+    "observations": [
+      "2026-08-19",
+      "2026-08-31"
+    ],
+    "catalogVerified": true,
+    "analysisAvailable": true,
+    "description": "A glacier collapse north of Langtang sent water and debris down the Bhote Koshi valley. Two independent radar methods trace the flood path for about 40 km, past Timure and Syabrubesi."
+  },
+  {
+    "id": "silesia",
+    "title": "Mining subsidence in Poland",
+    "country": "Poland",
+    "countryCode": "PL",
+    "region": "Europe",
+    "aliases": [
+      "poland",
+      "polska",
+      "silesia",
+      "śląsk",
+      "slask",
+      "katowice",
+      "pawłowice",
+      "jastrzębie",
+      "krzyżowice",
+      "mining",
+      "kopalnia",
+      "osiadanie",
+      "subsidence"
+    ],
+    "kind": "subsidence",
+    "date": "2026-10-16",
+    "coordinates": [
+      18.85,
+      50.2
+    ],
+    "observations": [
+      "2026-06-18",
+      "2026-10-16"
+    ],
+    "catalogVerified": true,
+    "analysisAvailable": true,
+    "description": "The ground above active coal mines sinks continuously. Nine consecutive NISAR interferograms from June to October 2026 show 25 sinking bowls, each confirmed by a second satellite track."
+  },
+  {
+    "id": "mozambique",
+    "title": "Flooding along the Limpopo",
+    "country": "Mozambique",
+    "aliases": [
+      "mozambique",
+      "mozambik",
+      "limpopo",
+      "africa",
+      "afryka"
+    ],
+    "kind": "flood",
+    "date": "2026-01-17",
+    "coordinates": [
+      33,
+      -24.6
+    ],
+    "description": "NASA documents NISAR observations before and during flooding. A candidate for comparing open water and inundated vegetation. Our own pixel analysis has not been performed.",
+    "observations": [
+      "2026-01-05",
+      "2026-01-17"
+    ],
+    "source": "https://svs.gsfc.nasa.gov/5661",
+    "catalogVerified": true,
+    "analysisAvailable": false,
+    "countryCode": "MZ",
+    "region": "Africa"
+  },
+  {
+    "id": "venezuela",
+    "title": "Ground movement · Venezuela",
+    "country": "Venezuela",
+    "aliases": [
+      "venezuela",
+      "wenezuela",
+      "catia"
+    ],
+    "kind": "earthquake",
+    "date": "2026-06-24",
+    "coordinates": [
+      -67.22,
+      10.6
+    ],
+    "description": "Candidate GUNW study of earthquake-related line-of-sight displacement. Phase corrections, reference selection and quality assessment are required before interpreting movement.",
+    "observations": [
+      "2026-06-13",
+      "2026-06-25"
+    ],
+    "source": "https://science.nasa.gov/earth/earth-observatory/where-venezuelas-earthquakes-shifted-the-ground/",
+    "catalogVerified": true,
+    "analysisAvailable": false,
+    "countryCode": "VE",
+    "region": "South America"
+  },
+  {
+    "id": "hubbard",
+    "title": "Hubbard Glacier · surface deposits",
+    "country": "United States",
+    "aliases": [
+      "alaska",
+      "usa",
+      "united states",
+      "stany",
+      "hubbard"
+    ],
+    "kind": "ice",
+    "date": "2025-12-06",
+    "coordinates": [
+      -139.8,
+      60.45
+    ],
+    "description": "Candidate study of avalanche and landslide deposits following the Hubbard Glacier earthquake. Radar roughness, snow and glacier motion need to be distinguished.",
+    "observations": [
+      "2025-11-26",
+      "2025-12-08"
+    ],
+    "source": "https://science.nasa.gov/earth/earth-observatory/landslide-and-avalanche-debris-litter-hubbard-glacier/",
+    "catalogVerified": true,
+    "analysisAvailable": false,
+    "countryCode": "US",
+    "region": "North America"
+  },
+  {
+    "id": "canada",
+    "title": "Forest fire · Canada",
+    "country": "Canada",
+    "aliases": [
+      "canada",
+      "kanada"
+    ],
+    "kind": "wildfire",
+    "date": "2026-07-12",
+    "coordinates": [
+      -112,
+      56
+    ],
+    "description": "Demonstration scenario for the wildfire category. No NISAR analysis or burned-area estimate is available.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "CA",
+    "region": "North America"
+  },
+  {
+    "id": "brazil",
+    "title": "Forest change · Brazil",
+    "country": "Brazil",
+    "aliases": [
+      "brazil",
+      "brazylia",
+      "amazon"
+    ],
+    "kind": "wildfire",
+    "date": "2026-09-04",
+    "coordinates": [
+      -58,
+      -8
+    ],
+    "description": "Demonstration catalog entry. This marker illustrates a future workflow, not an observed change or an assessment of forest loss.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "BR",
+    "region": "South America"
+  },
+  {
+    "id": "iceland",
+    "title": "Volcanic terrain · Iceland",
+    "country": "Iceland",
+    "aliases": [
+      "iceland",
+      "islandia"
+    ],
+    "kind": "volcano",
+    "date": "2026-05-20",
+    "coordinates": [
+      -22,
+      64
+    ],
+    "description": "Demonstration scenario. A future study could compare radar observations of volcanic terrain with independent references.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "IS",
+    "region": "Europe"
+  },
+  {
+    "id": "japan",
+    "title": "Ground movement · Japan",
+    "country": "Japan",
+    "aliases": [
+      "japan",
+      "japonia"
+    ],
+    "kind": "earthquake",
+    "date": "2026-04-11",
+    "coordinates": [
+      138,
+      37
+    ],
+    "description": "Demonstration scenario for finding earthquake-related studies. No earthquake occurrence or deformation measurement is asserted.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "JP",
+    "region": "Asia"
+  },
+  {
+    "id": "pakistan",
+    "title": "River flooding · Pakistan",
+    "country": "Pakistan",
+    "aliases": [
+      "pakistan"
+    ],
+    "kind": "flood",
+    "date": "2026-08-27",
+    "coordinates": [
+      69,
+      27
+    ],
+    "description": "Demonstration scenario for a flood-mapping workflow. The marker does not represent a validated inundation map.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "PK",
+    "region": "Asia"
+  },
+  {
+    "id": "greenland",
+    "title": "Ice dynamics · Greenland",
+    "country": "Greenland",
+    "aliases": [
+      "greenland",
+      "grenlandia"
+    ],
+    "kind": "ice",
+    "date": "2026-06-15",
+    "coordinates": [
+      -43,
+      69
+    ],
+    "description": "Demonstration scenario for ice observations. Radar surface change does not directly measure lost ice volume.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "GL",
+    "region": "North America"
+  },
+  {
+    "id": "indonesia",
+    "title": "Volcanic terrain · Indonesia",
+    "country": "Indonesia",
+    "aliases": [
+      "indonesia",
+      "indonezja"
+    ],
+    "kind": "volcano",
+    "date": "2026-10-08",
+    "coordinates": [
+      110,
+      -7
+    ],
+    "description": "Demonstration scenario illustrating the volcano category and regional navigation.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "ID",
+    "region": "Asia"
+  },
+  {
+    "id": "australia",
+    "title": "Forest fire · Australia",
+    "country": "Australia",
+    "aliases": [
+      "australia"
+    ],
+    "kind": "wildfire",
+    "date": "2026-02-09",
+    "coordinates": [
+      146,
+      -35
+    ],
+    "description": "Demonstration scenario. No burned area or radar classification has been computed.",
+    "catalogVerified": false,
+    "analysisAvailable": false,
+    "countryCode": "AU",
+    "region": "Oceania"
+  }
+]

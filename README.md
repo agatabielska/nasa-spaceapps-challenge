@@ -1,5 +1,21 @@
 # cdet – satellite change detection (OSCD optical + NASA NISAR SAR)
 
+## EarthSignal web application
+
+The current map explorer lives in [`apps/earthsignal`](apps/earthsignal/README.md).
+Application work is maintained on the `earthsignal-app` branch independently of `main`.
+
+```bash
+cd apps/earthsignal
+npm ci
+npm run dev
+```
+
+Run `npm test` and `npm run build` from that directory to verify the application.
+The current version uses a local SQLite catalog and LM Studio for Orbit's natural-language
+search and navigation. See the application README for local model/API configuration.
+A processed NISAR case study remains subsequent work. No external hosting is required.
+
 Reproducible research code for bi-temporal change detection: a model zoo, two data
 modules (OSCD optical, NISAR SAR), Optuna tuning, full Weights & Biases tracking and
 data-understanding plots. Everything is driven by YAML configs plus command-line overrides.
