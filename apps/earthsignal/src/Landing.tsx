@@ -19,6 +19,8 @@ const chapters=[
   {id:'flight',label:'Nepal · 3D flight',short:'Flight'},{id:'discover',label:'Discover',short:'Discover'},
 ];
 // Screens of scrolling the camera spends on the drone flight.
+// The team, alphabetically by surname (shown on the start screen and in the footer).
+const TEAM=['Agata Bielska','Michał Leszczyński','Maria Musiał','Oliwier Necelman','Jakub Radziejewski','Martyna Stasiak'];
 const FLIGHT_HOLD=3.6;
 const eventIcons={wildfires:Flame,earthquakes:Activity,farming:Sprout,glaciers:Snowflake,volcanoes:Mountain};
 
@@ -432,6 +434,7 @@ export default function Landing(){
             <a className="sp-button" href="#about">Start the journey <ArrowDown size={20} aria-hidden="true"/></a>
           </div>
         </div>
+        <aside className="sp-team" aria-label="Team"><span>Team</span><ul>{TEAM.map(name=><li key={name}>{name}</li>)}</ul></aside>
         <a className="sp-scroll-cue" href="#about"><span>Scroll to travel</span><ChevronsDown size={22} aria-hidden="true"/></a>
       </section></Scene>
 
@@ -473,6 +476,7 @@ export default function Landing(){
         </section>
         <footer className="sp-footer">
           <p><strong>EarthSignal</strong> · Built for the NASA International Space Apps Challenge 2026, “Dancing with the SARs”. An independent team project, not an official NASA or ISRO service.</p>
+          <p>Team: {TEAM.join(' · ')}.</p>
           <p>Data and imagery: NISAR L2 GCOV/GUNW (NASA/ISRO, ASF DAAC) · Sentinel-2 (Copernicus/ESA) · Blue Marble (NASA Earth Observatory) · Esri World Imagery · AWS Terrain Tiles.</p>
         </footer>
       </Scene>
