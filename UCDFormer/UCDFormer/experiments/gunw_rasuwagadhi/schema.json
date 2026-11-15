@@ -1,0 +1,878 @@
+{
+  "identification": {
+    "boundingPolygon": "POLYGON ((86.6064780547409 27.9794185541377 4783.56250000061,86.5354783176166 28.1906944052213 5246.86773769452,86.4657043590069 28.4022915971762 5609.56576364448,86.4115421824518 28.6176566421434 4902.79638671958,86.3545083764602 28.8323627904971 4376.08740240613,86.2771853112831 29.0422406475873 5189.99902348197,86.2189365520757 29.2567166338148 4710.05421039532,86.1498192087478 29.4686192581721 4938.33837890673,86.0725647766887 29.6786027441878 5690.30487846876,86.0127054863403 29.8927857943415 5264.21044980502,85.9464675372156 30.1054712089393 5245.07421875042,85.64861349128 30.0339339780761 5166.44335937515,85.3552986446694 29.9627194755554 5742.72998046754,85.0838522671895 29.8961510950034 5523.14648492523,84.8249059979368 29.8320485896 5016.67480467363,84.5633257296616 29.7666845290894 5421.43164048574,84.3199564011151 29.7053417424987 4825.84423828183,84.0792687618702 29.6441581524797 4527.04345703222,83.8357657197632 29.5817290798701 5061.82275390758,83.6045590982698 29.5219763471476 4864.22958674568,83.3734512062204 29.4617715131746 5138.23730468689,83.4418705691473 29.2498383232061 5493.21191419073,83.5128245280786 29.0386117161516 5530.54003912837,83.5894525549572 28.8289132537478 4898.45453775649,83.6770592622329 28.6221280233321 3007.85253906693,83.7454982226728 28.4103577379652 3212.91430663957,83.8311911953379 28.2031378828002 1464.04480060313,83.9096163262597 27.9940509015945 488.057190790115,83.9726968402047 27.7809938541011 1179.83984374931,84.05153863138 27.5720861818498 86.3455886322995,84.1199296736443 27.3604891013241 120.018243541066,84.344509771305 27.4185116602087 293.466227616241,84.5730089252718 27.477113610393 516.110596504024,84.8108685506175 27.5376576584161 294.239135744034,85.0346343055142 27.5941633428025 1951.72509765456,85.2892995509286 27.6579909464814 1247.03710937444,85.5430415629027 27.7210412703616 1302.36138835844,85.8010658902466 27.7846021033857 1673.25104919528,86.0589376659159 27.8475638098475 2747.35546789432,86.3266669819888 27.9123474588759 3792.6232910139,86.6064780547409 27.9794185541377 4783.56250000061))",
+    "compositeReleaseId": "X05026",
+    "diagnosticModeFlag": 0,
+    "frameNumber": 16,
+    "granuleId": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_X05026_N_F_J_001",
+    "instrumentName": "L-SAR",
+    "isDithered": "True",
+    "isFullFrame": "True",
+    "isGeocoded": "True",
+    "isMixedMode": "False",
+    "isUrgentObservation": "False",
+    "listOfFrequencies": [
+      "A"
+    ],
+    "lookDirection": "Left",
+    "missionId": "NISAR",
+    "orbitPassDirection": "Ascending",
+    "platformName": "NISAR",
+    "processingCenter": "JPL",
+    "processingDateTime": "2026-09-19T02:24:24",
+    "processingType": "Nominal",
+    "productDoi": "10.5067/NIL2GUNW-P1",
+    "productLevel": "L2",
+    "productSpecificationVersion": "1.5.0",
+    "productType": "GUNW",
+    "productVersion": "1.0.12",
+    "radarBand": "L",
+    "referenceAbsoluteOrbitNumber": 5560,
+    "referenceHasInputDataException": 0,
+    "referenceIsJointObservation": "True",
+    "referenceListOfObservationModes": [
+      "(NOT SPECIFIED)"
+    ],
+    "referencePlannedDatatakeId": [
+      "dtid_2026231233240"
+    ],
+    "referencePlannedObservationId": [
+      "oid_2026231233712"
+    ],
+    "referenceZeroDopplerEndTime": "2026-08-19T23:39:53.999342105",
+    "referenceZeroDopplerStartTime": "2026-08-19T23:39:18.000000000",
+    "secondaryAbsoluteOrbitNumber": 5733,
+    "secondaryHasInputDataException": 0,
+    "secondaryIsJointObservation": "True",
+    "secondaryListOfObservationModes": [
+      "(NOT SPECIFIED)"
+    ],
+    "secondaryPlannedDatatakeId": [
+      "dtid_2026243233240"
+    ],
+    "secondaryPlannedObservationId": [
+      "oid_2026243233712"
+    ],
+    "secondaryZeroDopplerEndTime": "2026-08-31T23:39:52.999342105",
+    "secondaryZeroDopplerStartTime": "2026-08-31T23:39:18.000000000",
+    "staticLayersDataAccess": "https://nisar-services.earthdata.nasa.gov/redirect/NISAR_L2_STATIC/NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_X05026_N_F_J_001.h5",
+    "trackNumber": 98
+  },
+  "datasets": [
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/centerFrequency",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Center frequency of the processed image in hertz",
+        "units": "hertz"
+      },
+      "value": 1239000000.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/listOfPolarizations",
+      "shape": [
+        1
+      ],
+      "dtype": "|S2",
+      "attrs": {
+        "description": "List of processed polarization layers with frequency A"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/alongTrackOffset",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Along-track offset",
+        "grid_mapping": "projection",
+        "max_value": 0.23725223541259766,
+        "mean_value": -0.039394352585077286,
+        "min_value": -0.5452878475189209,
+        "sample_stddev": 0.07549900561571121,
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/correlationSurfacePeak",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Normalized cross-correlation surface peak",
+        "grid_mapping": "projection",
+        "max_value": 0.9914281368255615,
+        "mean_value": 0.6330951452255249,
+        "min_value": -0.051395002752542496,
+        "sample_stddev": 0.2258206605911255,
+        "units": "1"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/projection",
+      "shape": [],
+      "dtype": "uint32",
+      "attrs": {
+        "description": "Product map grid projection: EPSG code, with additional projection information as HDF5 Attributes",
+        "ellipsoid": "WGS84",
+        "epsg_code": 32645,
+        "false_easting": 500000.0,
+        "false_northing": 0.0,
+        "grid_mapping_name": "transverse_mercator",
+        "inverse_flattening": 298.257223563,
+        "latitude_of_projection_origin": 0.0,
+        "longitude_of_central_meridian": 87.0,
+        "longitude_of_projection_origin": 0.0,
+        "scale_factor_at_central_meridian": 0.9996,
+        "semi_major_axis": 6378137.0,
+        "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 45N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",87],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32645\"]]",
+        "utm_zone_number": 45
+      },
+      "value": 32645
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/slantRangeOffset",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Slant range offset",
+        "grid_mapping": "projection",
+        "max_value": 3.760047197341919,
+        "mean_value": -0.4659477174282074,
+        "min_value": -1.5143873691558838,
+        "sample_stddev": 0.07732363045215607,
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/xCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive pixels",
+        "long_name": "X coordinates spacing",
+        "units": "meters"
+      },
+      "value": 80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/xCoordinates",
+      "shape": [
+        4311
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ]
+        ],
+        "description": "X coordinates in specified projection",
+        "long_name": "X coordinate of projection",
+        "standard_name": "projection_x_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/yCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive lines",
+        "long_name": "Y coordinates spacing",
+        "units": "meters"
+      },
+      "value": -80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/HH/yCoordinates",
+      "shape": [
+        4230
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ]
+        ],
+        "description": "Y coordinates in specified projection",
+        "long_name": "Y coordinate of projection",
+        "standard_name": "projection_y_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/mask",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "uint32",
+      "attrs": {
+        "_FillValue": 255,
+        "description": "Combination of a water mask, a mask of subswaths of valid samples, and data anomalies in the reference RSLC and the geometrically coregistered secondary RSLC. Each pixel value is encoded as a 32-bit unsigned integer. Bits 0-7 represent subswath encoding, where the most significant digit represents the water flag of that pixel in the reference RSLC, where 1 is water and 0 is non-water; the second most significant digit corresponds to the subswath number of the reference RSLC, and the least significant digit corresponds to the subswath number of the secondary RSLC; a value of 0 in either digit indicates an invalid sample in the corresponding RSLC. Bits 8-15 represent bitwise anomaly flags for the secondary RSLC, and bits 16-23 represent bitwise anomaly flags for the reference RSLC, with each bit corresponding to a specific anomaly condition. A value of 0 in the anomaly bits indicates that no anomaly is detected in the corresponding RSLC. Bits 24-31 are reserved for future use",
+        "disclaimer": "Water Mask for the NASA-ISRO NISAR mission version 0.5, derived through analysis and processing of multiple input datasets, referenced to the WGS84 ellipsoid. Water mask derived at the Jet Propulsion Laboratory, California Institute of Technology, under contract with NASA, using multiple open datasets: JRC Global Surface Water v1.3 (Pekel et al 2016, Nature 540, 418-422,  EC JRC/Google); ESA WorldCover 10 m 2020 ( ESA WorldCover project 2020 / Contains modified Copernicus Sentinel data (2020) processed by ESA WorldCover consortium); OpenStreetMap Water Polygons ( OpenStreetMap contributors, ODbL 1.0); MEaSUREs GIMP Mask v1 (Howat 2017, doi:10.5067/B8X58MQBFUPA; Howat et al 2014). All trademarks and rights remain with their respective owners; NISAR mission organizations assume no liability for use of this product.",
+        "grid_mapping": "projection",
+        "percentage_water": 1.013143023537018,
+        "valid_min": 0
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/projection",
+      "shape": [],
+      "dtype": "uint32",
+      "attrs": {
+        "description": "Product map grid projection: EPSG code, with additional projection information as HDF5 Attributes",
+        "ellipsoid": "WGS84",
+        "epsg_code": 32645,
+        "false_easting": 500000.0,
+        "false_northing": 0.0,
+        "grid_mapping_name": "transverse_mercator",
+        "inverse_flattening": 298.257223563,
+        "latitude_of_projection_origin": 0.0,
+        "longitude_of_central_meridian": 87.0,
+        "longitude_of_projection_origin": 0.0,
+        "scale_factor_at_central_meridian": 0.9996,
+        "semi_major_axis": 6378137.0,
+        "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 45N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",87],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32645\"]]",
+        "utm_zone_number": 45
+      },
+      "value": 32645
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/xCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive pixels",
+        "long_name": "X coordinates spacing",
+        "units": "meters"
+      },
+      "value": 80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/xCoordinates",
+      "shape": [
+        4311
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            1
+          ]
+        ],
+        "description": "X coordinates in specified projection",
+        "long_name": "X coordinate of projection",
+        "standard_name": "projection_x_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/yCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive lines",
+        "long_name": "Y coordinates spacing",
+        "units": "meters"
+      },
+      "value": -80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/pixelOffsets/yCoordinates",
+      "shape": [
+        4230
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            0
+          ]
+        ],
+        "description": "Y coordinates in specified projection",
+        "long_name": "Y coordinate of projection",
+        "standard_name": "projection_y_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/coherenceMagnitude",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Coherence magnitude between HH layers",
+        "grid_mapping": "projection",
+        "max_value": 0.9969186186790466,
+        "mean_value": 0.5988510847091675,
+        "min_value": 0.0031111198477447033,
+        "sample_stddev": 0.24468638002872467,
+        "units": "1"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/connectedComponents",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "uint16",
+      "attrs": {
+        "_FillValue": 65535,
+        "description": "Connected components for HH layer",
+        "grid_mapping": "projection",
+        "units": "1"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/ionospherePhaseScreen",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Ionosphere phase screen",
+        "grid_mapping": "projection",
+        "max_value": 17.259469985961914,
+        "mean_value": 13.504621505737305,
+        "min_value": 10.07861328125,
+        "sample_stddev": 1.9944323301315308,
+        "units": "radians"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/ionospherePhaseScreenUncertainty",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Uncertainty of the ionosphere phase screen",
+        "grid_mapping": "projection",
+        "max_value": 3.148186206817627,
+        "mean_value": 0.8762938380241394,
+        "min_value": 0.3786965608596802,
+        "sample_stddev": 0.39617276191711426,
+        "units": "radians"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/projection",
+      "shape": [],
+      "dtype": "uint32",
+      "attrs": {
+        "description": "Product map grid projection: EPSG code, with additional projection information as HDF5 Attributes",
+        "ellipsoid": "WGS84",
+        "epsg_code": 32645,
+        "false_easting": 500000.0,
+        "false_northing": 0.0,
+        "grid_mapping_name": "transverse_mercator",
+        "inverse_flattening": 298.257223563,
+        "latitude_of_projection_origin": 0.0,
+        "longitude_of_central_meridian": 87.0,
+        "longitude_of_projection_origin": 0.0,
+        "scale_factor_at_central_meridian": 0.9996,
+        "semi_major_axis": 6378137.0,
+        "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 45N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",87],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32645\"]]",
+        "utm_zone_number": 45
+      },
+      "value": 32645
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/unwrappedPhase",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Unwrapped interferogram between HH layers",
+        "grid_mapping": "projection",
+        "max_value": 21.777137756347656,
+        "mean_value": 2.974392890930176,
+        "min_value": -15.131141662597656,
+        "sample_stddev": 2.399218797683716,
+        "units": "radians"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/xCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive pixels",
+        "long_name": "X coordinates spacing",
+        "units": "meters"
+      },
+      "value": 80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/xCoordinates",
+      "shape": [
+        4311
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ]
+        ],
+        "description": "X coordinates in specified projection",
+        "long_name": "X coordinate of projection",
+        "standard_name": "projection_x_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/yCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive lines",
+        "long_name": "Y coordinates spacing",
+        "units": "meters"
+      },
+      "value": -80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/HH/yCoordinates",
+      "shape": [
+        4230
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ]
+        ],
+        "description": "Y coordinates in specified projection",
+        "long_name": "Y coordinate of projection",
+        "standard_name": "projection_y_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/mask",
+      "shape": [
+        4230,
+        4311
+      ],
+      "dtype": "uint32",
+      "attrs": {
+        "_FillValue": 255,
+        "description": "Combination of a water mask, a mask of subswaths of valid samples, and data anomalies in the reference RSLC and the geometrically coregistered secondary RSLC. Each pixel value is encoded as a 32-bit unsigned integer. Bits 0-7 represent subswath encoding, where the most significant digit represents the water flag of that pixel in the reference RSLC, where 1 is water and 0 is non-water; the second most significant digit corresponds to the subswath number of the reference RSLC, and the least significant digit corresponds to the subswath number of the secondary RSLC; a value of 0 in either digit indicates an invalid sample in the corresponding RSLC. Bits 8-15 represent bitwise anomaly flags for the secondary RSLC, and bits 16-23 represent bitwise anomaly flags for the reference RSLC, with each bit corresponding to a specific anomaly condition. A value of 0 in the anomaly bits indicates that no anomaly is detected in the corresponding RSLC. Bit 24 indicates a bit mask for ionospheric phase mask used during filtering of ionospheric phase. This ionospheric phase mask indicates pixels which were masked out and filled with interpolated data. Bits 25-31 are reserved for future use",
+        "disclaimer": "Water Mask for the NASA-ISRO NISAR mission version 0.5, derived through analysis and processing of multiple input datasets, referenced to the WGS84 ellipsoid. Water mask derived at the Jet Propulsion Laboratory, California Institute of Technology, under contract with NASA, using multiple open datasets: JRC Global Surface Water v1.3 (Pekel et al 2016, Nature 540, 418-422,  EC JRC/Google); ESA WorldCover 10 m 2020 ( ESA WorldCover project 2020 / Contains modified Copernicus Sentinel data (2020) processed by ESA WorldCover consortium); OpenStreetMap Water Polygons ( OpenStreetMap contributors, ODbL 1.0); MEaSUREs GIMP Mask v1 (Howat 2017, doi:10.5067/B8X58MQBFUPA; Howat et al 2014). All trademarks and rights remain with their respective owners; NISAR mission organizations assume no liability for use of this product.",
+        "grid_mapping": "projection",
+        "percentage_water": 1.013143023537018,
+        "valid_min": 0
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/projection",
+      "shape": [],
+      "dtype": "uint32",
+      "attrs": {
+        "description": "Product map grid projection: EPSG code, with additional projection information as HDF5 Attributes",
+        "ellipsoid": "WGS84",
+        "epsg_code": 32645,
+        "false_easting": 500000.0,
+        "false_northing": 0.0,
+        "grid_mapping_name": "transverse_mercator",
+        "inverse_flattening": 298.257223563,
+        "latitude_of_projection_origin": 0.0,
+        "longitude_of_central_meridian": 87.0,
+        "longitude_of_projection_origin": 0.0,
+        "scale_factor_at_central_meridian": 0.9996,
+        "semi_major_axis": 6378137.0,
+        "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 45N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",87],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32645\"]]",
+        "utm_zone_number": 45
+      },
+      "value": 32645
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/xCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive pixels",
+        "long_name": "X coordinates spacing",
+        "units": "meters"
+      },
+      "value": 80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/xCoordinates",
+      "shape": [
+        4311
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            1
+          ]
+        ],
+        "description": "X coordinates in specified projection",
+        "long_name": "X coordinate of projection",
+        "standard_name": "projection_x_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/yCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive lines",
+        "long_name": "Y coordinates spacing",
+        "units": "meters"
+      },
+      "value": -80.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/unwrappedInterferogram/yCoordinates",
+      "shape": [
+        4230
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            0
+          ]
+        ],
+        "description": "Y coordinates in specified projection",
+        "long_name": "Y coordinate of projection",
+        "standard_name": "projection_y_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/coherenceMagnitude",
+      "shape": [
+        16920,
+        17244
+      ],
+      "dtype": "float32",
+      "attrs": {
+        "_FillValue": NaN,
+        "description": "Coherence magnitude between HH layers",
+        "grid_mapping": "projection",
+        "max_value": 0.9987413883209229,
+        "mean_value": 0.3106306791305542,
+        "min_value": 0.0,
+        "sample_stddev": 0.340767502784729,
+        "units": "1"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/projection",
+      "shape": [],
+      "dtype": "uint32",
+      "attrs": {
+        "description": "Product map grid projection: EPSG code, with additional projection information as HDF5 Attributes",
+        "ellipsoid": "WGS84",
+        "epsg_code": 32645,
+        "false_easting": 500000.0,
+        "false_northing": 0.0,
+        "grid_mapping_name": "transverse_mercator",
+        "inverse_flattening": 298.257223563,
+        "latitude_of_projection_origin": 0.0,
+        "longitude_of_central_meridian": 87.0,
+        "longitude_of_projection_origin": 0.0,
+        "scale_factor_at_central_meridian": 0.9996,
+        "semi_major_axis": 6378137.0,
+        "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 45N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",87],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32645\"]]",
+        "utm_zone_number": 45
+      },
+      "value": 32645
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/wrappedInterferogram",
+      "shape": [
+        16920,
+        17244
+      ],
+      "dtype": "complex64",
+      "attrs": {
+        "_FillValue": {
+          "real": NaN,
+          "imag": NaN
+        },
+        "description": "Complex wrapped interferogram between HH layers",
+        "grid_mapping": "projection",
+        "units": "1"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/xCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive pixels",
+        "long_name": "X coordinates spacing",
+        "units": "meters"
+      },
+      "value": 20.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/xCoordinates",
+      "shape": [
+        17244
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            1
+          ],
+          [
+            "HDF5 object reference",
+            1
+          ]
+        ],
+        "description": "X coordinates in specified projection",
+        "long_name": "X coordinate of projection",
+        "standard_name": "projection_x_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/yCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive lines",
+        "long_name": "Y coordinates spacing",
+        "units": "meters"
+      },
+      "value": -20.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/HH/yCoordinates",
+      "shape": [
+        16920
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            0
+          ],
+          [
+            "HDF5 object reference",
+            0
+          ]
+        ],
+        "description": "Y coordinates in specified projection",
+        "long_name": "Y coordinate of projection",
+        "standard_name": "projection_y_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/mask",
+      "shape": [
+        16920,
+        17244
+      ],
+      "dtype": "uint32",
+      "attrs": {
+        "_FillValue": 255,
+        "description": "Combination of a water mask, a mask of subswaths of valid samples, and data anomalies in the reference RSLC and the geometrically coregistered secondary RSLC. Each pixel value is encoded as a 32-bit unsigned integer. Bits 0-7 represent subswath encoding, where the most significant digit represents the water flag of that pixel in the reference RSLC, where 1 is water and 0 is non-water; the second most significant digit corresponds to the subswath number of the reference RSLC, and the least significant digit corresponds to the subswath number of the secondary RSLC; a value of 0 in either digit indicates an invalid sample in the corresponding RSLC. Bits 8-15 represent bitwise anomaly flags for the secondary RSLC, and bits 16-23 represent bitwise anomaly flags for the reference RSLC, with each bit corresponding to a specific anomaly condition. A value of 0 in the anomaly bits indicates that no anomaly is detected in the corresponding RSLC. Bits 24-31 are reserved for future use",
+        "disclaimer": "Water Mask for the NASA-ISRO NISAR mission version 0.5, derived through analysis and processing of multiple input datasets, referenced to the WGS84 ellipsoid. Water mask derived at the Jet Propulsion Laboratory, California Institute of Technology, under contract with NASA, using multiple open datasets: JRC Global Surface Water v1.3 (Pekel et al 2016, Nature 540, 418-422,  EC JRC/Google); ESA WorldCover 10 m 2020 ( ESA WorldCover project 2020 / Contains modified Copernicus Sentinel data (2020) processed by ESA WorldCover consortium); OpenStreetMap Water Polygons ( OpenStreetMap contributors, ODbL 1.0); MEaSUREs GIMP Mask v1 (Howat 2017, doi:10.5067/B8X58MQBFUPA; Howat et al 2014). All trademarks and rights remain with their respective owners; NISAR mission organizations assume no liability for use of this product.",
+        "grid_mapping": "projection",
+        "percentage_water": 1.0596367366344712,
+        "valid_min": 0
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/projection",
+      "shape": [],
+      "dtype": "uint32",
+      "attrs": {
+        "description": "Product map grid projection: EPSG code, with additional projection information as HDF5 Attributes",
+        "ellipsoid": "WGS84",
+        "epsg_code": 32645,
+        "false_easting": 500000.0,
+        "false_northing": 0.0,
+        "grid_mapping_name": "transverse_mercator",
+        "inverse_flattening": 298.257223563,
+        "latitude_of_projection_origin": 0.0,
+        "longitude_of_central_meridian": 87.0,
+        "longitude_of_projection_origin": 0.0,
+        "scale_factor_at_central_meridian": 0.9996,
+        "semi_major_axis": 6378137.0,
+        "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 45N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",87],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32645\"]]",
+        "utm_zone_number": 45
+      },
+      "value": 32645
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/xCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive pixels",
+        "long_name": "X coordinates spacing",
+        "units": "meters"
+      },
+      "value": 20.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/xCoordinates",
+      "shape": [
+        17244
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            1
+          ]
+        ],
+        "description": "X coordinates in specified projection",
+        "long_name": "X coordinate of projection",
+        "standard_name": "projection_x_coordinate",
+        "units": "meters"
+      }
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/yCoordinateSpacing",
+      "shape": [],
+      "dtype": "float64",
+      "attrs": {
+        "description": "Nominal spacing in meters between consecutive lines",
+        "long_name": "Y coordinates spacing",
+        "units": "meters"
+      },
+      "value": -20.0
+    },
+    {
+      "path": "science/LSAR/GUNW/grids/frequencyA/wrappedInterferogram/yCoordinates",
+      "shape": [
+        16920
+      ],
+      "dtype": "float64",
+      "attrs": {
+        "CLASS": "DIMENSION_SCALE",
+        "NAME": "",
+        "REFERENCE_LIST": [
+          [
+            "HDF5 object reference",
+            0
+          ]
+        ],
+        "description": "Y coordinates in specified projection",
+        "long_name": "Y coordinate of projection",
+        "standard_name": "projection_y_coordinate",
+        "units": "meters"
+      }
+    }
+  ]
+}

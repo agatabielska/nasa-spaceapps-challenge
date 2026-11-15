@@ -1,0 +1,1418 @@
+{
+  "searched_utc": "2026-11-14T23:34:24.603579+00:00",
+  "note": "Placeholder dates are search anchors only. Verified event does not verify approximate center or mask.",
+  "events": [
+    {
+      "id": "indonesia",
+      "event_date": "2026-10-08",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        110,
+        -7
+      ],
+      "bbox_wgs84": [
+        109.95474713324386,
+        -7.044915558749551,
+        110.04525286675614,
+        -6.955084441250449
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28109.95474713324386+-7.044915558749551%2C110.04525286675614+-7.044915558749551%2C110.04525286675614+-6.955084441250449%2C109.95474713324386+-6.955084441250449%2C109.95474713324386+-7.044915558749551%29%29&start=2026-09-13T00%3A00%3A00Z&end=2026-11-02T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 8,
+      "possibly_truncated": false,
+      "pair_count": 2,
+      "pairs": [
+        {
+          "track": 162,
+          "frame": 92,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_031_162_D_092_4005_DHDH_A_20260929T105504_20260929T105538_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_032_162_D_092_4005_DHDH_A_20261011T105504_20261011T105538_P05023_N_F_J_001",
+          "before_time": "2026-09-29T10:55:04Z",
+          "after_time": "2026-10-11T10:55:04Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_162_D_092_4005_DHDH_A_20260929T105504_20260929T105538_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_162_D_092_4005_DHDH_A_20260929T105504_20260929T105538_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_162_D_092_4005_DHDH_A_20261011T105504_20261011T105538_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_162_D_092_4005_DHDH_A_20261011T105504_20261011T105538_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 11429478400,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 154,
+          "frame": 174,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_031_154_A_174_4005_DHDH_A_20260928T222239_20260928T222314_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_032_154_A_174_4005_DHDH_A_20261010T222239_20261010T222314_P05023_N_F_J_001",
+          "before_time": "2026-09-28T22:22:39Z",
+          "after_time": "2026-10-10T22:22:39Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_154_A_174_4005_DHDH_A_20260928T222239_20260928T222314_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_154_A_174_4005_DHDH_A_20260928T222239_20260928T222314_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_154_A_174_4005_DHDH_A_20261010T222239_20261010T222314_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_154_A_174_4005_DHDH_A_20261010T222239_20261010T222314_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 11614027776,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "brazil",
+      "event_date": "2026-09-04",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -58,
+        -8
+      ],
+      "bbox_wgs84": [
+        -58.045356969660375,
+        -8.044915558749551,
+        -57.954643030339625,
+        -7.955084441250449
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-58.045356969660375+-8.044915558749551%2C-57.954643030339625+-8.044915558749551%2C-57.954643030339625+-7.955084441250449%2C-58.045356969660375+-7.955084441250449%2C-58.045356969660375+-8.044915558749551%29%29&start=2026-08-10T00%3A00%3A00Z&end=2026-09-29T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 13,
+      "possibly_truncated": false,
+      "pair_count": 5,
+      "pairs": [
+        {
+          "track": 31,
+          "frame": 174,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_029_031_A_174_2005_DHDH_A_20260827T093653_20260827T093727_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_030_031_A_174_2005_DHDH_A_20260908T093652_20260908T093727_P05023_N_F_J_001",
+          "before_time": "2026-08-27T09:36:53Z",
+          "after_time": "2026-09-08T09:36:52Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_031_A_174_2005_DHDH_A_20260827T093653_20260827T093727_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_031_A_174_2005_DHDH_A_20260827T093653_20260827T093727_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_031_A_174_2005_DHDH_A_20260908T093652_20260908T093727_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_031_A_174_2005_DHDH_A_20260908T093652_20260908T093727_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3925868544,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 39,
+          "frame": 92,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_039_D_092_2005_SHSH_A_20260815T220917_20260815T220952_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_030_039_D_092_2005_SHSH_A_20260908T220917_20260908T220951_P05023_N_F_J_001",
+          "before_time": "2026-08-15T22:09:17Z",
+          "after_time": "2026-09-08T22:09:17Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_039_D_092_2005_SHSH_A_20260815T220917_20260815T220952_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_039_D_092_2005_SHSH_A_20260815T220917_20260815T220952_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_039_D_092_2005_SHSH_A_20260908T220917_20260908T220951_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_039_D_092_2005_SHSH_A_20260908T220917_20260908T220951_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3141533696,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 39,
+          "frame": 92,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_029_039_D_092_2005_DHDH_A_20260827T220917_20260827T220951_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_031_039_D_092_2005_DHDH_A_20260920T220917_20260920T220951_P05023_N_F_J_001",
+          "before_time": "2026-08-27T22:09:17Z",
+          "after_time": "2026-09-20T22:09:17Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_039_D_092_2005_DHDH_A_20260827T220917_20260827T220951_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_039_D_092_2005_DHDH_A_20260827T220917_20260827T220951_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_039_D_092_2005_DHDH_A_20260920T220917_20260920T220951_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_039_D_092_2005_DHDH_A_20260920T220917_20260920T220951_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3900702720,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 39,
+          "frame": 93,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_039_D_093_2005_SHSH_A_20260815T220951_20260815T221025_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_030_039_D_093_2005_SHSH_A_20260908T220950_20260908T221025_P05023_N_F_J_001",
+          "before_time": "2026-08-15T22:09:51Z",
+          "after_time": "2026-09-08T22:09:50Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_039_D_093_2005_SHSH_A_20260815T220951_20260815T221025_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_039_D_093_2005_SHSH_A_20260815T220951_20260815T221025_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_039_D_093_2005_SHSH_A_20260908T220950_20260908T221025_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_039_D_093_2005_SHSH_A_20260908T220950_20260908T221025_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3120562176,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 39,
+          "frame": 93,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_029_039_D_093_2005_DHDH_A_20260827T220950_20260827T221025_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_031_039_D_093_2005_DHDH_A_20260920T220950_20260920T221025_P05023_N_F_J_001",
+          "before_time": "2026-08-27T22:09:50Z",
+          "after_time": "2026-09-20T22:09:50Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_039_D_093_2005_DHDH_A_20260827T220950_20260827T221025_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_039_D_093_2005_DHDH_A_20260827T220950_20260827T221025_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_039_D_093_2005_DHDH_A_20260920T220950_20260920T221025_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_039_D_093_2005_DHDH_A_20260920T220950_20260920T221025_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3976200192,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "pakistan",
+      "event_date": "2026-08-27",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        69,
+        27
+      ],
+      "bbox_wgs84": [
+        68.94959008993737,
+        26.95508444125045,
+        69.05040991006263,
+        27.04491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%2868.94959008993737+26.95508444125045%2C69.05040991006263+26.95508444125045%2C69.05040991006263+27.04491555874955%2C68.94959008993737+27.04491555874955%2C68.94959008993737+26.95508444125045%29%29&start=2026-08-02T00%3A00%3A00Z&end=2026-09-21T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 11,
+      "possibly_truncated": false,
+      "pair_count": 2,
+      "pairs": [
+        {
+          "track": 41,
+          "frame": 15,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_041_A_015_4005_DHDH_A_20260816T004520_20260816T004554_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_041_A_015_4005_DHDH_A_20260828T004520_20260828T004554_P05023_N_F_J_001",
+          "before_time": "2026-08-16T00:45:20Z",
+          "after_time": "2026-08-28T00:45:20Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_041_A_015_4005_DHDH_A_20260816T004520_20260816T004554_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_041_A_015_4005_DHDH_A_20260816T004520_20260816T004554_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_041_A_015_4005_DHDH_A_20260828T004520_20260828T004554_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_041_A_015_4005_DHDH_A_20260828T004520_20260828T004554_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 13312720896,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 164,
+          "frame": 75,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV",
+            "VH",
+            "VV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_164_D_075_2005_QPDH_A_20260824T140521_20260824T140555_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_164_D_075_2005_QPDH_A_20260905T140522_20260905T140547_P05023_N_P_J_002",
+          "before_time": "2026-08-24T14:05:21Z",
+          "after_time": "2026-09-05T14:05:22Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_164_D_075_2005_QPDH_A_20260824T140521_20260824T140555_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_164_D_075_2005_QPDH_A_20260824T140521_20260824T140555_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_164_D_075_2005_QPDH_A_20260905T140522_20260905T140547_P05023_N_P_J_002/NISAR_L2_PR_GCOV_029_164_D_075_2005_QPDH_A_20260905T140522_20260905T140547_P05023_N_P_J_002.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Partial",
+          "full_h5_bytes": 14151581696,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "spain",
+      "event_date": "2026-08-18",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -7.3,
+        42.4
+      ],
+      "bbox_wgs84": [
+        -7.36082366296042,
+        42.35508444125045,
+        -7.23917633703958,
+        42.44491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-7.36082366296042+42.35508444125045%2C-7.23917633703958+42.35508444125045%2C-7.23917633703958+42.44491555874955%2C-7.36082366296042+42.44491555874955%2C-7.36082366296042+42.35508444125045%29%29&start=2026-07-24T00%3A00%3A00Z&end=2026-09-12T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 8,
+      "possibly_truncated": false,
+      "pair_count": 2,
+      "pairs": [
+        {
+          "track": 52,
+          "frame": 67,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_052_D_067_2005_DHDH_A_20260816T193347_20260816T193422_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_052_D_067_2005_DHDH_A_20260828T193347_20260828T193422_P05023_N_F_J_001",
+          "before_time": "2026-08-16T19:33:47Z",
+          "after_time": "2026-08-28T19:33:47Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_052_D_067_2005_DHDH_A_20260816T193347_20260816T193422_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_052_D_067_2005_DHDH_A_20260816T193347_20260816T193422_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_052_D_067_2005_DHDH_A_20260828T193347_20260828T193422_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_052_D_067_2005_DHDH_A_20260828T193347_20260828T193422_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3661627392,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 15,
+          "frame": 23,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_015_A_023_2005_DHDH_A_20260814T053250_20260814T053325_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_015_A_023_2005_DHDH_A_20260826T053250_20260826T053325_P05023_N_F_J_001",
+          "before_time": "2026-08-14T05:32:50Z",
+          "after_time": "2026-08-26T05:32:50Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_015_A_023_2005_DHDH_A_20260814T053250_20260814T053325_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_015_A_023_2005_DHDH_A_20260814T053250_20260814T053325_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_015_A_023_2005_DHDH_A_20260826T053250_20260826T053325_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_015_A_023_2005_DHDH_A_20260826T053250_20260826T053325_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3900702720,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "etna",
+      "event_date": "2026-08-07",
+      "event_verified": true,
+      "source": "https://ingvvulcani.com/2026/08/22/etna-la-calda-estate-del-2026/",
+      "coordinate_source": null,
+      "center_lon_lat": [
+        15,
+        37.75
+      ],
+      "bbox_wgs84": [
+        14.943194446669025,
+        37.70508444125045,
+        15.056805553330975,
+        37.79491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%2814.943194446669025+37.70508444125045%2C15.056805553330975+37.70508444125045%2C15.056805553330975+37.79491555874955%2C14.943194446669025+37.79491555874955%2C14.943194446669025+37.70508444125045%29%29&start=2026-07-13T00%3A00%3A00Z&end=2026-09-01T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 6,
+      "possibly_truncated": false,
+      "pair_count": 2,
+      "pairs": [
+        {
+          "track": 43,
+          "frame": 21,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001",
+          "before_time": "2026-07-23T04:08:29Z",
+          "after_time": "2026-08-16T04:08:28Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3045064704,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 51,
+          "frame": 69,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_026_051_D_069_2005_DHDH_A_20260723T175503_20260723T175538_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_028_051_D_069_2005_DHDH_A_20260816T175502_20260816T175537_P05023_N_F_J_001",
+          "before_time": "2026-07-23T17:55:03Z",
+          "after_time": "2026-08-16T17:55:02Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_051_D_069_2005_DHDH_A_20260723T175503_20260723T175538_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_051_D_069_2005_DHDH_A_20260723T175503_20260723T175538_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_051_D_069_2005_DHDH_A_20260816T175502_20260816T175537_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_051_D_069_2005_DHDH_A_20260816T175502_20260816T175537_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3057647616,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "canada",
+      "event_date": "2026-07-12",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -112,
+        56
+      ],
+      "bbox_wgs84": [
+        -112.08032211866562,
+        55.95508444125045,
+        -111.91967788133438,
+        56.04491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-112.08032211866562+55.95508444125045%2C-111.91967788133438+55.95508444125045%2C-111.91967788133438+56.04491555874955%2C-112.08032211866562+56.04491555874955%2C-112.08032211866562+55.95508444125045%29%29&start=2026-06-17T00%3A00%3A00Z&end=2026-08-06T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 16,
+      "possibly_truncated": false,
+      "pair_count": 4,
+      "pairs": [
+        {
+          "track": 42,
+          "frame": 60,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_025_042_D_060_4005_DHDH_A_20260711T025113_20260711T025135_P05023_N_P_J_001",
+          "after": "NISAR_L2_PR_GCOV_026_042_D_060_4005_DHDH_A_20260723T025113_20260723T025134_P05023_N_P_J_001",
+          "before_time": "2026-07-11T02:51:13Z",
+          "after_time": "2026-07-23T02:51:13Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_042_D_060_4005_DHDH_A_20260711T025113_20260711T025135_P05023_N_P_J_001/NISAR_L2_PR_GCOV_025_042_D_060_4005_DHDH_A_20260711T025113_20260711T025135_P05023_N_P_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_042_D_060_4005_DHDH_A_20260723T025113_20260723T025134_P05023_N_P_J_001/NISAR_L2_PR_GCOV_026_042_D_060_4005_DHDH_A_20260723T025113_20260723T025134_P05023_N_P_J_001.h5",
+          "before_coverage": "Partial",
+          "after_coverage": "Partial",
+          "full_h5_bytes": 8841592832,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 143,
+          "frame": 60,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_024_143_D_060_4005_DHDH_A_20260706T025919_20260706T025955_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_025_143_D_060_4005_DHDH_A_20260718T025918_20260718T025954_P05023_N_F_J_001",
+          "before_time": "2026-07-06T02:59:19Z",
+          "after_time": "2026-07-18T02:59:18Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_143_D_060_4005_DHDH_A_20260706T025919_20260706T025955_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_143_D_060_4005_DHDH_A_20260706T025919_20260706T025955_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_143_D_060_4005_DHDH_A_20260718T025918_20260718T025954_P05023_N_F_J_001/NISAR_L2_PR_GCOV_025_143_D_060_4005_DHDH_A_20260718T025918_20260718T025954_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14688452608,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 91,
+          "frame": 30,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_024_091_A_030_4005_DHDH_A_20260702T120805_20260702T120840_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_025_091_A_030_4005_DHDH_A_20260714T120804_20260714T120840_P05023_F_F_J_001",
+          "before_time": "2026-07-02T12:08:05Z",
+          "after_time": "2026-07-14T12:08:04Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_091_A_030_4005_DHDH_A_20260702T120805_20260702T120840_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_091_A_030_4005_DHDH_A_20260702T120805_20260702T120840_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_091_A_030_4005_DHDH_A_20260714T120804_20260714T120840_P05023_F_F_J_001/NISAR_L2_PR_GCOV_025_091_A_030_4005_DHDH_A_20260714T120804_20260714T120840_P05023_F_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14717812736,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 62,
+          "frame": 30,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_024_062_A_030_4005_DHDH_A_20260630T115126_20260630T115201_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_026_062_A_030_4005_DHDH_A_20260724T115124_20260724T115200_P05023_N_F_J_001",
+          "before_time": "2026-06-30T11:51:26Z",
+          "after_time": "2026-07-24T11:51:24Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_062_A_030_4005_DHDH_A_20260630T115126_20260630T115201_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_062_A_030_4005_DHDH_A_20260630T115126_20260630T115201_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_062_A_030_4005_DHDH_A_20260724T115124_20260724T115200_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_062_A_030_4005_DHDH_A_20260724T115124_20260724T115200_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14147387392,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "venezuela",
+      "event_date": "2026-06-24",
+      "event_verified": true,
+      "source": "https://science.nasa.gov/earth/earth-observatory/where-venezuelas-earthquakes-shifted-the-ground/",
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -67.22,
+        10.6
+      ],
+      "bbox_wgs84": [
+        -67.26569533366403,
+        10.555084441250449,
+        -67.17430466633597,
+        10.64491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-67.26569533366403+10.555084441250449%2C-67.17430466633597+10.555084441250449%2C-67.17430466633597+10.64491555874955%2C-67.26569533366403+10.64491555874955%2C-67.26569533366403+10.555084441250449%29%29&start=2026-05-30T00%3A00%3A00Z&end=2026-07-19T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 18,
+      "possibly_truncated": false,
+      "pair_count": 3,
+      "pairs": [
+        {
+          "track": 126,
+          "frame": 83,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_023_126_D_083_4005_DHDH_A_20260622T225416_20260622T225450_P05023_N_F_J_002",
+          "after": "NISAR_L2_PR_GCOV_024_126_D_083_4005_DHDH_A_20260704T225415_20260704T225450_P05023_N_F_J_001",
+          "before_time": "2026-06-22T22:54:16Z",
+          "after_time": "2026-07-04T22:54:15Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_023_126_D_083_4005_DHDH_A_20260622T225416_20260622T225450_P05023_N_F_J_002/NISAR_L2_PR_GCOV_023_126_D_083_4005_DHDH_A_20260622T225416_20260622T225450_P05023_N_F_J_002.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_126_D_083_4005_DHDH_A_20260704T225415_20260704T225450_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_126_D_083_4005_DHDH_A_20260704T225415_20260704T225450_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 10297016320,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 162,
+          "frame": 7,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_022_162_A_007_4005_DHDH_A_20260613T100656_20260613T100731_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_023_162_A_007_4005_DHDH_A_20260625T100655_20260625T100730_P05023_N_F_J_002",
+          "before_time": "2026-06-13T10:06:56Z",
+          "after_time": "2026-06-25T10:06:55Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_022_162_A_007_4005_DHDH_A_20260613T100656_20260613T100731_P05023_N_F_J_001/NISAR_L2_PR_GCOV_022_162_A_007_4005_DHDH_A_20260613T100656_20260613T100731_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_023_162_A_007_4005_DHDH_A_20260625T100655_20260625T100730_P05023_N_F_J_002/NISAR_L2_PR_GCOV_023_162_A_007_4005_DHDH_A_20260625T100655_20260625T100730_P05023_N_F_J_002.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 11450449920,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 61,
+          "frame": 7,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_023_061_A_007_4005_DHDH_A_20260618T095836_20260618T095911_P05023_N_F_J_002",
+          "after": "NISAR_L2_PR_GCOV_024_061_A_007_4005_DHDH_A_20260630T095835_20260630T095910_P05023_N_F_J_001",
+          "before_time": "2026-06-18T09:58:36Z",
+          "after_time": "2026-06-30T09:58:35Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_023_061_A_007_4005_DHDH_A_20260618T095836_20260618T095911_P05023_N_F_J_002/NISAR_L2_PR_GCOV_023_061_A_007_4005_DHDH_A_20260618T095836_20260618T095911_P05023_N_F_J_002.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_061_A_007_4005_DHDH_A_20260630T095835_20260630T095910_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_061_A_007_4005_DHDH_A_20260630T095835_20260630T095910_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 10225713152,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "greenland",
+      "event_date": "2026-06-15",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -43,
+        69
+      ],
+      "bbox_wgs84": [
+        -43.125333637694276,
+        68.95508444125045,
+        -42.874666362305724,
+        69.04491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-43.125333637694276+68.95508444125045%2C-42.874666362305724+68.95508444125045%2C-42.874666362305724+69.04491555874955%2C-43.125333637694276+69.04491555874955%2C-43.125333637694276+68.95508444125045%29%29&start=2026-05-21T00%3A00%3A00Z&end=2026-07-10T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 11,
+      "possibly_truncated": false,
+      "pair_count": 0,
+      "pairs": []
+    },
+    {
+      "id": "iceland",
+      "event_date": "2026-05-20",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -22,
+        64
+      ],
+      "bbox_wgs84": [
+        -22.102460116452786,
+        63.95508444125045,
+        -21.897539883547214,
+        64.04491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-22.102460116452786+63.95508444125045%2C-21.897539883547214+63.95508444125045%2C-21.897539883547214+64.04491555874955%2C-22.102460116452786+64.04491555874955%2C-22.102460116452786+63.95508444125045%29%29&start=2026-04-25T00%3A00%3A00Z&end=2026-06-14T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 9,
+      "possibly_truncated": false,
+      "pair_count": 2,
+      "pairs": [
+        {
+          "track": 82,
+          "frame": 56,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_020_082_D_056_4005_DHDH_A_20260514T212404_20260514T212430_P05023_N_P_J_001",
+          "after": "NISAR_L2_PR_GCOV_021_082_D_056_4005_DHDH_A_20260526T212403_20260526T212429_P05023_F_P_J_001",
+          "before_time": "2026-05-14T21:24:04Z",
+          "after_time": "2026-05-26T21:24:03Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_020_082_D_056_4005_DHDH_A_20260514T212404_20260514T212430_P05023_N_P_J_001/NISAR_L2_PR_GCOV_020_082_D_056_4005_DHDH_A_20260514T212404_20260514T212430_P05023_N_P_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_021_082_D_056_4005_DHDH_A_20260526T212403_20260526T212429_P05023_F_P_J_001/NISAR_L2_PR_GCOV_021_082_D_056_4005_DHDH_A_20260526T212403_20260526T212429_P05023_F_P_J_001.h5",
+          "before_coverage": "Partial",
+          "after_coverage": "Partial",
+          "full_h5_bytes": 9403629568,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 159,
+          "frame": 34,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_019_159_A_034_4005_DHDH_A_20260508T052241_20260508T052313_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_021_159_A_034_4005_DHDH_A_20260601T052240_20260601T052312_P05023_N_F_J_001",
+          "before_time": "2026-05-08T05:22:41Z",
+          "after_time": "2026-06-01T05:22:40Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_019_159_A_034_4005_DHDH_A_20260508T052241_20260508T052313_P05023_N_F_J_001/NISAR_L2_PR_GCOV_019_159_A_034_4005_DHDH_A_20260508T052241_20260508T052313_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_021_159_A_034_4005_DHDH_A_20260601T052240_20260601T052312_P05023_N_F_J_001/NISAR_L2_PR_GCOV_021_159_A_034_4005_DHDH_A_20260601T052240_20260601T052312_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 10905190400,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "japan",
+      "event_date": "2026-04-11",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        138,
+        37
+      ],
+      "bbox_wgs84": [
+        137.94375962728367,
+        36.95508444125045,
+        138.05624037271633,
+        37.04491555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28137.94375962728367+36.95508444125045%2C138.05624037271633+36.95508444125045%2C138.05624037271633+37.04491555874955%2C137.94375962728367+37.04491555874955%2C137.94375962728367+36.95508444125045%29%29&start=2026-03-17T00%3A00%3A00Z&end=2026-05-06T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 0,
+      "possibly_truncated": false,
+      "pair_count": 0,
+      "pairs": []
+    },
+    {
+      "id": "australia",
+      "event_date": "2026-02-09",
+      "event_verified": false,
+      "source": null,
+      "coordinate_source": null,
+      "center_lon_lat": [
+        146,
+        -35
+      ],
+      "bbox_wgs84": [
+        145.94516822723853,
+        -35.04491555874955,
+        146.05483177276147,
+        -34.95508444125045
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28145.94516822723853+-35.04491555874955%2C146.05483177276147+-35.04491555874955%2C146.05483177276147+-34.95508444125045%2C145.94516822723853+-34.95508444125045%2C145.94516822723853+-35.04491555874955%29%29&start=2026-01-15T00%3A00%3A00Z&end=2026-03-06T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 5,
+      "possibly_truncated": false,
+      "pair_count": 1,
+      "pairs": [
+        {
+          "track": 45,
+          "frame": 106,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_012_045_D_106_2005_DHDH_M_20260205T081631_20260205T081705_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_013_045_D_106_2005_DHDH_M_20260217T081631_20260217T081706_P05023_N_F_J_001",
+          "before_time": "2026-02-05T08:16:31Z",
+          "after_time": "2026-02-17T08:16:31Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_012_045_D_106_2005_DHDH_M_20260205T081631_20260205T081705_P05023_N_F_J_001/NISAR_L2_PR_GCOV_012_045_D_106_2005_DHDH_M_20260205T081631_20260205T081705_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_013_045_D_106_2005_DHDH_M_20260217T081631_20260217T081706_P05023_N_F_J_001/NISAR_L2_PR_GCOV_013_045_D_106_2005_DHDH_M_20260217T081631_20260217T081706_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3745513472,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "mozambique",
+      "event_date": "2026-01-17",
+      "event_verified": true,
+      "source": "https://svs.gsfc.nasa.gov/5661",
+      "coordinate_source": null,
+      "center_lon_lat": [
+        33,
+        -24.6
+      ],
+      "bbox_wgs84": [
+        32.950600775417264,
+        -24.644915558749553,
+        33.049399224582736,
+        -24.55508444125045
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%2832.950600775417264+-24.644915558749553%2C33.049399224582736+-24.644915558749553%2C33.049399224582736+-24.55508444125045%2C32.950600775417264+-24.55508444125045%2C32.950600775417264+-24.644915558749553%29%29&start=2025-12-23T00%3A00%3A00Z&end=2026-02-11T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 3,
+      "possibly_truncated": false,
+      "pair_count": 1,
+      "pairs": [
+        {
+          "track": 114,
+          "frame": 165,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_BETA_V1",
+          "crid": "X05010",
+          "before": "NISAR_L2_PR_GCOV_009_114_A_165_4005_DHDH_A_20260105T034232_20260105T034253_X05010_N_P_J_001",
+          "after": "NISAR_L2_PR_GCOV_010_114_A_165_4005_DHDH_A_20260117T034232_20260117T034254_X05010_N_P_J_001",
+          "before_time": "2026-01-05T03:42:32Z",
+          "after_time": "2026-01-17T03:42:32Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_009_114_A_165_4005_DHDH_A_20260105T034232_20260105T034253_X05010_N_P_J_001/NISAR_L2_PR_GCOV_009_114_A_165_4005_DHDH_A_20260105T034232_20260105T034253_X05010_N_P_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_010_114_A_165_4005_DHDH_A_20260117T034232_20260117T034254_X05010_N_P_J_001/NISAR_L2_PR_GCOV_010_114_A_165_4005_DHDH_A_20260117T034232_20260117T034254_X05010_N_P_J_001.h5",
+          "before_coverage": "Partial",
+          "after_coverage": "Partial",
+          "full_h5_bytes": 8216641536,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": true,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "hubbard",
+      "event_date": "2025-12-06",
+      "event_verified": true,
+      "source": "https://science.nasa.gov/earth/earth-observatory/landslide-and-avalanche-debris-litter-hubbard-glacier/",
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -139.8,
+        60.45
+      ],
+      "bbox_wgs84": [
+        -139.89107282236728,
+        60.40508444125045,
+        -139.70892717763275,
+        60.494915558749554
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-139.89107282236728+60.40508444125045%2C-139.70892717763275+60.40508444125045%2C-139.70892717763275+60.494915558749554%2C-139.89107282236728+60.494915558749554%2C-139.89107282236728+60.40508444125045%29%29&start=2025-11-11T00%3A00%3A00Z&end=2025-12-31T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 20,
+      "possibly_truncated": false,
+      "pair_count": 5,
+      "pairs": [
+        {
+          "track": 164,
+          "frame": 32,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_BETA_V1",
+          "crid": "X05009",
+          "before": "NISAR_L2_PR_GCOV_006_164_A_032_4005_DHDH_A_20251203T134047_20251203T134123_X05009_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_007_164_A_032_4005_DHDH_A_20251215T134047_20251215T134123_X05009_N_F_J_001",
+          "before_time": "2025-12-03T13:40:47Z",
+          "after_time": "2025-12-15T13:40:47Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_006_164_A_032_4005_DHDH_A_20251203T134047_20251203T134123_X05009_N_F_J_001/NISAR_L2_PR_GCOV_006_164_A_032_4005_DHDH_A_20251203T134047_20251203T134123_X05009_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_007_164_A_032_4005_DHDH_A_20251215T134047_20251215T134123_X05009_N_F_J_001/NISAR_L2_PR_GCOV_007_164_A_032_4005_DHDH_A_20251215T134047_20251215T134123_X05009_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 12180258816,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 63,
+          "frame": 32,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_BETA_V1",
+          "crid": "X05009",
+          "before": "NISAR_L2_PR_GCOV_006_063_A_032_4005_DHDH_A_20251126T133227_20251126T133303_X05009_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_007_063_A_032_4005_DHDH_A_20251208T133228_20251208T133304_X05009_N_F_J_001",
+          "before_time": "2025-11-26T13:32:27Z",
+          "after_time": "2025-12-08T13:32:28Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_006_063_A_032_4005_DHDH_A_20251126T133227_20251126T133303_X05009_N_F_J_001/NISAR_L2_PR_GCOV_006_063_A_032_4005_DHDH_A_20251126T133227_20251126T133303_X05009_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_007_063_A_032_4005_DHDH_A_20251208T133228_20251208T133304_X05009_N_F_J_001/NISAR_L2_PR_GCOV_007_063_A_032_4005_DHDH_A_20251208T133228_20251208T133304_X05009_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14516486144,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 101,
+          "frame": 58,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_BETA_V1",
+          "crid": "X05009",
+          "before": "NISAR_L2_PR_GCOV_006_101_D_058_4005_DHDH_A_20251129T050259_20251129T050339_X05009_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_007_101_D_058_4005_DHDH_A_20251211T050300_20251211T050339_X05009_N_F_J_001",
+          "before_time": "2025-11-29T05:02:59Z",
+          "after_time": "2025-12-11T05:03:00Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_006_101_D_058_4005_DHDH_A_20251129T050259_20251129T050339_X05009_N_F_J_001/NISAR_L2_PR_GCOV_006_101_D_058_4005_DHDH_A_20251129T050259_20251129T050339_X05009_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_007_101_D_058_4005_DHDH_A_20251211T050300_20251211T050339_X05009_N_F_J_001/NISAR_L2_PR_GCOV_007_101_D_058_4005_DHDH_A_20251211T050300_20251211T050339_X05009_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14625538048,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 29,
+          "frame": 58,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_BETA_V1",
+          "crid": "X05010",
+          "before": "NISAR_L2_PR_GCOV_006_029_D_058_4005_DHDH_A_20251124T051119_20251124T051151_X05010_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_008_029_D_058_4005_DHDH_A_20251218T051120_20251218T051152_X05010_N_F_J_001",
+          "before_time": "2025-11-24T05:11:19Z",
+          "after_time": "2025-12-18T05:11:20Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_006_029_D_058_4005_DHDH_A_20251124T051119_20251124T051151_X05010_N_F_J_001/NISAR_L2_PR_GCOV_006_029_D_058_4005_DHDH_A_20251124T051119_20251124T051151_X05010_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_008_029_D_058_4005_DHDH_A_20251218T051120_20251218T051152_X05010_N_F_J_001/NISAR_L2_PR_GCOV_008_029_D_058_4005_DHDH_A_20251218T051120_20251218T051152_X05010_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 11689525248,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 173,
+          "frame": 58,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_BETA_V1",
+          "crid": "X05009",
+          "before": "NISAR_L2_PR_GCOV_006_173_D_058_4005_DHDH_A_20251204T045438_20251204T045516_X05009_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_007_173_D_058_4005_DHDH_A_20251216T045439_20251216T045517_X05009_N_F_J_001",
+          "before_time": "2025-12-04T04:54:38Z",
+          "after_time": "2025-12-16T04:54:39Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_006_173_D_058_4005_DHDH_A_20251204T045438_20251204T045516_X05009_N_F_J_001/NISAR_L2_PR_GCOV_006_173_D_058_4005_DHDH_A_20251204T045438_20251204T045516_X05009_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_BETA_V1/NISAR_L2_PR_GCOV_007_173_D_058_4005_DHDH_A_20251216T045439_20251216T045517_X05009_N_F_J_001/NISAR_L2_PR_GCOV_007_173_D_058_4005_DHDH_A_20251216T045439_20251216T045517_X05009_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 15674114048,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "nepal_shyar_khola",
+      "event_date": "2026-10-11",
+      "event_verified": true,
+      "source": "https://eu-space.europa.eu/components/earth-observation-copernicus/image-of-the-day/landslide-triggered-flash-flood-sweeps-through-nepals-himalayan-valleys",
+      "coordinate_source": "https://browser.dataspace.copernicus.eu/?zoom=13&lat=28.45767&lng=84.94629",
+      "center_lon_lat": [
+        84.94629,
+        28.45767
+      ],
+      "bbox_wgs84": [
+        84.89520137143788,
+        28.41275444125045,
+        84.99737862856213,
+        28.50258555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%2884.89520137143788+28.41275444125045%2C84.99737862856213+28.41275444125045%2C84.99737862856213+28.50258555874955%2C84.89520137143788+28.50258555874955%2C84.89520137143788+28.41275444125045%29%29&start=2026-09-16T00%3A00%3A00Z&end=2026-11-05T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 17,
+      "possibly_truncated": false,
+      "pair_count": 3,
+      "pairs": [
+        {
+          "track": 98,
+          "frame": 16,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_032_098_A_016_4005_DHDH_A_20261006T233918_20261006T233952_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_033_098_A_016_4005_DHDH_A_20261018T233918_20261018T233952_P05023_N_F_J_001",
+          "before_time": "2026-10-06T23:39:18Z",
+          "after_time": "2026-10-18T23:39:18Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_098_A_016_4005_DHDH_A_20261006T233918_20261006T233952_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_098_A_016_4005_DHDH_A_20261006T233918_20261006T233952_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_033_098_A_016_4005_DHDH_A_20261018T233918_20261018T233952_P05023_N_F_J_001/NISAR_L2_PR_GCOV_033_098_A_016_4005_DHDH_A_20261018T233918_20261018T233952_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14092861440,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 48,
+          "frame": 74,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV",
+            "VH",
+            "VV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_031_048_D_074_2005_QPDH_A_20260921T125811_20260921T125846_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_033_048_D_074_2005_QPDH_A_20261015T125812_20261015T125846_P05023_N_F_J_001",
+          "before_time": "2026-09-21T12:58:11Z",
+          "after_time": "2026-10-15T12:58:12Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_048_D_074_2005_QPDH_A_20260921T125811_20260921T125846_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_048_D_074_2005_QPDH_A_20260921T125811_20260921T125846_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_033_048_D_074_2005_QPDH_A_20261015T125812_20261015T125846_P05023_N_F_J_001/NISAR_L2_PR_GCOV_033_048_D_074_2005_QPDH_A_20261015T125812_20261015T125846_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 16638803968,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 98,
+          "frame": 16,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_UR_L2",
+          "crid": "P05023",
+          "before": "NISAR_L2_UR_GCOV_031_098_A_016_4005_DHDH_A_20260924T233918_20260924T233952_P05023_F_F_J_001",
+          "after": "NISAR_L2_UR_GCOV_034_098_A_016_4005_DHDH_A_20261030T233918_20261030T233953_P05023_F_F_J_001",
+          "before_time": "2026-09-24T23:39:18Z",
+          "after_time": "2026-10-30T23:39:18Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR-UR/UR_L2_L_GCOV/NISAR_L2_UR_GCOV_031_098_A_016_4005_DHDH_A_20260924T233918_20260924T233952_P05023_F_F_J_001/NISAR_L2_UR_GCOV_031_098_A_016_4005_DHDH_A_20260924T233918_20260924T233952_P05023_F_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR-UR/UR_L2_L_GCOV/NISAR_L2_UR_GCOV_034_098_A_016_4005_DHDH_A_20261030T233918_20261030T233953_P05023_F_F_J_001/NISAR_L2_UR_GCOV_034_098_A_016_4005_DHDH_A_20261030T233918_20261030T233953_P05023_F_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14289993728,
+          "interval_days": 36,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "nepal_rasuwagadhi",
+      "event_date": "2026-08-26",
+      "event_verified": true,
+      "source": "https://nepal.un.org/sites/default/files/2026-11/Nepal%20Rasuwa-Bhotekoshi%20Flood%20%26%20Budhi%20Gandaki%20Flood_Situation%20Report%20No.%2012.docx.pdf",
+      "coordinate_source": "https://www.geonames.org/advanced-search.html?country=NP&q=&startRow=250",
+      "center_lon_lat": [
+        85.37767854,
+        28.27741433
+      ],
+      "bbox_wgs84": [
+        85.32667662532783,
+        28.232498771250448,
+        85.42868045467218,
+        28.32232988874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%2885.32667662532783+28.232498771250448%2C85.42868045467218+28.232498771250448%2C85.42868045467218+28.32232988874955%2C85.32667662532783+28.32232988874955%2C85.32667662532783+28.232498771250448%29%29&start=2026-08-01T00%3A00%3A00Z&end=2026-09-20T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 17,
+      "possibly_truncated": false,
+      "pair_count": 5,
+      "pairs": [
+        {
+          "track": 98,
+          "frame": 16,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "X05026",
+          "before": "NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_X05026_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_X05026_N_F_J_001",
+          "before_time": "2026-08-19T23:39:18Z",
+          "after_time": "2026-08-31T23:39:18Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_X05026_N_F_J_001/NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_X05026_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_X05026_N_F_J_001/NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_X05026_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14294188032,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 98,
+          "frame": 16,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001",
+          "before_time": "2026-08-19T23:39:18Z",
+          "after_time": "2026-08-31T23:39:18Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14294188032,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 48,
+          "frame": 74,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_048_D_074_4005_DHDH_A_20260816T125812_20260816T125846_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_030_048_D_074_4005_DHDH_A_20260909T125811_20260909T125846_P05023_N_F_J_001",
+          "before_time": "2026-08-16T12:58:12Z",
+          "after_time": "2026-09-09T12:58:11Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_048_D_074_4005_DHDH_A_20260816T125812_20260816T125846_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_048_D_074_4005_DHDH_A_20260816T125812_20260816T125846_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_048_D_074_4005_DHDH_A_20260909T125811_20260909T125846_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_048_D_074_4005_DHDH_A_20260909T125811_20260909T125846_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14277410816,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 149,
+          "frame": 74,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "40+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_027_149_D_074_4005_DHDH_A_20260811T130632_20260811T130706_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_029_149_D_074_4005_DHDH_A_20260904T130631_20260904T130706_P05023_N_F_J_001",
+          "before_time": "2026-08-11T13:06:32Z",
+          "after_time": "2026-09-04T13:06:31Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_027_149_D_074_4005_DHDH_A_20260811T130632_20260811T130706_P05023_N_F_J_001/NISAR_L2_PR_GCOV_027_149_D_074_4005_DHDH_A_20260811T130632_20260811T130706_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_149_D_074_4005_DHDH_A_20260904T130631_20260904T130706_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_149_D_074_4005_DHDH_A_20260904T130631_20260904T130706_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 14487126016,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        },
+        {
+          "track": 149,
+          "frame": 74,
+          "direction": "DESCENDING",
+          "polarizations": [
+            "HH",
+            "HV",
+            "VH",
+            "VV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_028_149_D_074_2005_QPDH_A_20260823T130631_20260823T130706_P05023_N_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_030_149_D_074_2005_QPDH_A_20260916T130631_20260916T130705_P05023_N_F_J_001",
+          "before_time": "2026-08-23T13:06:31Z",
+          "after_time": "2026-09-16T13:06:31Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_149_D_074_2005_QPDH_A_20260823T130631_20260823T130706_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_149_D_074_2005_QPDH_A_20260823T130631_20260823T130706_P05023_N_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_149_D_074_2005_QPDH_A_20260916T130631_20260916T130705_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_149_D_074_2005_QPDH_A_20260916T130631_20260916T130705_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 16387145728,
+          "interval_days": 24,
+          "both_footprints_contain_box_corners": false,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    },
+    {
+      "id": "spain_burgohondo",
+      "event_date": "2026-07-22",
+      "event_verified": true,
+      "source": "https://science.nasa.gov/earth/earth-observatory/destructive-fires-char-western-europe/",
+      "coordinate_source": null,
+      "center_lon_lat": [
+        -4.785,
+        40.415
+      ],
+      "bbox_wgs84": [
+        -4.843993184786916,
+        40.37008444125045,
+        -4.7260068152130845,
+        40.45991555874955
+      ],
+      "bbox_status": "proposed approximately 10 km search box; not a verified change footprint",
+      "query_url": "https://api.daac.asf.alaska.edu/services/search/param?dataset=NISAR&processingLevel=GCOV&intersectsWith=POLYGON%28%28-4.843993184786916+40.37008444125045%2C-4.7260068152130845+40.37008444125045%2C-4.7260068152130845+40.45991555874955%2C-4.843993184786916+40.45991555874955%2C-4.843993184786916+40.37008444125045%29%29&start=2026-06-27T00%3A00%3A00Z&end=2026-08-16T23%3A59%3A59Z&output=geojson&maxResults=250",
+      "granule_count": 6,
+      "possibly_truncated": false,
+      "pair_count": 1,
+      "pairs": [
+        {
+          "track": 87,
+          "frame": 22,
+          "direction": "ASCENDING",
+          "polarizations": [
+            "HH",
+            "HV"
+          ],
+          "bandwidth": [
+            "20+5"
+          ],
+          "collection": "NISAR_L2_GCOV_PROVISIONAL_V1",
+          "crid": "P05023",
+          "before": "NISAR_L2_PR_GCOV_025_087_A_022_2005_DHDH_A_20260714T052401_20260714T052434_P05023_F_F_J_001",
+          "after": "NISAR_L2_PR_GCOV_026_087_A_022_2005_DHDH_A_20260726T052401_20260726T052433_P05023_N_F_J_001",
+          "before_time": "2026-07-14T05:24:01Z",
+          "after_time": "2026-07-26T05:24:01Z",
+          "before_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_087_A_022_2005_DHDH_A_20260714T052401_20260714T052434_P05023_F_F_J_001/NISAR_L2_PR_GCOV_025_087_A_022_2005_DHDH_A_20260714T052401_20260714T052434_P05023_F_F_J_001.h5",
+          "after_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_087_A_022_2005_DHDH_A_20260726T052401_20260726T052433_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_087_A_022_2005_DHDH_A_20260726T052401_20260726T052433_P05023_N_F_J_001.h5",
+          "before_coverage": "Full",
+          "after_coverage": "Full",
+          "full_h5_bytes": 3703570432,
+          "interval_days": 12,
+          "both_footprints_contain_box_corners": true,
+          "same_day_post_needs_onset_check": false,
+          "validation": "catalog compatibility only; AOI intersection is not full or valid-pixel coverage"
+        }
+      ]
+    }
+  ]
+}

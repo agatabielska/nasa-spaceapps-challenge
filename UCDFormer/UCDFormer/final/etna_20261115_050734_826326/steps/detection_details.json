@@ -1,0 +1,47 @@
+{
+  "pseudo_method": "physical_local_and_feature_membership_v2",
+  "fcm_centers": [
+    0.2749126214207804,
+    0.3933736968728486,
+    0.5286610835405513
+  ],
+  "changed_seeds": 789,
+  "unchanged_seeds": 12152,
+  "uncertain": 235842,
+  "samples_per_class": 789,
+  "rf_features": [
+    "pre_HH_dB",
+    "pre_HV_dB",
+    "post_HH_dB",
+    "post_HV_dB",
+    "signed_HH_dB_change",
+    "signed_HV_dB_change",
+    "absolute_HH_dB_change",
+    "absolute_HV_dB_change",
+    "HH_normalized_change",
+    "HV_normalized_change",
+    "VGG_score"
+  ],
+  "final_classifier": "temporal-feature RF; uncertain positives require >=0.8 vote and weak physical component connected to positive seed",
+  "rf_positive_vote": 0.8,
+  "local_window_pixels": 31,
+  "threshold_statistic": "local residual MAD proxy; uncalibrated",
+  "pseudo_changed_membership": 0.6,
+  "memberships_calibrated": false,
+  "raw_positive_seeds": 789,
+  "weak_connected_support_pixels": 2699,
+  "modification": "new pseudo-label generator, temporal RF descriptors and hysteresis support; not exact original UCDFormer",
+  "rf_feature_importance_names": [
+    "pre_HH_dB",
+    "pre_HV_dB",
+    "post_HH_dB",
+    "post_HV_dB",
+    "signed_HH_dB_change",
+    "signed_HV_dB_change",
+    "absolute_HH_dB_change",
+    "absolute_HV_dB_change",
+    "HH_normalized_change",
+    "HV_normalized_change",
+    "VGG_score"
+  ]
+}

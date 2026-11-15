@@ -1,0 +1,11 @@
+{
+  "study_id": "spain_navaluenga_corrected",
+  "before": "data/raw/NISAR_L2_PR_GCOV_024_087_A_022_2005_DHDH_A_20260702T052402_20260702T052434_P05023_N_F_J_001.h5",
+  "after": "data/raw/NISAR_L2_PR_GCOV_028_087_A_022_2005_DHDH_A_20260819T052400_20260819T052432_P05023_N_F_J_001.h5",
+  "bbox": [
+    -4.7,
+    40.29,
+    -4.58,
+    40.38
+  ]
+}

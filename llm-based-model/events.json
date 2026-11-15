@@ -1,0 +1,37 @@
+{
+  "venezuela": {
+    "bbox": [
+      -68.65,
+      10.3,
+      -68.3,
+      10.6
+    ],
+    "date": "2026-06-24",
+    "window_days": 30,
+    "note": "M7.2 + M7.5 earthquakes (~35 x 33 km around the epicentre). Public data only from ~17 Jun, so the 'before' side is short. Backscatter barely changes; use GUNW for displacement."
+  },
+  "nepal": {
+    "bbox": [
+      85.3,
+      28.15,
+      85.6,
+      28.3
+    ],
+    "date": "2026-08-26",
+    "window_days": 45,
+    "note": "Langtang valley + Timure (~29 x 17 km). Data gap 27 Jul - 10 Aug 2026. Try --pol HHHH and --diff."
+  },
+  "spain_fire": {
+    "bbox": [
+      -5.05,
+      40.3,
+      -4.5,
+      40.6
+    ],
+    "date": "2026-07-22",
+    "window_days": 45,
+    "note": "Avila wildfire near Burgohondo (~46 x 33 km, approximate). HV shows burn best. after_from skips the early 26 Jul scene (fire still growing) and uses a post-gap scene.",
+    "pol": "HVHV",
+    "after_from": "2026-08-10"
+  }
+}

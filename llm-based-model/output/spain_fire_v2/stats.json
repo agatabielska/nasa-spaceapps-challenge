@@ -1,0 +1,31 @@
+{
+  "case": "spain_fire_v2",
+  "kind": "fire",
+  "title": "Avila wildfire near Burgohondo, Spain",
+  "event_date": "2026-07-22",
+  "bbox_lonlat": [
+    -5.05,
+    40.3,
+    -4.5,
+    40.6
+  ],
+  "methods": {
+    "backscatter": {
+      "what": "log-ratio HV, decrease direction, 15x15 filter, threshold 1.8 sigma",
+      "area_km2": 108.48960000000001,
+      "reliable_fraction": 1.0,
+      "mean_change_db_in_mask": {
+        "HHHH": -0.14674696326255798,
+        "HVHV": -1.1835472583770752
+      },
+      "scene_noise_db": {
+        "HHHH": 0.24511125683784485,
+        "HVHV": 0.2507399022579193
+      }
+    }
+  },
+  "granules": {
+    "gcov_before": "NISAR_L2_PR_GCOV_026_023_D_068_2005_DHDH_A_20260721T191744_20260721T191819_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001"
+  }
+}

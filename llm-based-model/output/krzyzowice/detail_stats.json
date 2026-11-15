@@ -1,0 +1,25 @@
+{
+  "case": "krzyzowice",
+  "pixel_m": 20.0,
+  "pairs": 9,
+  "period": [
+    "2026-06-18",
+    "2026-10-16"
+  ],
+  "deepest_cm": 79.6,
+  "deepest_lonlat": [
+    18.65457,
+    49.95757
+  ],
+  "area_over_5cm_km2": 5.71,
+  "area_over_20cm_km2": 1.08,
+  "valid_fraction": 0.96,
+  "last_interval": {
+    "dates": [
+      "2026-10-04",
+      "2026-10-16"
+    ],
+    "max_sink_cm": 13.7,
+    "area_coherence_drop_over_0.3_km2": 1.51
+  }
+}

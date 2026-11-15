@@ -1,0 +1,113 @@
+{
+  "granule": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_X05026_N_F_J_001",
+  "file_bytes": 2344615936,
+  "bbox": [
+    85.3239,
+    28.2087,
+    85.4786,
+    28.3435
+  ],
+  "dates": {
+    "referenceZeroDopplerStartTime": "2026-08-19T23:39:18.000000000",
+    "secondaryZeroDopplerStartTime": "2026-08-31T23:39:18.000000000"
+  },
+  "wrapped_grid": {
+    "crs": "EPSG:32645",
+    "transform": [
+      20.0,
+      0.0,
+      335500.0,
+      0.0,
+      -20.0,
+      3136400.0
+    ],
+    "shape": [
+      757,
+      769
+    ],
+    "pixel_size_m": [
+      20.0,
+      -20.0
+    ],
+    "native_window": [
+      10544,
+      10439,
+      11301,
+      11208
+    ],
+    "mask_values": {
+      "11": 581785,
+      "111": 348
+    },
+    "anomaly_bits_policy": "bytes 8-23 excluded; reserved upper byte recorded without interpreting it as an anomaly",
+    "reserved_upper_byte_nonzero": 0
+  },
+  "unwrapped_grid": {
+    "crs": "EPSG:32645",
+    "transform": [
+      80.0,
+      0.0,
+      335520.0,
+      0.0,
+      -80.0,
+      3136400.0
+    ],
+    "shape": [
+      189,
+      192
+    ],
+    "pixel_size_m": [
+      80.0,
+      -80.0
+    ],
+    "native_window": [
+      2636,
+      2610,
+      2825,
+      2802
+    ],
+    "mask_values": {
+      "11": 1762,
+      "16777228": 34524,
+      "16777340": 2
+    },
+    "anomaly_bits_policy": "bytes 8-23 excluded; reserved upper byte recorded without interpreting it as an anomaly",
+    "reserved_upper_byte_nonzero": 34526
+  },
+  "coherence20": {
+    "finite_pixels": 582133,
+    "minimum": 0.012681522406637669,
+    "maximum": 0.9953944683074951,
+    "median": 0.5762344002723694,
+    "q10": 0.23401542305946352,
+    "q90": 0.8649219989776611
+  },
+  "coherence80": {
+    "finite_pixels": 36288,
+    "minimum": 0.012052386067807674,
+    "maximum": 0.9862092733383179,
+    "median": 0.574162483215332,
+    "q10": 0.22578413635492328,
+    "q90": 0.8526326954364776
+  },
+  "valid_unwrapped_component_fraction": 0.9270833333333334,
+  "phase_display_coherence_threshold": 0.3,
+  "phase_above_display_coherence_fraction": 0.8509149029982364,
+  "existing_run": "outputs/walkthroughs/nepal_rasuwagadhi_20261115_111749_238311",
+  "association": {
+    "mean_coherence_weighted_by_existing_mask_fraction": 0.512977659702301,
+    "mean_coherence_weighted_by_existing_unchanged_fraction": 0.5988484025001526,
+    "interpretation": "Descriptive association only, not accuracy or independent event validation; no baseline coherence pair available"
+  },
+  "changes_to_pipeline": "none",
+  "fused_masks_generated": false,
+  "warnings": [
+    "One GUNW represents the two-date interval, not two separate date images",
+    "Low coherence can arise from water, vegetation, geometry and noise; one interval cannot establish coherence loss relative to a pre-event baseline",
+    "Phase retains arbitrary reference and correction effects; no calibrated displacement or event attribution",
+    "Unwrapped connected components with label zero and fill labels are excluded from phase views",
+    "20/80 m GUNW maps must not be treated as independent 10 m observations",
+    "GCOV P05023 and GUNW X05026 are different processing releases; source acquisition times match but products need independent QA"
+  ]
+}
+REPORT /home/marysia/Downloads/sar-change-detection/UCDFormer/UCDFormer/outputs/experiments/gunw_rasuwagadhi/index.html
