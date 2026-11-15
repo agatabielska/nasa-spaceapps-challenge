@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {blockStops,CLOSE_DEPTH,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,sub,type Layout} from './journey/path.ts';
+import {blockStops,CLOSE_DEPTH,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,stableHeight,sub,type Layout} from './journey/path.ts';
 
 const sizes=[{id:'home',height:900,hold:270},{id:'about',height:1500,hold:270},{id:'flight',height:900,hold:3240},{id:'end',height:1100,hold:270}];
 const layout=layoutJourney(sizes,1440,900);
@@ -65,4 +65,12 @@ test('a close scene waits right behind the previous one and is reached in a stra
   assert.ok(Math.abs(atHome.s-1/(1+CLOSE_DEPTH))<1e-9);assert.ok(Math.abs(atHome.x-720)<1e-6);
   assert.deepEqual(mid.fwd,[0,0,-1]);assert.equal(mid.roll,0);
   assert.ok(Math.abs(project(view(l,about.start),about.anchor)!.s-1)<1e-9);
+});
+test('phones keep the journey height while the toolbar slides in and out, but not on rotation or desktop resizes',()=>{
+  const last={w:390,h:664};
+  assert.equal(stableHeight(last,390,745,true),664);   // toolbar hidden: taller by a bar
+  assert.equal(stableHeight(last,390,600,true),664);   // toolbar shown again
+  assert.equal(stableHeight(last,844,390,true),390);   // rotated
+  assert.equal(stableHeight(last,390,745,false),745);  // a desktop window resized
+  assert.equal(stableHeight({w:0,h:0},390,745,true),745); // first measurement
 });

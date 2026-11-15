@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import {blockStops,clamp,CLOSE_DEPTH,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
+import {stableHeight,blockStops,clamp,CLOSE_DEPTH,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
 
 export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;hold:Record<string,number>;progress:number;chapter:number;marks:number[]};
 // data-hold: minimum screens to rest on a scene · data-steps: stops while it plays, as fractions of its hold ·
@@ -45,6 +45,13 @@ const editable='input,textarea,select,[contenteditable=""],[contenteditable=true
 // Drives the landing page as one continuous camera flight. The page still scrolls natively (scrollbar,
 // keyboard, touch and links keep working); a tall spacer provides the scroll length, and the camera eases
 // towards the scroll position with some inertia. Scenes ([data-scene]) are fixed layers projected in 3D.
+// Jump to y at once. The page scrolls smoothly by CSS (for anchor links), and behavior:'instant' is not
+// understood by every Safari (older ones reject the call), so smooth scrolling is switched off just for this.
+export function instantly(scroll:()=>void){
+  const root=document.documentElement,before=root.style.scrollBehavior;
+  root.style.scrollBehavior='auto';scroll();root.style.scrollBehavior=before;
+}
+export const jumpTo=(y:number)=>instantly(()=>window.scrollTo(0,y));
 export class Journey{
   private scenes:Scene[];
   private layout!:Layout;
@@ -73,7 +80,7 @@ export class Journey{
     // An unknown anchor (/#xyz) opens the start screen and is dropped from the address.
     if(hash&&found<0)history.replaceState(null,'',location.pathname+location.search);
     const start=this.layout.scenes[Math.max(0,found)].start;
-    window.scrollTo({top:start,behavior:'instant'});this.cam=start;
+    jumpTo(start);this.cam=start;
     this.resize=new ResizeObserver(()=>this.relayout());
     this.scenes.forEach(sc=>this.resize.observe(sc.el));
     window.addEventListener('resize',this.relayout);
@@ -132,8 +139,9 @@ export class Journey{
     this.spacer.style.height='';history.scrollRestoration=this.restoration;
   }
 
+  private screen={w:0,h:0};
   private measure(){
-    const w=window.innerWidth,h=window.innerHeight;
+    const w=window.innerWidth,h=stableHeight(this.screen,w,window.innerHeight);this.screen={w,h};
     this.layout=layoutJourney(this.scenes.map(sc=>({id:sc.id,height:sc.el.offsetHeight,hold:sc.minHold*h,close:sc.close})),w,h);
     this.spacer.style.height=`${Math.ceil(this.layout.total+h)}px`;
     // A scene plays through data-steps, or stops at each content block (split at elements marked data-stop),
@@ -148,7 +156,7 @@ export class Journey{
   }
   // The scene whose hold contains scroll position y (not the flight after it).
   private restingIn(y:number){const sc=this.layout.scenes[sceneAtScroll(this.layout,y)];return y<=sc.end+.5?sc:null;}
-  private scrollTo(y:number){window.scrollTo({top:y,behavior:'instant'});}
+  private scrollTo(y:number){jumpTo(y);}
   // Keep the camera on the same scene, at the same relative point, when sizes change.
   private relayout=()=>{
     const old=this.layout,s=Number.isNaN(this.cam)?0:this.cam;

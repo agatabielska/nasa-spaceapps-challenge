@@ -145,7 +145,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-heading{max-width:980px;margin:0 auto clamp(28px,5vh,56px);text-align:center}
 .sp-heading h2,.sp-case-text h2,.sp-flight-top h2{font-size:clamp(34px,4.3vw,76px);font-weight:800;line-height:1.05;letter-spacing:-.035em}
 .sp-heading p{max-width:760px;margin:1.1em auto 0;color:var(--sp-text-2)}
-.sp-frame{position:relative;border:1px solid var(--sp-line);background:#071230eb;backdrop-filter:blur(8px)}
+.sp-frame{position:relative;border:1px solid var(--sp-line);background:#071230eb;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .sp-frame:before,.sp-frame:after{content:'';position:absolute;width:18px;height:18px;border:2px solid var(--sp-accent);pointer-events:none}
 .sp-frame:before{left:-1px;top:-1px;border-right:0;border-bottom:0}
 .sp-frame:after{right:-1px;bottom:-1px;border-left:0;border-top:0}
@@ -163,7 +163,10 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .landing .sp-title{margin:.22em 0 .3em;font:800 clamp(44px,min(9vw,15vh),164px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
 /* The gradient is clipped to the text, so the box must reach below descenders (g, y): extra bottom padding,
    taken back in part with a negative margin, leaving a clear gap between the two title lines. */
-.sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.1em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
+.sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.1em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* The glow sits on the heading, not on the gradient-clipped lines: Safari can paint a filtered background-clip:text
+   element as a solid block. */
+.landing .sp-title{filter:drop-shadow(0 0 42px #4aa6ff59)}
 .sp-title-accent{background-image:linear-gradient(90deg,var(--sp-accent),var(--sp-accent-2))}
 .sp-lead{max-width:760px;font-size:max(19px,1.2em);line-height:1.5;color:var(--sp-text-2)}
 .sp-hero .sp-button{margin-top:2em}
@@ -182,8 +185,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
   .sp-engine .sp-hero .sp-button{margin-top:1.5em}
 }
 @media(max-height:720px){.sp-engine .sp-hero{padding:72px clamp(20px,5vw,80px) calc(var(--sp-bar) + 12px)}.sp-engine .sp-hero .sp-button{margin-top:1.2em}}
-/* Behind the title the globe is dimmed so the text stays readable; it brightens as the camera arrives. */
-.sp-engine .sp-orbit-globe canvas{filter:brightness(calc(.78 + .22*var(--arrive,1))) saturate(calc(.85 + .15*var(--arrive,1)))}
+/* Behind the title the globe is dimmed so the text stays readable (in its shader, from --arrive); it brightens as the camera arrives. */
 /* Enlarged while waiting behind the title (see --globe-boost in Landing.tsx), back to its own size on arrival. */
 .sp-engine .sp-orbit-globe,.sp-engine .sp-globe-rings{scale:calc(1 + (var(--globe-boost,1) - 1)*(1 - var(--approach,1)))}
 @media(max-height:820px){.sp-engine .sp-scroll-cue{display:none}}
@@ -192,7 +194,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-orbit-wrap{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,34px)}
 .sp-orbit{position:relative;width:min(1180px,100%);height:clamp(400px,60vh,660px)}
 .sp-orbit{--globe:70%}
-.sp-orbit-globe{position:absolute;left:50%;top:50%;z-index:2;height:var(--globe);aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 0 70px #3d8bff59)}
+.sp-orbit-globe{position:absolute;left:50%;top:50%;z-index:2;height:var(--globe);aspect-ratio:1;transform:translate(-50%,-50%)}
 /* A breathing blue halo behind the planet and a glowing rim on its edge (the disc fills 91% of the canvas). */
 .sp-orbit-globe:before{content:'';position:absolute;inset:-32%;z-index:-1;border-radius:50%;background:radial-gradient(circle,#4aa6ff5c 0,#2f7fff30 38%,#2f7fff00 66%);animation:sp-breathe 6s ease-in-out infinite}
 .sp-orbit-globe:after{content:'';position:absolute;inset:4.5%;border-radius:50%;border:1.5px solid #8defff8c;box-shadow:0 0 26px #5cbdff70,inset 0 0 20px #5cbdff3d;pointer-events:none}
@@ -462,3 +464,13 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 
 .sp-nav-actions{gap:12px}
 @media(max-width:640px){.sp-nav-actions .sp-signal{display:none}}
+/* Phones: the brand and both header buttons fit across the narrowest screens. */
+@media(max-width:480px){
+  .sp-nav{gap:10px}
+  .sp-brand{gap:9px}
+  .sp-brand b{font-size:14px;letter-spacing:.1em}
+  .sp-nav-actions{gap:8px}
+  .sp-small-button{gap:6px;padding:9px 10px;font-size:13px;letter-spacing:.08em}
+}
+/* The narrowest phones keep the logo alone (its link is still labelled "EarthSignal, back to the start"). */
+@media(max-width:370px){.sp-brand b{display:none}}

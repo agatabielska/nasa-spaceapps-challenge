@@ -10,7 +10,7 @@ export default function About(){
   useEffect(()=>{document.title='EarthSignal — About us';},[]);
   const [first,...rest]=TEAM_NAME.split(' ');
   return <div className="about">
-    <header className="ab-nav"><a href="/"><ArrowLeft size={16} aria-hidden="true"/>Back to the journey</a><a href={EXPLORER_PATH}>Open the app <ArrowUpRight size={16} aria-hidden="true"/></a></header>
+    <header className="ab-nav"><a href="/"><ArrowLeft size={16} aria-hidden="true"/>Back to the journey</a><a href={EXPLORER_PATH}><span className="ab-hide-sm">Open the </span>app <ArrowUpRight size={16} aria-hidden="true"/></a></header>
     <main>
       <p className="ab-kicker">NASA Space Apps Challenge 2026 · EarthSignal</p>
       <h1>Team <em>{first}</em> {rest.join(' ')}</h1>

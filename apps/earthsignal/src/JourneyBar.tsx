@@ -1,6 +1,6 @@
 import {useContext,useEffect,useRef,useState,type KeyboardEvent as ReactKeyboardEvent,type PointerEvent as ReactPointerEvent} from 'react';
 import {ArrowDown,ArrowUp,CircleDashed,Pause,Play} from 'lucide-react';
-import {JourneyContext} from './journey/engine';
+import {JourneyContext,jumpTo} from './journey/engine';
 
 type Chapter={id:string;label:string};
 const clamp=(v:number)=>Math.max(0,Math.min(1,v));
@@ -36,7 +36,7 @@ export default function JourneyBar({chapters,chapter,autopilot,paused,onPause}:{
   const step=(dir:1|-1)=>{if(journey){if(dir>0)journey.next();else journey.prev();}else flowTo(index+dir);};
   const seek=(fraction:number)=>{
     if(journey)journey.seek(fraction);
-    else window.scrollTo({top:clamp(fraction)*(document.documentElement.scrollHeight-window.innerHeight),behavior:'instant'});
+    else jumpTo(clamp(fraction)*(document.documentElement.scrollHeight-window.innerHeight));
   };
   const fromPointer=(e:ReactPointerEvent<HTMLDivElement>)=>{const r=e.currentTarget.getBoundingClientRect();seek((e.clientX-r.left)/r.width);};
   const onKey=(e:ReactKeyboardEvent<HTMLDivElement>)=>{

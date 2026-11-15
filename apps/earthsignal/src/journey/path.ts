@@ -110,3 +110,11 @@ export function blockStops(blocks:{top:number;bottom:number}[],h:number,pan:numb
   });
   return stops.filter((s,i)=>i===0||s>stops[i-1]+1);
 }
+
+// On phones the browser's toolbar slides in and out while scrolling, changing the window height by a bar's
+// worth each time. Relaying the journey out then would move the page under the finger (and stop iOS momentum
+// scrolling), so such height-only changes keep the previous height; a rotation or a real resize still applies.
+const touchScreen=typeof window!=='undefined'&&window.matchMedia('(pointer: coarse)').matches;
+export function stableHeight(last:{w:number;h:number},w:number,h:number,touch=touchScreen){
+  return touch&&last.h>0&&w===last.w&&Math.abs(h-last.h)<=Math.max(140,last.h*.2)?last.h:h;
+}

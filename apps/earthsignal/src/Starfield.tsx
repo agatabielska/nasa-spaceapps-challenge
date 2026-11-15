@@ -28,10 +28,13 @@ export default function Starfield({paused,journey}:{paused:boolean;journey:Journ
       w=window.innerWidth;h=window.innerHeight;
       canvas!.width=Math.round(w*dpr);canvas!.height=Math.round(h*dpr);
       ctx!.setTransform(dpr,0,0,dpr,0,0);
+      still=makeCamera([0,0,0],[0,0,-1],0,Math.max(700,h*1.1),w,h);
+      // Keep the same stars when the size changes a little (a phone's toolbar sliding in and out), so they do not
+      // jump to new places; scatter new ones only when the screen changes a lot.
       const count=Math.round(Math.min(1600,Math.max(500,w*h/1100)));
+      if(stars.length&&Math.abs(count-stars.length)<count*.25)return;
       stars=Array.from({length:count},()=>({x:Math.random(),y:Math.random(),z:Math.random(),r:.5+Math.random()*1.1+(Math.random()<.03?1.2:0),
         phase:Math.random()*6.283,tint:tints[Math.floor(Math.random()*tints.length)],ox:0,oy:0,sx:0,sy:0,seen:false}));
-      still=makeCamera([0,0,0],[0,0,-1],0,Math.max(700,h*1.1),w,h);
     }
     function draw(camera:Camera,speed:number,time:number){
       const live=animated();

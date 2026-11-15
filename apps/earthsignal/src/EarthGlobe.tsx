@@ -16,6 +16,8 @@ const fragmentSource=`
   uniform float u_rotation;
   uniform float u_tilt;
   uniform float u_time;
+  // Dims the globe while it waits behind the hero title (1 = full colour).
+  uniform float u_tone;
   const float PI=3.14159265359;
   const vec2 TEXEL=vec2(1.0/2048.0,1.0/1024.0);
   // Blue Marble oceans are near-black navy: water = blue clearly above red and green, and dark.
@@ -44,7 +46,10 @@ const fragmentSource=`
       // Atmosphere: a soft cyan halo, brightest on the sunlit side.
       float glow=exp(-(radius-1.0)*34.0)*0.5;
       float lit=mix(0.35,1.0,clamp(dot(normalize(vec3(p,0.12)),light)*0.5+0.5,0.0,1.0));
-      gl_FragColor=vec4(vec3(0.42,0.76,1.0),glow*lit);
+      // Premultiplied colour: where the halo fades out the pixel is truly empty. Safari shows the colour of
+      // nearly transparent unpremultiplied pixels, which painted the canvas square solid cyan.
+      float a=glow*lit;
+      gl_FragColor=vec4(vec3(0.42,0.76,1.0)*mix(0.78,1.0,u_tone)*a,a);
       return;
     }
     vec3 normal=vec3(p,sqrt(max(0.0,1.0-dot(p,p))));
@@ -84,7 +89,9 @@ const fragmentSource=`
     float rim=pow(1.0-normal.z,3.0);
     surface+=vec3(0.33,0.70,1.0)*rim*(0.25+max(0.0,facing))*0.5;
     float edge=1.0-smoothstep(0.996,1.0,radius);
-    gl_FragColor=vec4(surface,edge);
+    surface*=mix(0.78,1.0,u_tone);
+    surface=mix(vec3(dot(surface,vec3(0.299,0.587,0.114))),surface,mix(0.85,1.0,u_tone));
+    gl_FragColor=vec4(surface*edge,edge);
   }
 `;
 
@@ -99,7 +106,7 @@ export default function EarthGlobe({paused=false,view}:{paused?:boolean;view?:Mu
   useEffect(()=>{pausedRef.current=paused;refresh.current();},[paused]);
   useEffect(()=>{
     const element=canvas.current;if(!element)return;
-    const gl=element.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:false,powerPreference:'low-power'});
+    const gl=element.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:true,powerPreference:'low-power'});
     if(!gl)return;
     let disposed=false,frame=0,loaded=false,visible=true,lastTime=0,rotation=0.32;
     const shaders:WebGLShader[]=[];
@@ -128,7 +135,9 @@ export default function EarthGlobe({paused=false,view}:{paused?:boolean;view?:Mu
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
       gl.uniform1i(gl.getUniformLocation(program,'u_earth'),0);
     }catch{release();return;}
-    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),tiltUniform=gl.getUniformLocation(program,'u_tilt'),timeUniform=gl.getUniformLocation(program,'u_time');
+    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),tiltUniform=gl.getUniformLocation(program,'u_tilt'),timeUniform=gl.getUniformLocation(program,'u_time'),toneUniform=gl.getUniformLocation(program,'u_tone');
+    // The landing page's About scene sets --arrive on its layer: the globe is dimmer until the camera arrives.
+    const scene=element.closest<HTMLElement>('[data-scene]');
     let clock=0;
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
     const draw=(time:number)=>{
@@ -139,6 +148,7 @@ export default function EarthGlobe({paused=false,view}:{paused?:boolean;view?:Mu
       lastTime=time;
       gl.viewport(0,0,element.width,element.height);
       gl.uniform1f(timeUniform,clock);
+      const arrive=parseFloat(scene?.style.getPropertyValue('--arrive')||'1');gl.uniform1f(toneUniform,Number.isFinite(arrive)?arrive:1);
       gl.uniform1f(rotationUniform,view?view.current.lon:rotation);gl.uniform1f(tiltUniform,view?view.current.lat:0.29);gl.drawArrays(gl.TRIANGLES,0,6);
       // A steered globe keeps drawing while visible, because the camera can move even when motion is paused.
       if(view||(!pausedRef.current&&!reduced.matches))frame=requestAnimationFrame(draw);

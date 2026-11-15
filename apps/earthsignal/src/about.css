@@ -13,3 +13,5 @@
 .ab-team li{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;font:700 clamp(18px,1.9vw,26px) var(--es-display)}
 .ab-team img{width:clamp(110px,15vw,200px);aspect-ratio:1;border-radius:50%;object-fit:cover;border:2px solid #8fd6ff;box-shadow:0 0 0 7px #8fd6ff1f,0 14px 40px #0008}
 @media(max-width:800px){.ab-team{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Phones: both links fit on one line ("app" alone, tighter type), and wrap rather than widen the page. */
+@media(max-width:560px){.ab-nav{flex-wrap:wrap}.ab-nav a{padding:10px 12px;font-size:13px;letter-spacing:.1em}.ab-hide-sm{display:none}}

@@ -4,7 +4,7 @@ import {Astronaut} from './Astronaut';
 import EarthGlobe,{type GlobeView} from './EarthGlobe';
 import Starfield from './Starfield';
 import JourneyBar from './JourneyBar';
-import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
+import {AutopilotContext,instantly,Journey,JourneyContext} from './journey/engine';
 import {CLOSE_DEPTH} from './journey/path';
 import {sky} from './journey/sky';
 import {ABOUT_PATH,EXPLORER_PATH} from './routes';
@@ -369,7 +369,7 @@ export default function Landing(){
       setChapter(current);
     };
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
-    const anchor=requestAnimationFrame(()=>{const hash=window.location.hash.slice(1);if(hash)document.getElementById(hash)?.scrollIntoView({behavior:'instant',block:'start'});schedule();});
+    const anchor=requestAnimationFrame(()=>{const hash=window.location.hash.slice(1);if(hash){const target=document.getElementById(hash);if(target)instantly(()=>target.scrollIntoView({block:'start'}));}schedule();});
     window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);
     return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(anchor);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
   },[reduced]);

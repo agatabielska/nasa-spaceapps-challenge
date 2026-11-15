@@ -21,7 +21,7 @@
 .app .icon-button{display:grid;place-items:center;padding:7px;border-radius:6px;color:var(--text-3)}
 .app .icon-button:hover{background:#8fd6ff14;color:var(--text)}
 /* The landing page's instrument frame: a thin light-blue border with a highlight along the top. */
-.app .panel{position:relative;border:1px solid #86dcfa57;border-radius:var(--radius);background:linear-gradient(145deg,#0a1b33f2,#030d1cf2);box-shadow:0 18px 50px #0006,0 0 40px #34a0ed14;backdrop-filter:blur(14px)}
+.app .panel{position:relative;border:1px solid #86dcfa57;border-radius:var(--radius);background:linear-gradient(145deg,#0a1b33f2,#030d1cf2);box-shadow:0 18px 50px #0006,0 0 40px #34a0ed14;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .app .panel:before{content:'';position:absolute;top:0;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,#b6eaff,transparent);opacity:.55;pointer-events:none}
 .app .primary-button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:46px;margin-top:16px;padding:12px 18px;background:var(--accent);color:var(--ink);font:800 15px Manrope,sans-serif;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
 .app .primary-button:hover{background:#fff;color:var(--ink)}
@@ -263,7 +263,7 @@
 .app .chat form button:hover{background:#fff;color:var(--ink)}
 
 /* ===== About, data and method ===== */
-.app .modal-backdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:#01040ec4;backdrop-filter:blur(8px)}
+.app .modal-backdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:#01040ec4;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .app .modal{width:540px;max-width:100%;max-height:90dvh;padding:34px;overflow:auto;animation:enter .2s}
 .app .modal-close{position:absolute;right:14px;top:14px}
 .app .modal>.brand-logo{margin:4px 0 22px 8px}
