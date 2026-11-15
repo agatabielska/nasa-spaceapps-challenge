@@ -1,0 +1,58 @@
+{
+  "formula": "(post-pre)/(post+pre)",
+  "smoothing": "3x3 linear-power mean; full-valid neighborhood only; EDA only",
+  "source_dates": [
+    "2026-07-02T05:24:02+00:00",
+    "2026-08-19T05:24:00+00:00"
+  ],
+  "channels": [
+    {
+      "polarization": "HH",
+      "normalized_change_range": [
+        -1,
+        1
+      ],
+      "display_clip": [
+        -0.6,
+        0.6
+      ],
+      "power_display_clip": [
+        -0.2200406920909881,
+        0.2200406920909881
+      ],
+      "median_normalized_change": 0.05986097827553749,
+      "amplitude_stretch_shared": [
+        0.21812232092022896,
+        1.037746891975403
+      ],
+      "low_combined_signal_p01": 0.09883900493383407
+    },
+    {
+      "polarization": "HV",
+      "normalized_change_range": [
+        -1,
+        1
+      ],
+      "display_clip": [
+        -0.6,
+        0.6
+      ],
+      "power_display_clip": [
+        -0.05704699814319609,
+        0.05704699814319609
+      ],
+      "median_normalized_change": -0.019085204228758812,
+      "amplitude_stretch_shared": [
+        0.10619018472731113,
+        0.43310773938894276
+      ],
+      "low_combined_signal_p01": 0.02556585919111967
+    }
+  ],
+  "limitations": [
+    "Ratios unstable near noise floor; no instrument noise floor estimated here",
+    "Relative score is mathematically related to log-ratio; not new independent evidence",
+    "Linear difference emphasizes bright scatterers; display is clipped but GeoTIFF retains values",
+    "Speckle, moisture, terrain and misregistration can cause colors"
+  ]
+}

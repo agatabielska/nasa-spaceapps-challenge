@@ -1,0 +1,154 @@
+[
+  {
+    "from": "outputs/etna",
+    "to": "old/outputs/etna"
+  },
+  {
+    "from": "outputs/etna_v2",
+    "to": "old/outputs/etna_v2"
+  },
+  {
+    "from": "configs/etna.json",
+    "to": "old/configs/etna.json"
+  },
+  {
+    "from": "configs/etna_v2.json",
+    "to": "old/configs/etna_v2.json"
+  },
+  {
+    "from": "compare_etna_runs.py",
+    "to": "old/compare_etna_runs.py"
+  },
+  {
+    "from": "refine_etna.py",
+    "to": "old/refine_etna.py"
+  },
+  {
+    "from": "nisar_diagnostics.py",
+    "to": "old/nisar_diagnostics.py"
+  },
+  {
+    "from": "refresh_geographic_previews.py",
+    "to": "old/refresh_geographic_previews.py"
+  },
+  {
+    "from": "NISAR_PIPELINE_PLAN.md",
+    "to": "old/NISAR_PIPELINE_PLAN.md"
+  },
+  {
+    "from": "NISAR_ADAPTATION.md",
+    "to": "old/NISAR_ADAPTATION.md"
+  },
+  {
+    "from": "README.md",
+    "to": "old/UPSTREAM_README.md"
+  },
+  {
+    "from": "requirements.txt",
+    "to": "old/requirements.txt"
+  },
+  {
+    "from": "Datasets",
+    "to": "old/Datasets"
+  },
+  {
+    "from": "UCDFormer/vgg.py",
+    "to": "old/UCDFormer/vgg.py"
+  },
+  {
+    "from": "UCDFormer/main_seasonal_change_from_spring to_winter.py",
+    "to": "old/UCDFormer/main_seasonal_change_from_spring to_winter.py"
+  },
+  {
+    "from": "UCDFormer/prepare_dataset.py",
+    "to": "old/UCDFormer/prepare_dataset.py"
+  },
+  {
+    "from": "UCDFormer/main_landslide.py",
+    "to": "old/UCDFormer/main_landslide.py"
+  },
+  {
+    "from": "UCDFormer/networksForFeatureExtraction.py",
+    "to": "old/UCDFormer/networksForFeatureExtraction.py"
+  },
+  {
+    "from": "UCDFormer/dataset.py",
+    "to": "old/UCDFormer/dataset.py"
+  },
+  {
+    "from": "UCDFormer/fslic.c",
+    "to": "old/UCDFormer/fslic.c"
+  },
+  {
+    "from": "UCDFormer/saturateSomePercentile.py",
+    "to": "old/UCDFormer/saturateSomePercentile.py"
+  },
+  {
+    "from": "UCDFormer/process_mask.py",
+    "to": "old/UCDFormer/process_mask.py"
+  },
+  {
+    "from": "UCDFormer/data.py",
+    "to": "old/UCDFormer/data.py"
+  },
+  {
+    "from": "UCDFormer/shared.so",
+    "to": "old/UCDFormer/shared.so"
+  },
+  {
+    "from": "UCDFormer/img_augm.py",
+    "to": "old/UCDFormer/img_augm.py"
+  },
+  {
+    "from": "UCDFormer/main_seasonal_change_from _summer_to_autumn.py",
+    "to": "old/UCDFormer/main_seasonal_change_from _summer_to_autumn.py"
+  },
+  {
+    "from": "UCDFormer/utils.py",
+    "to": "old/UCDFormer/utils.py"
+  },
+  {
+    "from": "UCDFormer/main_style_changes.py",
+    "to": "old/UCDFormer/main_style_changes.py"
+  },
+  {
+    "from": "UCDFormer/change_prior.py",
+    "to": "old/UCDFormer/change_prior.py"
+  },
+  {
+    "from": "UCDFormer/utilf.py",
+    "to": "old/UCDFormer/utilf.py"
+  },
+  {
+    "from": "UCDFormer/model.py",
+    "to": "old/UCDFormer/model.py"
+  },
+  {
+    "from": "UCDFormer/output",
+    "to": "old/UCDFormer/output"
+  },
+  {
+    "from": "UCDFormer/scripts",
+    "to": "old/UCDFormer/scripts"
+  },
+  {
+    "from": "UCDFormer/dcvaUnequalRowColumn.py",
+    "to": "old/UCDFormer/dcvaUnequalRowColumn.py"
+  },
+  {
+    "from": "UCDFormer/mask_transfer.py",
+    "to": "old/UCDFormer/mask_transfer.py"
+  },
+  {
+    "from": "UCDFormer/pre_process.py",
+    "to": "old/UCDFormer/pre_process.py"
+  },
+  {
+    "from": "UCDFormer/options.py",
+    "to": "old/UCDFormer/options.py"
+  },
+  {
+    "from": "UCDFormer/Figures",
+    "to": "old/UCDFormer/Figures"
+  }
+]

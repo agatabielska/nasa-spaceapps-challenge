@@ -1,0 +1,61 @@
+{
+  "event": "spain_burgohondo",
+  "before": "2026-07-14T05:24:01+00:00",
+  "after": "2026-07-26T05:24:01+00:00",
+  "event_context": {
+    "anchor": "2026-07-22",
+    "status": "NASA first fire observations July 22/23; exact ignition time unverified",
+    "source": "https://science.nasa.gov/earth/earth-observatory/destructive-fires-char-western-europe/",
+    "note": "Pair brackets the first NASA observations near Burgohondo. Town-centered AOI is not a verified fire perimeter; post-image may be during continuing fires."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    -4.843993184786916,
+    40.37008444125045,
+    -4.7260068152130845,
+    40.45991555874955
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:32630",
+  "shape": [
+    509,
+    511
+  ],
+  "valid_fraction": 1.0,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -16.503138427734374,
+        -3.4253658390045167
+      ],
+      "pre_median_db": -9.361666679382324,
+      "post_median_db": -9.479199409484863,
+      "signed_median_db": -0.08741092681884766,
+      "absolute_median_db": 0.849696159362793,
+      "absolute_p95_db": 2.8779035568237292
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -22.306255073547362,
+        -9.211539058685302
+      ],
+      "pre_median_db": -15.275533676147461,
+      "post_median_db": -15.312567710876465,
+      "signed_median_db": 0.02467632293701172,
+      "absolute_median_db": 1.0099239349365234,
+      "absolute_p95_db": 3.2835275650024416
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

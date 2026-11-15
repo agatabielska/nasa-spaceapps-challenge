@@ -1,0 +1,61 @@
+{
+  "event": "nepal_shyar_khola",
+  "before": "2026-10-06T23:39:18+00:00",
+  "after": "2026-10-18T23:39:18+00:00",
+  "event_context": {
+    "anchor": "2026-10-11",
+    "status": "Event date independently documented",
+    "source": "https://eu-space.europa.eu/components/earth-observation-copernicus/image-of-the-day/landslide-triggered-flash-flood-sweeps-through-nepals-himalayan-valleys",
+    "note": "October 11 avalanche/debris-flow/flood cascade. River deposits, snow and terrain can produce different radar signatures."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    84.89520137143788,
+    28.41275444125045,
+    84.99737862856213,
+    28.50258555874955
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:32645",
+  "shape": [
+    1012,
+    1018
+  ],
+  "valid_fraction": 0.9472469850982707,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -19.607600173950196,
+        5.912143325805665
+      ],
+      "pre_median_db": -6.790981292724609,
+      "post_median_db": -6.96082878112793,
+      "signed_median_db": -0.12324142456054688,
+      "absolute_median_db": 1.6011204719543457,
+      "absolute_p95_db": 5.20640468597412
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -25.387901306152344,
+        -0.5761147022247307
+      ],
+      "pre_median_db": -12.539454460144043,
+      "post_median_db": -12.828746795654297,
+      "signed_median_db": -0.246490478515625,
+      "absolute_median_db": 1.6759614944458008,
+      "absolute_p95_db": 5.511230087280273
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

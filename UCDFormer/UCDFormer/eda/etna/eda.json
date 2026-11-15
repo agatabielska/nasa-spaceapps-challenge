@@ -1,0 +1,62 @@
+{
+  "event": "etna",
+  "before": "2026-07-23T04:08:29+00:00",
+  "after": "2026-08-16T04:08:28+00:00",
+  "event_context": {
+    "anchor": "2026-07-30",
+    "end": "2026-08-16",
+    "status": "Documented eruptive phases; not a single disaster onset",
+    "source": "https://ingvvulcani.com/2026/08/22/etna-la-calda-estate-del-2026/",
+    "note": "July 23 precedes selected late-July/August phases, but Etna was already active earlier in July. August 16 captures part of a multi-phase interval, not necessarily its end."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    14.943194446669025,
+    37.70508444125045,
+    15.056805553330975,
+    37.79491555874955
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:32633",
+  "shape": [
+    498,
+    500
+  ],
+  "valid_fraction": 0.999995983935743,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -14.648107376098633,
+        -1.015786709785462
+      ],
+      "pre_median_db": -7.725285530090332,
+      "post_median_db": -6.654090404510498,
+      "signed_median_db": 0.9022622108459473,
+      "absolute_median_db": 1.575618028640747,
+      "absolute_p95_db": 5.330513048171993
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -22.37312973022461,
+        -6.802103528976441
+      ],
+      "pre_median_db": -14.159420013427734,
+      "post_median_db": -14.420123100280762,
+      "signed_median_db": -0.11976814270019531,
+      "absolute_median_db": 1.5223536491394043,
+      "absolute_p95_db": 4.814959239959715
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

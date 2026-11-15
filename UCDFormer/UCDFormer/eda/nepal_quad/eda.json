@@ -1,0 +1,87 @@
+{
+  "event": "nepal_quad",
+  "before": "2026-09-21T12:58:11+00:00",
+  "after": "2026-10-15T12:58:12+00:00",
+  "event_context": {
+    "anchor": "2026-10-11",
+    "status": "Event date independently documented",
+    "source": "https://eu-space.europa.eu/components/earth-observation-copernicus/image-of-the-day/landslide-triggered-flash-flood-sweeps-through-nepals-himalayan-valleys",
+    "note": "October 11 avalanche/debris-flow/flood cascade. River deposits, snow and terrain can produce different radar signatures."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    84.89520137143788,
+    28.41275444125045,
+    84.99737862856213,
+    28.50258555874955
+  ],
+  "channels": [
+    "HH",
+    "HV",
+    "VH",
+    "VV"
+  ],
+  "crs": "EPSG:32645",
+  "shape": [
+    506,
+    509
+  ],
+  "valid_fraction": 0.9365841726395241,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -16.01007652282715,
+        15.927465438842724
+      ],
+      "pre_median_db": -5.463253021240234,
+      "post_median_db": -5.71566104888916,
+      "signed_median_db": -0.26604127883911133,
+      "absolute_median_db": 1.6092445850372314,
+      "absolute_p95_db": 5.139952659606934
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -22.3922518157959,
+        8.910071792602524
+      ],
+      "pre_median_db": -11.561838150024414,
+      "post_median_db": -12.364250183105469,
+      "signed_median_db": -0.7681188583374023,
+      "absolute_median_db": 1.699472427368164,
+      "absolute_p95_db": 5.495713233947754
+    },
+    {
+      "polarization": "VH",
+      "shared_display_db": [
+        -22.19724681854248,
+        9.21291446685791
+      ],
+      "pre_median_db": -11.35464859008789,
+      "post_median_db": -12.23474407196045,
+      "signed_median_db": -0.8447074890136719,
+      "absolute_median_db": 1.7184057235717773,
+      "absolute_p95_db": 5.543046951293945
+    },
+    {
+      "polarization": "VV",
+      "shared_display_db": [
+        -16.261274299621583,
+        15.409940528869605
+      ],
+      "pre_median_db": -5.799552917480469,
+      "post_median_db": -6.003932952880859,
+      "signed_median_db": -0.19486594200134277,
+      "absolute_median_db": 1.5989007949829102,
+      "absolute_p95_db": 5.169775009155273
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

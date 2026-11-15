@@ -1,0 +1,20 @@
+{
+  "source": "/home/marysia/Downloads/sar-change-detection/UCDFormer/UCDFormer/planning/spain_verification/CEMS_Piedralaves_observed_event.json",
+  "source_crs": "CRS84 longitude,latitude",
+  "reference_acquisition": "2026-08-05T07:32:00",
+  "reference_type": "optical-derived CEMS mapped burnt area",
+  "mapped_burn_fraction": 0.5502799323165677,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "mapped_burn_median": 0.0537603497505188,
+      "outside_polygon_median": 0.06638392806053162
+    },
+    {
+      "polarization": "HV",
+      "mapped_burn_median": -0.03755014389753342,
+      "outside_polygon_median": -0.0032177274115383625
+    }
+  ],
+  "caveat": "Outside polygons may be unburned or incompletely mapped; these are not generic-change labels"
+}
