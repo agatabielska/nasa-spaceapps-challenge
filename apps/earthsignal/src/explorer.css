@@ -8,7 +8,9 @@
   --line:var(--es-line);--line-soft:#8fd6ff26;--text:var(--es-text);--text-2:var(--es-text-2);--text-3:var(--es-text-3);
   --accent:var(--es-accent);--ink:var(--es-ink);
   --radius:8px;
-  display:flex;flex-direction:column;height:100dvh;min-height:600px;overflow:clip;background:var(--bg);color:var(--text);font-family:var(--es-body);
+  /* position:relative contains every absolutely placed element (overlays, screen-reader labels), so nothing can
+     reach past the screen and make the page itself scroll. */
+  position:relative;display:flex;flex-direction:column;height:100dvh;min-height:600px;overflow:clip;background:var(--bg);color:var(--text);font-family:var(--es-body);
 }
 .app button:hover{color:#fff}
 .app button,.app input,.app select{transition:background .18s,color .18s,border-color .18s}
@@ -111,7 +113,7 @@
 .app .event-row{display:flex;align-items:flex-start;gap:11px;width:100%;margin:2px 0;padding:9px 8px;border:1px solid transparent;border-radius:var(--radius);text-align:left}
 .app .event-row:hover{border-color:var(--line-soft);background:#8fd6ff0d}
 .app .event-row.active{border-color:#8fd6ff80;background:var(--panel-2);box-shadow:inset 3px 0 0 var(--accent)}
-.app .row-icon{display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;border-radius:var(--radius);background:color-mix(in srgb,var(--kind) 15%,transparent);color:var(--kind)}
+.app .row-icon{position:relative;display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;border-radius:var(--radius);background:color-mix(in srgb,var(--kind) 15%,transparent);color:var(--kind)}
 .app .row-text{flex:1;min-width:0}
 /* Names wrap to two lines instead of being cut off. */
 .app .row-text strong{display:-webkit-box;overflow:hidden;font-size:14.5px;font-weight:600;line-height:1.3;color:var(--text);-webkit-line-clamp:2;-webkit-box-orient:vertical}
