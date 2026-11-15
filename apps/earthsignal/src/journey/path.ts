@@ -69,3 +69,19 @@ export function shotAt(l:Layout,s:number):Shot{
 }
 // How far through its hold a scene is (0 before it, 1 after it).
 export function holdProgress(sc:PlacedScene,s:number){return sc.hold>0?clamp((s-sc.start)/sc.hold):s>=sc.start?1:0;}
+
+// Places the presenter can step to with the keyboard or the bar: every scene start, plus evenly spaced points
+// through a scene that pans (taller than the screen) or plays something during its hold (the drone flight).
+export function journeyStops(l:Layout,steps:(number|undefined)[]):number[]{
+  const stops:number[]=[];
+  l.scenes.forEach((sc,i)=>{
+    const given=steps[i],span=given?sc.hold:sc.pan,n=given??(sc.pan>0?Math.ceil(sc.pan/(l.h*.75)):0);
+    stops.push(sc.start);
+    for(let k=1;k<=n;k++)stops.push(sc.start+span*k/n);
+  });
+  return stops;
+}
+export const nextStop=(stops:number[],y:number)=>stops.find(s=>s>y+1)??stops[stops.length-1];
+export const prevStop=(stops:number[],y:number)=>[...stops].reverse().find(s=>s<y-1)??0;
+// The scene whose hold, or the flight after it, contains scroll position y.
+export function sceneAtScroll(l:Layout,y:number){let i=0;l.scenes.forEach((sc,k)=>{if(y>=sc.start-.5)i=k;});return i;}

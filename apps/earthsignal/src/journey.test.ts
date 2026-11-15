@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {holdProgress,layoutJourney,makeCamera,project,shotAt,sub,type Layout} from './journey/path.ts';
+import {holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,sub,type Layout} from './journey/path.ts';
 
 const sizes=[{id:'home',height:900,hold:270},{id:'about',height:1500,hold:270},{id:'flight',height:900,hold:3240},{id:'end',height:1100,hold:270}];
 const layout=layoutJourney(sizes,1440,900);
@@ -34,4 +34,15 @@ test('chapter switches halfway through a flight and hold progress drives the fli
   assert.equal(shotAt(layout,flight.start-layout.travel*.6).chapter,1);
   assert.equal(shotAt(layout,flight.start-layout.travel*.4).chapter,2);
   assert.equal(holdProgress(flight,flight.start-1),0);assert.equal(holdProgress(flight,flight.start+flight.hold/2),.5);assert.equal(holdProgress(flight,flight.end+5),1);
+});
+test('stops cover scene starts, pan steps and the playing scene, and step both ways',()=>{
+  const stops=journeyStops(layout,[undefined,undefined,3,undefined]),[home,about,flight,end]=layout.scenes;
+  assert.deepEqual(stops,[home.start,about.start,about.start+600,flight.start,flight.start+flight.hold/3,flight.start+flight.hold*2/3,flight.end,end.start,end.start+200]);
+  assert.equal(nextStop(stops,home.start),about.start);
+  assert.equal(nextStop(stops,about.start+100),about.start+600);
+  assert.equal(nextStop(stops,end.start+200),end.start+200);
+  assert.equal(prevStop(stops,flight.start+10),flight.start);
+  assert.equal(prevStop(stops,flight.start-300),about.start+600);
+  assert.equal(prevStop(stops,0),0);
+  assert.equal(sceneAtScroll(layout,flight.start-300),1);assert.equal(sceneAtScroll(layout,flight.start),2);
 });

@@ -3,6 +3,7 @@ import {Activity,ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,Fl
 import {Astronaut} from './Astronaut';
 import EarthGlobe from './EarthGlobe';
 import Starfield from './Starfield';
+import JourneyBar from './JourneyBar';
 import {Journey,JourneyContext} from './journey/engine';
 import {EXPLORER_PATH} from './routes';
 import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy} from './cases';
@@ -88,8 +89,9 @@ function CaseViewer({study}:{study:CaseStudy}){
 }
 
 // One stop of the camera journey. In motion mode it floats in 3D space; with reduced motion it is a plain block.
-function Scene({id,hold,children}:{id:string;hold?:number;children:ReactNode}){
-  return <div id={id} className="sp-scene" data-scene data-hold={hold}>{children}</div>;
+// hold/steps/dwell/pace tune how long the camera and the autopilot stay on it (see src/journey/engine.ts).
+function Scene({id,hold,steps,dwell,pace,children}:{id:string;hold?:number;steps?:number;dwell?:number;pace?:number;children:ReactNode}){
+  return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps} data-dwell={dwell} data-pace={pace}>{children}</div>;
 }
 
 function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
@@ -217,7 +219,7 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
     <div className="sp-stills">{[0,44,80,131].map((index,i)=><figure key={index}><img src={flight.frame(index)} width={flight.width} height={flight.height} loading="lazy" alt={`3D view of the flood trace: ${flight.beats[i].stop}`}/><figcaption><strong>{flight.beats[i].stop}</strong>{flight.beats[i].text}</figcaption></figure>)}</div>
     {legend}{credit}
   </section></Scene>;
-  return <Scene id="flight" hold={FLIGHT_HOLD}><section className="sp-flight" aria-labelledby="flight-title">
+  return <Scene id="flight" hold={FLIGHT_HOLD} steps={3} dwell={1.5} pace={.4}><section className="sp-flight" aria-labelledby="flight-title">
     <div className="sp-flight-stage">
       <div className="sp-flight-window">
         <canvas ref={canvas} role="img" aria-label="Drone-style flight over a 3D map of the Bhote Koshi valley, following the detected flood trace from its origin to Syabrubesi"/>
@@ -240,7 +242,7 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
 export default function Landing(){
   const reduced=useReducedMotion();
   const [paused,setPaused]=useState(false),[menu,setMenu]=useState(false),[chapter,setChapter]=useState('home');
-  const [journey,setJourney]=useState<Journey|null>(null);
+  const [journey,setJourney]=useState<Journey|null>(null),[autopilot,setAutopilot]=useState(false);
   const root=useRef<HTMLDivElement>(null),world=useRef<HTMLElement>(null),spacer=useRef<HTMLDivElement>(null);
   useEffect(()=>{
     document.title='EarthSignal — Dancing with the SARs';
@@ -250,9 +252,9 @@ export default function Landing(){
   // Motion mode: one camera flies through scenes placed in 3D space.
   useEffect(()=>{
     if(reduced||!root.current||!world.current||!spacer.current)return;
-    const engine=new Journey(root.current,world.current,spacer.current,id=>setChapter(id));
+    const engine=new Journey(root.current,world.current,spacer.current,{onChapter:id=>setChapter(id),onAutopilot:setAutopilot});
     setJourney(engine);
-    return()=>{engine.destroy();setJourney(null);};
+    return()=>{engine.destroy();setJourney(null);setAutopilot(false);};
   },[reduced]);
   // Reduced motion: an ordinary scrolling page with gentle reveals.
   useEffect(()=>{
@@ -291,7 +293,7 @@ export default function Landing(){
     </nav>
 
     <main className="sp-world" ref={world}>
-      <Scene id="home"><section className="sp-hero" aria-labelledby="hero-title">
+      <Scene id="home" dwell={3}><section className="sp-hero" aria-labelledby="hero-title">
         <div className="sp-hero-inner">
           <p className="sp-kicker"><i/>NASA Space Apps Challenge 2026 · EarthSignal</p>
           <h1 id="hero-title" className="sp-title"><span className="sp-title-line">Dancing with</span> <span className="sp-title-line sp-title-accent">the SARs</span></h1>
@@ -346,7 +348,7 @@ export default function Landing(){
 
       <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='etna')}/>
 
-      <Scene id="discover">
+      <Scene id="discover" dwell={4}>
         <section className="sp-cta" aria-labelledby="discover-title">
           <div className="sp-reveal">
             <span className="sp-index">04 / Your turn</span>
@@ -361,6 +363,7 @@ export default function Landing(){
         </footer>
       </Scene>
     </main>
+    <JourneyBar chapters={chapters} chapter={chapter} autopilot={autopilot}/>
     <div className="sp-spacer" ref={spacer} aria-hidden="true"/>
   </div></JourneyContext.Provider>;
 }
