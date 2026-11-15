@@ -10,13 +10,13 @@ test('real database results power navigation, session and source output',async()
   const c=new Catalog(':memory:',readSeed());try{
     const orbit=new Orbit(c,model([call('search_events',search),call('focus_event',{eventId:'spain'}),{role:'assistant',content:'Scenariusz demonstracyjny w Hiszpanii.'}]));
     const r=await orbit.chat({message:'Dowolna prośba użytkownika',context});
-    assert.deepEqual(r.actions,[{type:'show_results',eventIds:['spain']},{type:'focus_event',eventId:'spain'}]);assert.equal(r.events[0].catalogVerified,false);assert.equal(r.revision,7);assert.ok(r.sessionId);
+    assert.deepEqual(r.actions,[{type:'show_results',eventIds:['spain']},{type:'focus_event',eventId:'spain'}]);assert.equal(r.events[0].catalogVerified,true);assert.equal(r.revision,7);assert.ok(r.sessionId);
   }finally{c.close();}
 });
 test('invented event and unknown tools do not cause navigation',async()=>{
   const c=new Catalog(':memory:',readSeed());try{
     const orbit=new Orbit(c,model([call('focus_event',{eventId:'imaginary-disaster'}),call('execute_sql',{sql:'DELETE FROM events'}),{role:'assistant',content:'Nie znaleziono rekordu.'},{role:'assistant',content:'Nie znaleziono rekordu.'}]));
-    await assert.rejects(orbit.chat({message:'test',context}),/did not finish/);assert.equal(c.search().total,13);
+    await assert.rejects(orbit.chat({message:'test',context}),/did not finish/);assert.equal(c.search().total,15);
   }finally{c.close();}
 });
 test('model failure cannot commit a partially prepared navigation',async()=>{

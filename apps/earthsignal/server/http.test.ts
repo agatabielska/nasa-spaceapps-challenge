@@ -32,7 +32,7 @@ const code=(text:string)=>JSON.parse(text).error?.code;
 test('health and catalog answer; unknown API paths and methods are refused',async()=>{
   const s=await start();
   try{
-    const health=await call(s.port,'/api/health');assert.equal(health.status,200);assert.equal(JSON.parse(health.text).events,13);
+    const health=await call(s.port,'/api/health');assert.equal(health.status,200);assert.equal(JSON.parse(health.text).events,15);
     assert.equal((await call(s.port,'/api/events/etna')).status,200);
     assert.equal(code((await call(s.port,'/api/events/nope')).text),'NOT_FOUND');
     assert.equal(code((await call(s.port,'/api/nope')).text),'NOT_FOUND');
