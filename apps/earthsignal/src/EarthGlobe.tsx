@@ -1,8 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import './earth-globe.css';
 
-// NASA Blue Marble is a photographic background, not a NISAR data layer. It is redrawn in a flat, cartoon-like
-// palette (bright water, flat land, outlined coasts, drifting clouds) to match the illustrated landing page.
+// NASA Blue Marble is a photographic background, not a NISAR data layer.
 // A single screen-space sphere keeps this decorative scene independent of the map engine.
 const vertexSource=`
   attribute vec2 a_position;
@@ -14,27 +13,8 @@ const fragmentSource=`
   varying vec2 v_position;
   uniform sampler2D u_earth;
   uniform float u_rotation;
-  uniform float u_time;
+  uniform float u_scan;
   const float PI=3.14159265359;
-  const vec2 TEXEL=vec2(1.0/2048.0,1.0/1024.0);
-  // Blue Marble oceans are near-black navy: water = blue clearly above red and green, and dark.
-  float water(vec2 uv){
-    vec3 c=texture2D(u_earth,uv).rgb;
-    float lum=dot(c,vec3(0.299,0.587,0.114));
-    return smoothstep(0.012,0.04,c.b-max(c.r,c.g))*(1.0-smoothstep(0.1,0.2,lum));
-  }
-  float around(vec2 uv,float r){
-    float s=0.0;
-    for(int k=0;k<8;k++){float a=float(k)*0.785398;s+=water(uv+vec2(cos(a),sin(a))*TEXEL*r);}
-    return s/8.0;
-  }
-  float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
-  float noise(vec3 p){
-    vec3 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
-    return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
-               mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);
-  }
-  float fbm(vec3 p){float v=0.0,a=0.5;for(int k=0;k<4;k++){v+=a*noise(p);p*=2.07;a*=0.5;}return v;}
   void main(){
     vec2 p=v_position/0.91;
     float radius=length(p);
@@ -50,40 +30,18 @@ const fragmentSource=`
     float tilt=0.29;
     vec3 world=vec3(normal.x,normal.y*cos(tilt)+normal.z*sin(tilt),-normal.y*sin(tilt)+normal.z*cos(tilt));
     float longitude=atan(world.x,world.z)+u_rotation;
-    float latitude=asin(clamp(world.y,-1.0,1.0));
-    vec2 uv=vec2(fract(0.5+longitude/(2.0*PI)),0.5+latitude/PI);
-    vec3 c=texture2D(u_earth,uv).rgb;
-    float lum=dot(c,vec3(0.299,0.587,0.114));
-
-    // Cartoon palette: flat bright oceans with lighter shallows, flat greens and sand, white ice,
-    // and a dark outline along the coasts.
-    float w=water(uv),near=around(uv,2.5),far=around(uv,9.0);
-    float lat=abs(world.y);
-    vec3 ocean=mix(vec3(0.11,0.55,0.80),vec3(0.07,0.38,0.62),smoothstep(0.25,0.9,lat));
-    ocean=mix(ocean,vec3(0.38,0.80,0.93),w*(1.0-far)*0.8);
-    // Gentle animated ripples on the water (periodic in longitude, so there is no seam).
-    float ripple=sin(uv.x*2.0*PI*48.0+uv.y*90.0+u_time*1.4)*sin(uv.y*170.0-u_time*0.9);
-    ocean+=vec3(0.07,0.12,0.14)*smoothstep(0.82,0.97,ripple)*(1.0-lat);
-    float desert=smoothstep(0.06,0.2,c.r-c.b)*smoothstep(0.22,0.4,lum);
-    vec3 land=mix(vec3(0.17,0.45,0.37),vec3(0.30,0.66,0.44),smoothstep(0.02,0.14,lum));
-    land=mix(land,vec3(0.86,0.74,0.48),desert);
-    land=mix(land,vec3(0.93,0.97,1.0),smoothstep(0.55,0.75,lum));
-    vec3 base=mix(land,ocean,w);
-    float coast=(1.0-w)*smoothstep(0.12,0.55,near);
-    base=mix(base,vec3(0.05,0.18,0.24),coast*0.7);
-
-    // Soft clouds drifting a little faster than the ground.
-    float drift=longitude+u_time*0.02;
-    vec3 q=vec3(sin(drift)*cos(latitude),sin(latitude),cos(drift)*cos(latitude));
-    float cloud=smoothstep(0.6,0.8,fbm(q*3.2+vec3(0.0,0.0,u_time*0.01)));
-
-    // Toon lighting: bright day side, a soft stepped terminator, a lifted night side.
+    vec2 uv=vec2(fract(0.5+longitude/(2.0*PI)),0.5+asin(clamp(world.y,-1.0,1.0))/PI);
+    vec3 photograph=texture2D(u_earth,uv).rgb;
     float diffuse=max(0.0,dot(normal,light));
-    float toon=0.5+0.4*smoothstep(0.0,0.3,diffuse)+0.12*smoothstep(0.55,0.7,diffuse);
-    vec3 surface=base*toon;
-    surface=mix(surface,vec3(0.96,0.98,1.0)*(0.65+0.35*toon),cloud*0.6);
+    // Brighter than a photo-real night side, so the planet reads on a projector: a generous ambient term,
+    // a little extra saturation and a strong cyan atmosphere rim.
+    vec3 surface=photograph*(0.32+diffuse*1.0);
+    surface=mix(vec3(dot(surface,vec3(0.299,0.587,0.114))),surface,1.18);
     float rim=pow(1.0-normal.z,3.0);
-    surface+=vec3(0.33,0.72,1.0)*rim*(0.3+diffuse)*0.6;
+    surface+=vec3(0.33,0.72,1.0)*rim*(0.3+diffuse)*0.7;
+    // Radar swath: a thin bright line sweeps across the disc, leaving a faint lit strip behind it.
+    float d=p.x-u_scan;
+    surface+=vec3(0.55,0.9,1.0)*(exp(-d*d/0.0005)*0.55+(d<0.0?exp(d/0.22)*0.07:0.0))*normal.z;
     float edge=1.0-smoothstep(0.996,1.0,radius);
     gl_FragColor=vec4(surface,edge);
   }
@@ -126,17 +84,17 @@ export default function EarthGlobe({paused=false}:{paused?:boolean}){
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
       gl.uniform1i(gl.getUniformLocation(program,'u_earth'),0);
     }catch{release();return;}
-    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),timeUniform=gl.getUniformLocation(program,'u_time');
-    let clock=0;
+    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),scanUniform=gl.getUniformLocation(program,'u_scan');
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
     const draw=(time:number)=>{
       frame=0;if(disposed||!loaded||!visible||document.hidden)return;
       const moving=!pausedRef.current&&!reduced.matches;
       // About one turn a minute: alive, but calm enough to read the chips around it.
-      if(lastTime&&moving){rotation+=Math.min(time-lastTime,50)*0.00011;clock+=Math.min(time-lastTime,50)/1000;}
+      if(lastTime&&moving)rotation+=Math.min(time-lastTime,50)*0.00011;
       lastTime=time;
       gl.viewport(0,0,element.width,element.height);
-      gl.uniform1f(timeUniform,clock);
+      // The swath crosses the disc every 7 s and is hidden while motion is paused.
+      gl.uniform1f(scanUniform,moving?((time/7000)%1)*2.6-1.3:-9.0);
       gl.uniform1f(rotationUniform,rotation);gl.drawArrays(gl.TRIANGLES,0,6);
       if(!pausedRef.current&&!reduced.matches)frame=requestAnimationFrame(draw);
     };
