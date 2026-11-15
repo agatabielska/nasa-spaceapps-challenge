@@ -4,7 +4,7 @@ import {Astronaut} from './Astronaut';
 import EarthGlobe from './EarthGlobe';
 import Starfield from './Starfield';
 import JourneyBar from './JourneyBar';
-import {Journey,JourneyContext} from './journey/engine';
+import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
 import {EXPLORER_PATH} from './routes';
 import {detected,etna,etnaCloud,flight,flightDistanceAt,flightTimeAt,nepal,spain,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
@@ -40,10 +40,42 @@ function Placeholder({title,asset,source}:{title:string;asset:string;source:stri
   </div>;
 }
 
+// Autopilot demo of a before/after divider, as [seconds, split %] keyframes: hold, sweep right to show more
+// of "before", across to show more of "after", and back to the middle, where it stays until the next stop.
+// Seconds the autopilot rests on each case block: one full divider sweep plus a moment to read.
+const CASE_DWELL=8.5;
+const SWEEP:[number,number][]=[[0,50],[.7,50],[2,84],[2.5,84],[4.6,16],[5.1,16],[6.4,50],[7.6,50]];
+function sweepAt(seconds:number,from:number){
+  const t=Math.min(seconds,SWEEP[SWEEP.length-1][0]),first=seconds<SWEEP[1][0];
+  for(let k=1;k<SWEEP.length;k++){
+    const [t0,v0]=SWEEP[k-1],[t1,v1]=SWEEP[k];
+    if(t<=t1){const u=(t-t0)/(t1-t0),e=u*u*(3-2*u),start=first&&k===1?from:v0;return start+(v1-start)*e;}
+  }
+  return 50;
+}
+
 // Before/after image comparison: drag the divider, or use the labelled range input from the keyboard.
+// While the autopilot runs and the comparison is at rest on screen, the divider sweeps on its own.
 function Compare({name,before,after,width,height,children}:{name:string;before:CaseImage;after:CaseImage;width:number;height:number;children?:ReactNode}){
   const [split,setSplit]=useState(50),[failed,setFailed]=useState<string[]>([]);
-  const frame=useRef<HTMLDivElement>(null);
+  const frame=useRef<HTMLDivElement>(null),splitRef=useRef(split),autopilot=useContext(AutopilotContext);
+  splitRef.current=split;
+  useEffect(()=>{
+    if(!autopilot)return;
+    let raf=0,since=-1,from=50;
+    const tick=(now:number)=>{
+      raf=requestAnimationFrame(tick);
+      const el=frame.current;if(!el){since=-1;return;}
+      // Only at rest on screen: drawn at its real size (the camera is not flying), inside the window, and its
+      // middle above the bottom bar. Scenes waiting off screen fail the first checks.
+      const r=el.getBoundingClientRect(),resting=Math.abs(r.width-el.offsetWidth)<1.5&&r.left>=0&&r.right<=window.innerWidth&&r.top>=40&&r.top+r.height/2<=window.innerHeight-100;
+      if(!resting){since=-1;return;}
+      if(since<0){since=now;from=splitRef.current;}
+      setSplit(sweepAt((now-since)/1000,from));
+    };
+    raf=requestAnimationFrame(tick);
+    return()=>cancelAnimationFrame(raf);
+  },[autopilot]);
   const move=(e:ReactPointerEvent<HTMLDivElement>)=>{const r=frame.current?.getBoundingClientRect();if(r)setSplit(clamp((e.clientX-r.left)/r.width)*100);};
   const fail=(src:string)=>setFailed(list=>list.includes(src)?list:[...list,src]);
   const missing=[before,after].find(image=>failed.includes(image.src));
@@ -95,7 +127,7 @@ function Scene({id,hold,steps,dwell,pace,children}:{id:string;hold?:number;steps
 }
 
 function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
-  return <Scene id={study.id}><section className={`sp-section sp-case sp-case-${study.id}`} aria-labelledby={`${study.id}-title`}>
+  return <Scene id={study.id} dwell={CASE_DWELL}><section className={`sp-section sp-case sp-case-${study.id}`} aria-labelledby={`${study.id}-title`}>
     <div className="sp-case-grid">
       <div className="sp-case-text sp-reveal">
         <span className="sp-index">Case {study.index} / {study.kind}</span>
@@ -288,7 +320,7 @@ export default function Landing(){
   },[reduced]);
   const still=paused||reduced,activeNav=chapters.find(item=>item.id===chapter)?.nav;
   const chapterIndex=chapters.findIndex(item=>item.id===chapter);
-  return <JourneyContext.Provider value={journey}><div className={'landing'+(reduced?' sp-flow':' sp-engine')+(still?' sp-paused':'')} ref={root}>
+  return <JourneyContext.Provider value={journey}><AutopilotContext.Provider value={autopilot}><div className={'landing'+(reduced?' sp-flow':' sp-engine')+(still?' sp-paused':'')} ref={root}>
     <div className="sp-space" aria-hidden="true"/>
     <Starfield paused={paused} journey={journey}/>
     <a className="sp-skip" href="#about">Skip to the journey</a>
@@ -374,5 +406,5 @@ export default function Landing(){
     </main>
     <JourneyBar chapters={chapters} chapter={chapter} autopilot={autopilot}/>
     <div className="sp-spacer" ref={spacer} aria-hidden="true"/>
-  </div></JourneyContext.Provider>;
+  </div></AutopilotContext.Provider></JourneyContext.Provider>;
 }

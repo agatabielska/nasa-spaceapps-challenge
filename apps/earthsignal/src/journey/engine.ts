@@ -3,10 +3,10 @@ import {blockStops,clamp,holdProgress,journeyStops,layoutJourney,makeCamera,next
 
 export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;hold:Record<string,number>;progress:number;chapter:number;marks:number[]};
 // data-hold: minimum screens to rest on a scene · data-steps: stops while it plays, as fractions of its hold ·
-// data-dwell: autopilot pause
+// data-dwell: autopilot pause on each content block
 // in seconds · data-pace: autopilot speed through the scene, in screens per second.
 type Scene={el:HTMLElement;id:string;minHold:number;steps?:number[];dwell:number;pace:number};
-type Autopilot={phase:'arrive'|'rest'|'move'|'linger';wait:number;y:number;from:number;to:number;time:number;duration:number};
+type Autopilot={phase:'arrive'|'rest'|'move';wait:number;y:number;from:number;to:number;time:number;duration:number};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
 // Room left above a content block when the camera stops on it (top bar), and below it (presenter bar).
 const STOP_GAP=96,BAR_ROOM=96;
@@ -164,20 +164,21 @@ export class Journey{
     if(a.phase==='arrive'){if(Math.abs(this.cam-a.y)<l.h*.01){a.phase='rest';a.wait=info.dwell;}return;}
     if(a.phase==='rest'){
       a.wait-=dt;if(a.wait>0)return;
-      // A camera move through the scene: ramps up and down gently, steady speed in between.
-      a.from=a.y;a.to=Math.max(a.y,info.steps||i===l.scenes.length-1?sc.end:sc.start+sc.pan);
-      a.time=0;a.duration=(a.to-a.from)/(info.pace*l.h)+RAMP;a.phase='move';
+      // Next move inside the scene: right through a scene that plays (the flight), otherwise on to the next
+      // content block, resting on each one. With nothing left, fly on to the next scene.
+      const last=i===l.scenes.length-1,limit=info.steps||last?sc.end:sc.start+sc.pan;
+      const to=info.steps?limit:this.stops.find(stop=>stop>a.y+1&&stop<=limit+.5);
+      if(to===undefined||to<=a.y+.5){
+        if(last){this.setAutopilot(false);return;}
+        a.y=l.scenes[i+1].start;this.scrollTo(a.y);a.y=window.scrollY;a.phase='arrive';return;
+      }
+      // The move ramps up and down gently, with a steady speed in between.
+      a.from=a.y;a.to=to;a.time=0;a.duration=(a.to-a.from)/(info.pace*l.h)+RAMP;a.phase='move';
     }
-    if(a.phase==='move'){
-      a.time+=dt;
-      const t=a.duration>0?clamp(a.time/a.duration):1;
-      a.y=a.from+(a.to-a.from)*easeMove(t,a.duration>0?Math.min(.3,RAMP/a.duration):0);this.scrollTo(a.y);
-      if(t>=1){a.phase='linger';a.wait=a.to>a.from+.5?2.5:0;}
-      return;
-    }
-    a.wait-=dt;if(a.wait>0)return;
-    if(i>=l.scenes.length-1){this.setAutopilot(false);return;}
-    a.y=l.scenes[i+1].start;this.scrollTo(a.y);a.y=window.scrollY;a.phase='arrive';
+    a.time+=dt;
+    const t=a.duration>0?clamp(a.time/a.duration):1;
+    a.y=a.from+(a.to-a.from)*easeMove(t,a.duration>0?Math.min(.3,RAMP/a.duration):0);this.scrollTo(a.y);
+    if(t>=1){a.phase='rest';a.wait=info.steps?2.5:info.dwell;}
   }
   private onClick=(e:MouseEvent)=>{
     const link=(e.target as Element|null)?.closest?.('a[href^="#"]');
@@ -240,3 +241,5 @@ export class Journey{
 }
 
 export const JourneyContext=createContext<Journey|null>(null);
+// True while the autopilot runs, so scenes can demonstrate themselves (e.g. sweep the before/after dividers).
+export const AutopilotContext=createContext(false);
