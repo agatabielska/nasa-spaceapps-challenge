@@ -30,7 +30,6 @@ export const spain:CaseStudy={
 
 export const etna:CaseStudy={
   look:{region:'Etna',sub:'Eruption',code:'IT',theme:'fire',panel:'Volcanic signal',status:'Change analysis',caption:'Volcanic activity analysis'},
-  photo:{src:'/media/cases/etna/satellite.webp',source:'Esri World Imagery',label:'Satellite photo',alt:'Satellite photo of Mount Etna.'},mask:'/media/cases/etna/detected.webp',
   id:'etna',index:'01',kind:'Volcanic eruption',title:'Etna eruption',place:'Sicily, Italy',eventDate:'6 August 2026',
   summary:'Fresh lava and ash reshape a volcano’s surface. Comparing NISAR radar passes from before and after the eruption shows where the ground changed, marked in pink on the satellite photo.',
   stats:[{value:'9.7',unit:'km²',label:'Changed surface detected by radar'},{value:'36',unit:'days',label:'Between passes: 23 Jul → 28 Aug 2026'}],
@@ -94,5 +93,5 @@ export const detected=[
   {id:'earthquakes',label:'Earthquakes',color:'#ffd84d',place:{lat:38.3,lon:140.9,name:'Japan',example:true},picture:null,text:'Repeat radar passes can reveal ground shifts of a few centimetres along a fault.',target:null,cta:'Coming soon'},
   {id:'farming',label:'Farming activities',color:'#7ddc6f',place:{lat:41.9,lon:-93.1,name:'US Midwest',example:true},picture:null,text:'Radar brightness follows crops through the season: growth, harvest and changing soil moisture.',target:null,cta:'Coming soon'},
   {id:'glaciers',label:'Glacier movement',color:'#9be7ff',place:{lat:28.2,lon:85.4,name:'Rasuwa, Nepal',example:false},picture:{src:'/media/cases/nepal/after.webp',caption:'NISAR radar composite of the Rasuwa flood area, Nepal'},text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'flight',cta:'See the Nepal flight'},
-  {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',place:{lat:37.75,lon:15,name:'Etna, Italy',example:false},picture:{src:'/media/cases/etna/after.webp',caption:'NISAR radar composite of Mount Etna, Italy'},text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See the Etna case'},
+  {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',place:{lat:37.75,lon:15,name:'Etna, Italy',example:false},picture:{src:'/media/cases/etna/after.webp',caption:'NISAR radar composite of Mount Etna, Italy'},text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See why radar'},
 ] as const;

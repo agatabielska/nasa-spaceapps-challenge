@@ -15,7 +15,7 @@ const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
 // label: the presenter bar and the rail tooltip · short: the rail's step name.
 const chapters=[
   {id:'home',label:'Home',short:'Home'},{id:'about',label:'About',short:'Earth'},
-  {id:'etna',label:'Etna · eruption',short:'Etna'},
+  {id:'etna',label:'Why radar · Etna',short:'Radar'},
   {id:'flight',label:'Nepal · 3D flight',short:'Flight'},{id:'discover',label:'Discover',short:'Discover'},
 ];
 // Screens of scrolling the camera spends on the drone flight.
@@ -114,42 +114,11 @@ function Panel({code,label,status,caption,note,tag,children}:{code:string;label:
   </div>;
 }
 
-// A case on the landing page, kept simple: an archive satellite photo, and on the right of the divider the same
-// photo with one mask on it, every place where our model detected change. Drag the divider to reveal the mask.
-function CaseViewer({study}:{study:CaseStudy}){
-  const photo=study.photo??study.after;
-  const before={...photo,label:'Satellite photo',date:undefined},after={...photo,label:'NISAR detection',date:undefined,alt:`${photo.alt} Areas where NISAR detected change are marked in pink.`};
-  return <Panel code={study.look.code} label={study.look.panel} status={study.look.status} caption={study.look.caption} note="Pink: where our model detected change between two NISAR passes. Background: archive satellite photo, not from the day of the event." tag="NISAR + satellite"><div className="sp-case-visual">
-    <Compare name={study.title} before={before} after={after} width={study.width} height={study.height}>
-      {study.mask&&<img className="sp-layer sp-layer-after" src={study.mask} alt="" draggable={false}/>}
-    </Compare>
-  </div></Panel>;
-}
-
 // One stop of the camera journey. In motion mode it floats in 3D space; with reduced motion it is a plain block.
 // hold/steps/dwell/pace tune how long the camera and the autopilot stay on it (see src/journey/engine.ts).
 // close: the scene waits right behind the previous one and the camera pushes straight through to it.
 function Scene({id,hold,steps,dwell,pace,close,children}:{id:string;hold?:number;steps?:number[];dwell?:number;pace?:number;close?:boolean;children:ReactNode}){
   return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps?.join(',')} data-dwell={dwell} data-pace={pace} data-close={close?'':undefined}>{children}</div>;
-}
-
-// intro: a block shown above the case itself (Etna: optical versus radar, before our detection).
-function CaseSection({study,intro}:{study:CaseStudy;intro?:ReactNode}){
-  const {look}=study;
-  return <Scene id={study.id} dwell={CASE_DWELL}><section className={`sp-section sp-case sp-case-${study.id} sp-theme-${look.theme}`} aria-labelledby={`${study.id}-title`}>
-    {intro}
-    <div className="sp-case-grid" data-stop={intro?'':undefined}>
-      <div className="sp-case-text sp-reveal">
-        <span className="sp-index">Event trace 0{study.index}</span>
-        <h2 id={`${study.id}-title`} className="sp-case-title"><span className="sp-case-big">{look.region}<i>.</i></span> <span className="sp-case-sub">{look.sub}</span></h2>
-        <p className="sp-case-meta">{study.title} · {study.place} · {study.eventDate}</p>
-        <p>{study.summary}</p>
-        <dl className="sp-stats">{study.stats.map(stat=><div key={stat.label}><dt>{stat.label}</dt><dd>{stat.value}{stat.unit&&<small>{stat.unit}</small>}</dd></div>)}</dl>
-        <ul className="sp-micro"><li>Region / {look.region}</li><li>Type / {study.kind}</li></ul>
-      </div>
-      <div className="sp-reveal"><CaseViewer study={study}/></div>
-    </div>
-  </section></Scene>;
 }
 
 // About: a camera flies around the globe from one event type's site to the next. The planet turns under it, the
@@ -449,18 +418,18 @@ export default function Landing(){
       </section></Scene>
 
 
-      <CaseSection study={etna} intro={
+      <Scene id="etna" dwell={CASE_DWELL}><section className="sp-section sp-case sp-case-etna sp-theme-fire" aria-labelledby="etna-title">
         <div className="sp-cloud sp-cloud-first sp-reveal">
           <div className="sp-cloud-text">
             <span className="sp-index">Why radar</span>
-            <h3>Clouds hide the summit. Radar sees through.</h3>
+            <h2 id="etna-title">Clouds hide the summit. Radar sees through.</h2>
             <p>An optical satellite sees a white cloud cap over Etna. Radar passes through cloud, so NISAR still maps the summit and the lava fields beneath it.</p>
           </div>
           <Panel code="IT" label="Optical vs radar" status="Through cloud" caption="Etna under a cloud cap" note="Left: Sentinel-2 optical image. Right: NISAR radar." tag="Sentinel-2 · NISAR">
             <Compare name="Etna under cloud" before={etnaCloud.before} after={etnaCloud.after} width={etnaCloud.width} height={etnaCloud.height}/>
           </Panel>
         </div>
-      }/>
+      </section></Scene>
 
 
       <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='etna')}/>

@@ -315,7 +315,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-layers button[aria-pressed=true] em{border-color:var(--sp-accent);background:var(--sp-accent);color:var(--sp-ink)}
 
 .sp-cloud{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4.5vw,84px);align-items:center;margin-top:clamp(70px,11vh,130px)}
-.sp-cloud h3{font-size:clamp(28px,3vw,52px);font-weight:800;line-height:1.08;letter-spacing:-.03em}
+.sp-cloud :is(h2,h3){font-size:clamp(28px,3vw,52px);font-weight:800;line-height:1.08;letter-spacing:-.03em}
 .sp-cloud p{margin-top:1em;color:var(--sp-text-2)}
 
 /* 3.2 → 3.3 Drone flight: one screen-sized scene; the camera rests on it while scrolling picks the frame. */
