@@ -1,5 +1,5 @@
 // Finished analyses, keyed by catalog event id. Everything shown in the "full analysis" view of the app lives in
-// public/analysis/<id>/ and is produced by the Python pipeline in llm-based-model/ (branch KOBRAncz):
+// public/analysis/<id>/ and is produced by the Python pipeline in model/:
 // tour.html = make_map3d.py --lang en, timeline.html = make_timeline.py, figures = analyze_case.py,
 // validate_case.py, compare_optical.py, subsidence_series.py, subsidence_detail.py and gis_check.py.
 export type Figure={title:string;caption:string;src?:string;pair?:{src:string;label:string}[]};

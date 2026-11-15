@@ -1,4 +1,0 @@
-# Editable install of the package + all optional extras.
-# After the first successful setup, freeze exact versions for reproducibility:
-#   pip freeze > requirements.lock.txt
--e .[nisar,dev]
