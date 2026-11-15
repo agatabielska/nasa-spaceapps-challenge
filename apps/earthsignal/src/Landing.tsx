@@ -14,7 +14,7 @@ import './landing.css';
 const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
 // label: the presenter bar and the rail tooltip · short: the rail's step name.
 const chapters=[
-  {id:'home',label:'Home',short:'Home'},{id:'about',label:'About',short:'Earth'},{id:'work',label:'Case studies',short:'Cases'},
+  {id:'home',label:'Home',short:'Home'},{id:'about',label:'About',short:'Earth'},
   {id:'spain',label:'Spain · wildfire',short:'Spain'},{id:'etna',label:'Etna · eruption',short:'Etna'},{id:'nepal',label:'Nepal · flood',short:'Nepal'},
   {id:'flight',label:'Nepal · 3D flight',short:'Flight'},{id:'discover',label:'Discover',short:'Discover'},
 ];
@@ -452,20 +452,6 @@ export default function Landing(){
         <AboutGlobe paused={paused} reduced={reduced}/>
       </section></Scene>
 
-      <Scene id="work"><section className="sp-section sp-work" aria-labelledby="work-title">
-        <header className="sp-heading sp-reveal">
-          <span className="sp-index">02 / Case studies</span>
-          <h2 id="work-title">Three events, seen by radar.</h2>
-          <p>Each case compares two NISAR passes, one before the event and one after, and shows where our model detected change.</p>
-        </header>
-        <div className="sp-case-links sp-reveal">
-          {[spain,etna,nepal].map(study=><a key={study.id} className="sp-frame" href={`#${study.id}`}>
-            <span className="sp-index">Case {study.index}</span><strong>{study.title}</strong><span>{study.kind} · {study.place}</span><ArrowDown size={22} aria-hidden="true"/>
-          </a>)}
-        </div>
-        <p className="sp-disclaimer sp-reveal">The colour images are radar composites, not natural-colour photographs. Coloured areas are detections by our model, not validated damage maps.</p>
-      </section></Scene>
-
       <CaseSection study={spain}/>
 
       <CaseSection study={etna}>
@@ -488,7 +474,7 @@ export default function Landing(){
       <Scene id="discover" dwell={4}>
         <section className="sp-cta" aria-labelledby="discover-title">
           <div className="sp-reveal">
-            <span className="sp-index">04 / Your turn</span>
+            <span className="sp-index">02 / Your turn</span>
             <h2 id="discover-title" className="sp-title"><span className="sp-title-line">Discover more</span> <span className="sp-title-line sp-title-accent">yourself</span></h2>
             <p className="sp-lead">Open the EarthSignal app to explore the globe, open the full analyses and ask Orbit, our guide.</p>
             <a className="sp-button sp-button-large" href={EXPLORER_PATH}>Open the app <Rocket size={24} aria-hidden="true"/></a>

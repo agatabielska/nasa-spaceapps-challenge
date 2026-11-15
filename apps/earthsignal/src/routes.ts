@@ -2,3 +2,5 @@
 export const EXPLORER_PATH='/explore';
 // TEMPORARY: prototype page comparing two About designs.
 export const ABOUT_VARIANTS_PATH='/about-variants';
+// The 30-second presentation: a page of its own, with nothing else on it.
+export const SHOW_PATH='/show';
