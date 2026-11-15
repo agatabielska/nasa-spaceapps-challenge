@@ -49,7 +49,7 @@ export const analyses:Record<string,Analysis>={
   },
   silesia:{
     headline:'The ground above active coal mines sank by up to 71 cm in four months. Every sinking bowl was confirmed by a second satellite track. On 28 October 2026, twelve days after the last measurement, a sinkhole opened next to a house in Krzyżowice, inside the fastest-sinking area.',
-    facts:[{value:'25',label:'sinking bowls, 11.1 km² in total'},{value:'71 cm',label:'deepest sinking in 120 days'},{value:'25 of 25',label:'bowls lie inside licensed coal-mining areas'},{value:'28 Oct 2026',label:'sinkhole in Krzyżowice, reported by local media'}],
+    facts:[{value:'25',label:'sinking bowls, 11.1 km² in total'},{value:'71 cm',label:'deepest sinking in 120 days'},{value:'25 of 25',label:'bowls lie inside licensed coal-mining areas'}],
     tabs:[
       {id:'detail',label:'Krzyżowice in detail',frame:a('silesia','krzyzowice-timeline.html')},
       {id:'timeline',label:'Whole region',frame:a('silesia','timeline.html')},

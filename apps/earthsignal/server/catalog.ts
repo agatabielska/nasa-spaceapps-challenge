@@ -5,7 +5,7 @@ import { eventSchema, searchSchema, type CatalogEvent, type SearchInput } from '
 import { inBounds, normalize } from '../src/domain.ts';
 
 /** Bump when data/events.seed.json changes. */
-const SEED_VERSION='4';
+const SEED_VERSION='5';
 
 export class Catalog {
   db: DatabaseSync;
