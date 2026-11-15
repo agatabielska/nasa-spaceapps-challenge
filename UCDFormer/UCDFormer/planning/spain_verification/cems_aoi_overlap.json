@@ -1,0 +1,42 @@
+{
+  "original_burgohondo": {
+    "bbox": [
+      -4.843993184786916,
+      40.37008444125045,
+      -4.7260068152130845,
+      40.45991555874955
+    ],
+    "cems_burn_fraction": 0.10650277777777778,
+    "features": 185
+  },
+  "navaluenga_south": {
+    "bbox": [
+      -4.7,
+      40.29,
+      -4.58,
+      40.38
+    ],
+    "cems_burn_fraction": 0.5554166666666667,
+    "features": 894
+  },
+  "el_tiemblo": {
+    "bbox": [
+      -4.6,
+      40.31,
+      -4.48,
+      40.4
+    ],
+    "cems_burn_fraction": 0.10302777777777777,
+    "features": 174
+  },
+  "navas_del_rey": {
+    "bbox": [
+      -4.35,
+      40.32,
+      -4.23,
+      40.41
+    ],
+    "cems_burn_fraction": 0,
+    "features": 0
+  }
+}
