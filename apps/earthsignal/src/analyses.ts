@@ -52,7 +52,7 @@ export const analyses:Record<string,Analysis>={
       {id:'detail',label:'Krzyżowice in detail',frame:a('silesia','krzyzowice-timeline.html')},
       {id:'timeline',label:'Whole region',frame:a('silesia','timeline.html')},
       {id:'figures',label:'Summary & figures',figures:[
-        {title:'Subsidence map, 18 June to 16 October 2026',caption:'Cumulative sinking from nine consecutive NISAR interferograms. Only bowls confirmed by a second satellite track are shown. Labels on the figures are in Polish.',src:a('silesia','map.webp')},
+        {title:'Subsidence map, 18 June to 16 October 2026',caption:'Cumulative sinking from nine consecutive NISAR interferograms. Only bowls confirmed by a second satellite track are shown.',src:a('silesia','map.webp')},
         {title:'The six largest bowls over time',caption:'Measured sinking (solid) and a projection to the end of the year at the current rate (dashed, with its uncertainty band).',src:a('silesia','bowls.webp')},
         {title:'Checked against official mining areas',caption:'All 25 bowls lie inside licensed hard-coal mining areas, which cover 23% of the region (source: PIG-PIB, MIDAS database).',src:a('silesia','mining-areas.webp')},
         {title:'Krzyżowice cluster at 20 m',caption:'Total sinking, the last 12-day interval alone, and the raw interferogram of that interval.',src:a('silesia','detail-20m.webp')},

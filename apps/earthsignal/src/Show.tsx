@@ -155,7 +155,7 @@ export default function Show(){
     </section>
     <section className={on('silesia')}>
       <iframe ref={frame} src={TIMELINE} title="Subsidence timeline" tabIndex={-1}/>
-      <div className="sh-caption"><p className="sh-kicker">Poland · Upper Silesia</p><h2>The ground sinks <em>above the mines.</em></h2>
+      <div className="sh-caption"><p className="sh-kicker">Poland · mining region</p><h2>The ground sinks <em>above the mines.</em></h2>
         <p className="sh-date">{date}{forecast&&<b>Forecast</b>}{sinkhole&&<u>Sinkhole reported</u>}</p></div>
     </section>
     <span className="sh-progress" aria-hidden="true"><i ref={bar}/></span>
