@@ -85,8 +85,8 @@ export const flight={
 // Event types on the About orbit; color tints each type's icon (fire orange, quake yellow, crops green, ice blue, lava red).
 export const detected=[
   {id:'wildfires',label:'Forest wildfires',color:'#ff9a3c',text:'Burn scars change how the surface scatters radar. Comparing passes before and after a fire outlines the affected area.',target:'spain',cta:'See the Spain case'},
-  {id:'earthquakes',label:'Earthquakes',color:'#ffd84d',text:'Repeat radar passes can reveal ground shifts of a few centimetres along a fault.',target:null,cta:'Case study coming next'},
-  {id:'farming',label:'Farming activities',color:'#7ddc6f',text:'Radar brightness follows crops through the season: growth, harvest and changing soil moisture.',target:null,cta:'Case study coming next'},
+  {id:'earthquakes',label:'Earthquakes',color:'#ffd84d',text:'Repeat radar passes can reveal ground shifts of a few centimetres along a fault.',target:null,cta:'Coming soon'},
+  {id:'farming',label:'Farming activities',color:'#7ddc6f',text:'Radar brightness follows crops through the season: growth, harvest and changing soil moisture.',target:null,cta:'Coming soon'},
   {id:'glaciers',label:'Glacier movement',color:'#9be7ff',text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'nepal',cta:'See the Nepal case'},
   {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See the Etna case'},
 ] as const;
