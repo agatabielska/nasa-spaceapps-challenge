@@ -32,6 +32,12 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-engine .sp-world{position:fixed;inset:0;z-index:1;overflow:clip;pointer-events:none}
 .sp-engine .sp-scene{position:absolute;left:0;top:0;width:100%;transform-origin:0 0;opacity:0;pointer-events:none;transform:translate3d(-400vw,0,0);backface-visibility:hidden}
 .sp-engine .sp-reveal{opacity:1;transform:none;filter:none;transition:none}
+/* A case should fit between the top bar and the presenter bar, so one camera stop shows all of it:
+   tall (portrait) radar images take the height that is left after the text, slider and layer buttons. */
+.sp-engine .sp-case{padding-top:96px}
+.sp-engine .sp-case .sp-stats{grid-template-columns:repeat(auto-fit,minmax(118px,1fr));margin:1.2em 0 1em!important;padding:1em 0}
+.sp-engine .sp-case .sp-stats dd{font-size:clamp(32px,2.5vw,50px)}
+.sp-engine .sp-case-visual .sp-viewer-tall{width:min(100%,calc(var(--fit,1)*max(340px,100vh - 430px)))}
 
 .sp-skip{position:fixed;left:16px;top:-100px;z-index:40;padding:12px 22px;background:var(--sp-accent);color:var(--sp-ink);font-weight:700}
 .sp-skip:focus{top:16px}
@@ -171,6 +177,9 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-tag b{font-size:15px;letter-spacing:.02em;text-transform:none;color:#fff}
 .sp-tag-before{left:14px}.sp-tag-after{right:14px}
 .sp-compare-narrow .sp-tag-after{top:auto;bottom:14px}
+/* A small viewer has no room for both date tags side by side. */
+.sp-viewer{container-type:inline-size}
+@container (max-width:440px){.sp-tag-after{top:auto;bottom:14px}}
 .sp-divider{position:absolute;left:var(--split);top:0;bottom:0;width:3px;background:#fff;transform:translateX(-50%);box-shadow:0 0 16px #000;pointer-events:none}
 .sp-divider span{position:absolute;left:50%;top:50%;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--sp-ink);transform:translate(-50%,-50%);box-shadow:0 4px 22px #0009}
 .sp-range{display:flex;align-items:center;gap:16px;margin-top:12px;font:600 max(15px,.85em) Manrope,sans-serif;color:var(--sp-text-2);white-space:nowrap}

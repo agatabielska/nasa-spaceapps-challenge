@@ -78,7 +78,7 @@ export function journeyStops(l:Layout,steps:(number[]|undefined)[]):number[]{
   l.scenes.forEach((sc,i)=>{
     stops.push(sc.start);
     const given=steps[i];
-    if(given){for(const f of given)stops.push(sc.start+sc.hold*f);return;}
+    if(given){for(const f of given){const y=sc.start+sc.hold*f;if(y>stops[stops.length-1]+1)stops.push(y);}return;}
     const n=sc.pan>0?Math.ceil(sc.pan/(l.h*.75)):0;
     for(let k=1;k<=n;k++)stops.push(sc.start+sc.pan*k/n);
   });
@@ -89,3 +89,16 @@ export const nextStop=(stops:number[],y:number)=>stops.find(s=>s>y+1)??stops[sto
 export const prevStop=(stops:number[],y:number)=>[...stops].reverse().find(s=>s<y-1)??0;
 // The scene whose hold, or the flight after it, contains scroll position y.
 export function sceneAtScroll(l:Layout,y:number){let i=0;l.scenes.forEach((sc,k)=>{if(y>=sc.start-.5)i=k;});return i;}
+
+// Where the camera stops inside a scene, as pan offsets: at the top of each content block (leaving `top` px for
+// the top bar) and, only if a block is too tall to show above the bottom bar (`bottom` px), at evenly spaced
+// points until its last line is visible. Blocks are {top,bottom} in scene pixels.
+export function blockStops(blocks:{top:number;bottom:number}[],h:number,pan:number,top:number,bottom:number):number[]{
+  const stops:number[]=[],room=h-top-bottom;
+  blocks.forEach((block,i)=>{
+    const first=i===0?0:clamp(block.top-top,0,pan),end=clamp(block.bottom-(h-bottom),0,pan);
+    stops.push(first);
+    if(end>first+40){const n=Math.ceil((end-first)/(room*.85));for(let k=1;k<=n;k++)stops.push(first+(end-first)*k/n);}
+  });
+  return stops.filter((s,i)=>i===0||s>stops[i-1]+1);
+}

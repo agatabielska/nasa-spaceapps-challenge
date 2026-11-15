@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,sub,type Layout} from './journey/path.ts';
+import {blockStops,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,sub,type Layout} from './journey/path.ts';
 
 const sizes=[{id:'home',height:900,hold:270},{id:'about',height:1500,hold:270},{id:'flight',height:900,hold:3240},{id:'end',height:1100,hold:270}];
 const layout=layoutJourney(sizes,1440,900);
@@ -46,4 +46,12 @@ test('stops cover scene starts, pan steps and the playing scene, and step both w
   assert.equal(prevStop(stops,flight.start-300),about.start+600);
   assert.equal(prevStop(stops,0),0);
   assert.equal(sceneAtScroll(layout,flight.start-300),1);assert.equal(sceneAtScroll(layout,flight.start),2);
+});
+test('a scene stops at its content blocks and adds steps only for a block that does not fit',()=>{
+  // Two blocks that each fit a 900px screen: one stop per block.
+  assert.deepEqual(blockStops([{top:0,bottom:780},{top:1000,bottom:1700}],900,900,96,96),[0,900]);
+  // A first block 300px too tall: one extra stop that shows its end, then the second block.
+  assert.deepEqual(blockStops([{top:0,bottom:1100},{top:1300,bottom:1700}],900,900,96,96),[0,296,900]);
+  // A single short block on a scene with a little pan: no extra stop.
+  assert.deepEqual(blockStops([{top:0,bottom:790}],900,150,96,96),[0]);
 });

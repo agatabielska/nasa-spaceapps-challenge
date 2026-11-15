@@ -49,7 +49,7 @@ function Compare({name,before,after,width,height,children}:{name:string;before:C
   const missing=[before,after].find(image=>failed.includes(image.src));
   const style={'--split':`${split}%`,'--fit':width/height,aspectRatio:`${width}/${height}`} as CSSProperties;
   if(missing)return <div className="sp-viewer" style={{'--fit':width/height} as CSSProperties}><div className="sp-compare sp-compare-missing" style={style}><Placeholder title={`${name} · ${missing.label}`} asset={missing.src} source={missing.source}/></div></div>;
-  return <div className="sp-viewer" style={{'--fit':width/height} as CSSProperties}>
+  return <div className={'sp-viewer'+(width/height<1.1?' sp-viewer-tall':'')} style={{'--fit':width/height} as CSSProperties}>
     <div className={'sp-compare'+(width/height<.8?' sp-compare-narrow':'')} ref={frame} style={style}
       onPointerDown={e=>{if(e.button!==0)return;e.currentTarget.setPointerCapture(e.pointerId);move(e);}}
       onPointerMove={e=>{if(e.currentTarget.hasPointerCapture(e.pointerId))move(e);}}
@@ -334,7 +334,7 @@ export default function Landing(){
       <CaseSection study={spain}/>
 
       <CaseSection study={etna}>
-        <div className="sp-cloud sp-reveal">
+        <div className="sp-cloud sp-reveal" data-stop>
           <div className="sp-cloud-text">
             <span className="sp-index">Why radar</span>
             <h3>Clouds hide the summit. Radar sees through.</h3>

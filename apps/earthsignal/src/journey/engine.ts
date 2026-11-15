@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import {clamp,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
+import {blockStops,clamp,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
 
 export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;hold:Record<string,number>;progress:number;chapter:number;marks:number[]};
 // data-hold: minimum screens to rest on a scene · data-steps: stops while it plays, as fractions of its hold ·
@@ -8,6 +8,24 @@ export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;h
 type Scene={el:HTMLElement;id:string;minHold:number;steps?:number[];dwell:number;pace:number};
 type Autopilot={phase:'arrive'|'rest'|'move'|'linger';wait:number;y:number};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
+// Room left above a content block when the camera stops on it (top bar), and below it (presenter bar).
+const STOP_GAP=96,BAR_ROOM=96;
+// Vertical position of an element inside its scene, unaffected by the scene's 3D transform.
+function offsetIn(el:HTMLElement,scene:HTMLElement){
+  let y=0,node:HTMLElement|null=el;
+  while(node&&node!==scene){y+=node.offsetTop;node=node.offsetParent as HTMLElement|null;}
+  return node===scene?y:0;
+}
+// The scene's content split at [data-stop] markers, without the empty padding at the bottom of the scene.
+function contentBlocks(scene:HTMLElement){
+  const end=Math.max(0,...[...scene.children].map(child=>{const el=child as HTMLElement;return el.offsetTop+el.offsetHeight-parseFloat(getComputedStyle(el).paddingBottom||'0');}));
+  const tops=[...scene.querySelectorAll<HTMLElement>('[data-stop]')].map(el=>({top:offsetIn(el,scene),margin:parseFloat(getComputedStyle(el).marginTop||'0')}));
+  const blocks:{top:number;bottom:number}[]=[];
+  let top=0;
+  for(const mark of tops){blocks.push({top,bottom:mark.top-mark.margin});top=mark.top;}
+  blocks.push({top,bottom:end});
+  return blocks;
+}
 const editable='input,textarea,select,[contenteditable=""],[contenteditable=true],[role=slider]';
 
 // Drives the landing page as one continuous camera flight. The page still scrolls natively (scrollbar,
@@ -88,7 +106,13 @@ export class Journey{
     const w=window.innerWidth,h=window.innerHeight;
     this.layout=layoutJourney(this.scenes.map(sc=>({id:sc.id,height:sc.el.offsetHeight,hold:sc.minHold*h})),w,h);
     this.spacer.style.height=`${Math.ceil(this.layout.total+h)}px`;
-    this.stops=journeyStops(this.layout,this.scenes.map(sc=>sc.steps));
+    // A scene plays through data-steps, or stops at each content block (split at elements marked data-stop),
+    // with extra stops only where a block is too tall for the screen.
+    this.stops=journeyStops(this.layout,this.scenes.map((sc,i)=>{
+      if(sc.steps)return sc.steps;
+      const placed=this.layout.scenes[i];if(!placed.hold)return [];
+      return blockStops(contentBlocks(sc.el),h,placed.pan,STOP_GAP,BAR_ROOM).map(y=>y/placed.hold).filter(f=>f>.001);
+    }));
     this.marks=this.layout.scenes.map(sc=>this.layout.total?sc.start/this.layout.total:0);
     this.dirty=true;
   }
@@ -150,9 +174,7 @@ export class Journey{
   private onFocus=(e:FocusEvent)=>{
     const target=e.target as HTMLElement,host=target.closest<HTMLElement>('[data-scene]');if(!host)return;
     const sc=this.layout.scenes[this.index(host.id)];if(!sc)return;
-    let y=0,node:HTMLElement|null=target;
-    while(node&&node!==host){y+=node.offsetTop;node=node.offsetParent as HTMLElement|null;}
-    if(node!==host)y=0;
+    const y=offsetIn(target,host);
     const h=this.layout.h,inView=window.scrollY>=sc.start&&window.scrollY<=sc.end&&y>=window.scrollY-sc.start&&y<window.scrollY-sc.start+h-80;
     if(!inView)this.scrollTo(sc.start+clamp(y-h*.35,0,sc.pan));
   };
