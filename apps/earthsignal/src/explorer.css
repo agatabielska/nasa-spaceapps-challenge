@@ -455,3 +455,12 @@
 .app .chat form textarea{min-height:36px;max-height:110px;resize:none;padding:7px 8px}
 .app .map-area.panels-low .chat{top:auto}
 @media(max-width:640px){.app .chat{left:10px;right:10px;width:auto;height:min(420px,calc(100% - 110px));bottom:12px;top:auto}}
+
+/* Press links in the full analysis. */
+.app .an-press{display:grid;gap:12px;max-width:1200px;margin:0 auto;padding:0;list-style:none}
+.app .an-press a{display:block;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);background:#8fd6ff0a;color:var(--text)}
+.app .an-press a:hover{border-color:var(--accent);background:#8fd6ff14}
+.app .an-press small{display:block;margin-bottom:6px;font:800 12px Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#81e5ff}
+.app .an-press strong{display:flex;align-items:center;gap:10px;font:800 20px/1.3 Manrope,sans-serif}
+.app .an-press strong svg{flex:none;color:var(--accent)}
+.app .an-press span{display:block;margin-top:6px;font-size:15px;line-height:1.5;color:var(--text-2)}

@@ -95,3 +95,10 @@ export const detected=[
   {id:'glaciers',label:'Glacier movement',color:'#9be7ff',place:{lat:28.2,lon:85.4,name:'Rasuwa, Nepal',example:false},picture:{src:'/media/cases/nepal/after.webp',caption:'NISAR radar composite of the Rasuwa flood area, Nepal'},text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'flight',cta:'See the Nepal flight'},
   {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',place:{lat:37.75,lon:15,name:'Etna, Italy',example:false},picture:{src:'/media/cases/etna/after.webp',caption:'NISAR radar composite of Mount Etna, Italy'},text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See why radar'},
 ] as const;
+
+// The landing page's About globe: only the events we have analysed, in the order the arrows step through them.
+export const globeEvents=[
+  {id:'volcanoes',label:'Volcanic eruption',color:'#ff6b6b',place:{lat:37.75,lon:15,name:'Etna, Italy',example:false},picture:{src:'/media/cases/etna/after.webp',caption:'NISAR radar composite of Mount Etna, Italy'},text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See why radar'},
+  {id:'subsidence',label:'Mining subsidence',color:'#c9a6ff',place:{lat:50.2,lon:18.85,name:'Poland',example:false},picture:{src:'/analysis/silesia/detail-20m.webp',caption:'NISAR subsidence map of a mining area in Poland'},text:'The ground above active coal mines sinks centimetre by centimetre. A chain of radar passes shows where, and how fast.',target:null,cta:'In the app'},
+  {id:'glaciers',label:'Glacier-collapse flood',color:'#9be7ff',place:{lat:28.2,lon:85.4,name:'Rasuwa, Nepal',example:false},picture:{src:'/media/cases/nepal/after.webp',caption:'NISAR radar composite of the Rasuwa flood area, Nepal'},text:'A collapsing glacier sent water and debris down the valley. Radar traces the whole flood path.',target:'flight',cta:'See the Nepal flight'},
+] as const;

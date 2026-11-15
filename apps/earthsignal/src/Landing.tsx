@@ -1,5 +1,5 @@
 import {useContext,useEffect,useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent,type ReactNode} from 'react';
-import {Activity,ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,Flame,ImageOff,Mountain,Rocket,Snowflake,Sprout} from 'lucide-react';
+import {ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,ImageOff,Mountain,Rocket,Snowflake,Pickaxe} from 'lucide-react';
 import {Astronaut} from './Astronaut';
 import EarthGlobe,{type GlobeView} from './EarthGlobe';
 import Starfield from './Starfield';
@@ -8,7 +8,7 @@ import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
 import {CLOSE_DEPTH} from './journey/path';
 import {sky} from './journey/sky';
 import {EXPLORER_PATH} from './routes';
-import {detected,etna,etnaCloud,flight,type CaseImage,type CaseStudy} from './cases';
+import {globeEvents as detected,etna,etnaCloud,flight,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
 
 const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
@@ -22,7 +22,7 @@ const chapters=[
 // The team, alphabetically by surname (shown on the start screen and in the footer).
 const TEAM=['Agata Bielska','Michał Leszczyński','Maria Musiał','Oliwier Necelman','Jakub Radziejewski','Martyna Stasiak'];
 const FLIGHT_HOLD=3.6;
-const eventIcons={wildfires:Flame,earthquakes:Activity,farming:Sprout,glaciers:Snowflake,volcanoes:Mountain};
+const eventIcons={glaciers:Snowflake,volcanoes:Mountain,subsidence:Pickaxe};
 
 function useReducedMotion(){
   const [reduced,setReduced]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -412,7 +412,7 @@ export default function Landing(){
       <Scene id="about" close dwell={1}><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
-          <h2 id="about-title">One radar. Five kinds of change.</h2>
+          <h2 id="about-title">One radar. Three events.</h2>
         </header>
         <AboutGlobe paused={paused} reduced={reduced}/>
       </section></Scene>
