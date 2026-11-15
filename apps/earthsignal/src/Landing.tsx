@@ -175,15 +175,38 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
   const start=detected[0].place;
   const view=useRef<GlobeView>({lon:toRad(start.lon),lat:toRad(start.lat)});
   const [active,setActive]=useState(0),[shown,setShown]=useState(false);
-  const st=useRef({active:0,from:{...view.current},to:{...view.current},t0:0,flying:false,here:false,hover:false,next:0,holdUntil:0,still:false});
-  st.current.still=paused||reduced;
+  const journey=useContext(JourneyContext),autopilot=useContext(AutopilotContext);
+  // seen: types whose card has been up for a full stay since the camera arrived (or the autopilot started);
+  // steps: the types shown since the visitor started stepping with the arrows, in order (null until then).
+  const st=useRef({active:0,from:{...view.current},to:{...view.current},t0:0,flying:false,here:false,hover:false,next:0,holdUntil:0,still:false,auto:false,visible:false,
+    seen:new Set<number>(),steps:null as number[]|null});
+  st.current.still=paused||reduced;st.current.auto=autopilot;
   const go=(i:number)=>{
     const s=st.current,p=detected[i].place;let lon=toRad(p.lon);
     while(lon-view.current.lon>Math.PI)lon-=Math.PI*2;while(lon-view.current.lon<-Math.PI)lon+=Math.PI*2;
     s.active=i;s.from={...view.current};s.to={lon,lat:toRad(p.lat)};s.t0=performance.now();s.flying=true;
+    s.steps?.push(i);
     setActive(i);setShown(false);
   };
   const pick=(i:number)=>{st.current.holdUntil=performance.now()+15000;go(i);};
+  // The autopilot tours every type once, from the one on screen.
+  useEffect(()=>{if(autopilot)st.current.seen=new Set();},[autopilot]);
+  // The arrows step through the types in order; once every type has been shown since the first press, the next
+  // press flies on. Back retraces those steps before leaving the scene.
+  useEffect(()=>journey?.step('about',{
+    next(){
+      // While the camera is still arriving, a press waits for the first type instead of skipping the scene.
+      const s=st.current;if(!s.here)return s.visible;
+      s.steps??=[s.active];
+      if(new Set(s.steps).size>=detected.length)return false;
+      pick((s.active+1)%detected.length);return true;
+    },
+    prev(){
+      const s=st.current;if(!s.here||!s.steps||s.steps.length<2)return false;
+      s.steps.pop();const back=s.steps.pop()!;pick(back);return true;
+    },
+    busy(){const s=st.current;return !s.here||s.flying||s.seen.size<detected.length;},
+  }),[journey]);
   useEffect(()=>{
     const el=stage.current;if(!el)return;
     const scene=el.closest<HTMLElement>('[data-scene]');
@@ -193,16 +216,26 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
       const s=st.current,arrive=parseFloat(scene?.style.getPropertyValue('--arrive')||'1');
       if(arrive<.99){
         // Waiting behind the hero: turn slowly, no card.
-        if(s.here){s.here=false;setShown(false);}
+        if(s.here){s.here=false;s.steps=null;setShown(false);}
         if(!s.flying&&!s.still)view.current={...view.current,lon:view.current.lon+dt*.00011};
-      }else if(!s.here){s.here=true;go(s.active);}
+      }else if(!s.here){
+        // Every visit starts the tour from the first type.
+        s.here=true;s.seen=new Set();s.steps=null;go(0);
+      }
       if(s.flying){
-        const t=reduced?1:clamp((now-s.t0)/FLY_MS),e=t<.5?4*t*t*t:1-(-2*t+2)**3/2;
+        // With motion paused or reduced the camera jumps straight to the site.
+        const t=s.still?1:clamp((now-s.t0)/FLY_MS),e=t<.5?4*t*t*t:1-(-2*t+2)**3/2;
         view.current={lon:s.from.lon+(s.to.lon-s.from.lon)*e,lat:s.from.lat+(s.to.lat-s.from.lat)*e};
         // The camera pulls back a little mid-flight, as when orbiting to the far side.
         if(world.current)world.current.style.transform=`scale(${(1-.08*Math.sin(Math.PI*t)).toFixed(4)})`;
         if(t>=1){s.flying=false;s.next=now+STAY_MS;if(s.here)setShown(true);}
-      }else if(s.here&&!s.still&&!s.hover&&now>s.next&&now>s.holdUntil)go((s.active+1)%detected.length);
+      }else if(s.here&&now>s.next){
+        s.seen.add(s.active);
+        // Left alone, the types take turns for as long as the visitor stays (not while they point at the globe
+        // or have just picked one). The autopilot goes once round, whatever the pointer does, and then moves on.
+        const turn=s.auto?s.seen.size<detected.length:!s.still&&!s.hover&&now>s.holdUntil;
+        if(turn)go((s.active+1)%detected.length);
+      }
       sky.lon=view.current.lon;sky.lat=view.current.lat;
       // Pins on the globe (hidden on the far side) and the card at the active pin.
       const g=globe.current;
@@ -218,7 +251,7 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
       }
       if(visible)frame=requestAnimationFrame(tick);
     };
-    const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible&&!frame){last=performance.now();frame=requestAnimationFrame(tick);}},{rootMargin:'20% 0px'});
+    const observer=new IntersectionObserver(([entry])=>{visible=st.current.visible=entry.isIntersecting;if(visible&&!frame){last=performance.now();frame=requestAnimationFrame(tick);}},{rootMargin:'20% 0px'});
     observer.observe(el);
     return()=>{observer.disconnect();cancelAnimationFrame(frame);};
   },[]);
@@ -409,7 +442,7 @@ export default function Landing(){
 
       {/* About waits right behind the hero title: from the start screen only its turning globe and orbits show;
           the camera flies through the title, the globe grows to full size and the details fill in on arrival. */}
-      <Scene id="about" close dwell={detected.length*(FLY_MS+STAY_MS)/1000}><section className="sp-section sp-about" aria-labelledby="about-title">
+      <Scene id="about" close dwell={1}><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
           <h2 id="about-title">One radar. Five kinds of change.</h2>

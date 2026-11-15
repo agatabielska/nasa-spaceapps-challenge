@@ -7,6 +7,10 @@ export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;h
 // in seconds · data-pace: autopilot speed through the scene, in screens per second.
 type Scene={el:HTMLElement;id:string;close:boolean;minHold:number;steps?:number[];dwell:number;pace:number};
 type Autopilot={phase:'arrive'|'rest'|'move';wait:number;y:number;from:number;to:number;time:number;duration:number};
+// A scene that shows several things in turn while the camera rests on it (About tours the event types).
+// next/prev step inside it and return false once there is nothing left to show that way; busy holds the
+// autopilot on the scene until its tour is done.
+export type SceneStepper={next():boolean;prev():boolean;busy():boolean};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
 // Room left above a content block when the camera stops on it (top bar), and below it (presenter bar).
 const STOP_GAP=76,BAR_ROOM=96;
@@ -56,6 +60,7 @@ export class Journey{
   private stops:number[]=[];
   private marks:number[]=[];
   private auto:Autopilot|null=null;
+  private steppers=new Map<string,SceneStepper>();
   latest:JourneyFrame|null=null;
 
   constructor(private root:HTMLElement,world:HTMLElement,private spacer:HTMLElement,private events:JourneyEvents){
@@ -87,8 +92,20 @@ export class Journey{
     history.replaceState(null,'',`#${id}`);
   }
   // Presenter controls: step to the next or previous stop, jump to an end, or seek along the whole journey.
-  next(){this.setAutopilot(false);this.scrollTo(nextStop(this.stops,window.scrollY));}
-  prev(){this.setAutopilot(false);this.scrollTo(prevStop(this.stops,window.scrollY));}
+  next(){
+    this.setAutopilot(false);
+    const y=window.scrollY,to=nextStop(this.stops,y),sc=this.restingIn(y);
+    if(sc&&to>sc.end+.5&&this.steppers.get(sc.id)?.next())return;
+    this.scrollTo(to);
+  }
+  prev(){
+    this.setAutopilot(false);
+    const y=window.scrollY,to=prevStop(this.stops,y),sc=this.restingIn(y);
+    if(sc&&to<sc.start-.5&&this.steppers.get(sc.id)?.prev())return;
+    this.scrollTo(to);
+  }
+  // A scene registers itself to take the arrows while the camera rests on it; returns the unregister call.
+  step(id:string,stepper:SceneStepper){this.steppers.set(id,stepper);return()=>{if(this.steppers.get(id)===stepper)this.steppers.delete(id);};}
   first(){this.setAutopilot(false);this.scrollTo(0);}
   last(){this.setAutopilot(false);this.scrollTo(this.layout.total);}
   seek(fraction:number){this.setAutopilot(false);this.scrollTo(clamp(fraction)*this.layout.total);}
@@ -129,6 +146,8 @@ export class Journey{
     this.marks=this.layout.scenes.map(sc=>this.layout.total?sc.start/this.layout.total:0);
     this.dirty=true;
   }
+  // The scene whose hold contains scroll position y (not the flight after it).
+  private restingIn(y:number){const sc=this.layout.scenes[sceneAtScroll(this.layout,y)];return y<=sc.end+.5?sc:null;}
   private scrollTo(y:number){window.scrollTo({top:y,behavior:'instant'});}
   // Keep the camera on the same scene, at the same relative point, when sizes change.
   private relayout=()=>{
@@ -167,6 +186,8 @@ export class Journey{
     if(a.phase==='arrive'){if(Math.abs(this.cam-a.y)<l.h*.01){a.phase='rest';a.wait=info.dwell;}return;}
     if(a.phase==='rest'){
       a.wait-=dt;if(a.wait>0)return;
+      // A scene with a tour keeps the camera until the tour is done (with a safety limit, if it never says so).
+      if(a.wait>-90&&this.steppers.get(info.id)?.busy())return;
       // Next move inside the scene: right through a scene that plays (the flight), otherwise on to the next
       // content block, resting on each one. With nothing left, fly on to the next scene.
       const last=i===l.scenes.length-1,limit=info.steps||last?sc.end:sc.start+sc.pan;
