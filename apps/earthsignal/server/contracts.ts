@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const kinds = ['flood', 'wildfire', 'volcano', 'earthquake', 'ice'] as const;
+export const kinds = ['flood', 'wildfire', 'volcano', 'earthquake', 'ice', 'subsidence'] as const;
 const day = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(s => {
   const d = new Date(`${s}T00:00:00Z`);
   return !Number.isNaN(+d) && d.toISOString().slice(0, 10) === s;
@@ -19,7 +19,7 @@ export const eventSchema = z.object({
 }).strict();
 export type CatalogEvent = z.infer<typeof eventSchema>;
 export const searchSchema = z.object({
-  q: z.string().max(300).nullable().optional(), kinds: z.array(z.enum(kinds)).max(5).nullable().optional(),
+  q: z.string().max(300).nullable().optional(), kinds: z.array(z.enum(kinds)).max(kinds.length).nullable().optional(),
   countries: z.array(z.string().max(100)).max(30).nullable().optional(),
   region: z.string().max(100).nullable().optional(),
   from: day.nullable().optional(), to: day.nullable().optional(),
@@ -33,7 +33,7 @@ export const chatSchema = z.object({
   sessionId: z.string().uuid().optional(),
   context: z.object({
     selectedEventId: z.string().max(100).nullable(), bounds: boundsSchema.nullable(),
-    filters: z.object({search:z.string().max(300), kinds:z.array(z.enum(kinds)).max(5),
+    filters: z.object({search:z.string().max(300), kinds:z.array(z.enum(kinds)).max(kinds.length),
       from:day, to:day, documentedOnly:z.boolean(), viewOnly:z.boolean()}).strict(),
     revision: z.number().int().nonnegative(),
     // Ordered IDs currently listed in the sidebar: what the user actually sees.

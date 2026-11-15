@@ -1,8 +1,8 @@
-export type Kind='flood'|'wildfire'|'volcano'|'earthquake'|'ice';
+export type Kind='flood'|'wildfire'|'volcano'|'earthquake'|'ice'|'subsidence';
 export type EventRecord={id:string;title:string;country:string;aliases:string[];kind:Kind;date:string;coordinates:[number,number];description:string;observations?:string[];source?:string;catalogVerified:boolean;analysisAvailable:boolean;countryCode:string;region:string};
 // Event types and their names. Icons and colours live in the frontend (eventKinds.tsx), so this module stays usable
 // by the server without React.
-export const categories:Record<Kind,{label:string}>={flood:{label:'Floods'},wildfire:{label:'Wildfires'},volcano:{label:'Volcanoes'},earthquake:{label:'Earthquakes'},ice:{label:'Ice & glaciers'}};
+export const categories:Record<Kind,{label:string}>={flood:{label:'Floods'},wildfire:{label:'Wildfires'},volcano:{label:'Volcanoes'},earthquake:{label:'Earthquakes'},ice:{label:'Ice & glaciers'},subsidence:{label:'Ground subsidence'}};
 export const normalize=(s:string)=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/ł/g,'l');
 export function inBounds(point:[number,number],b:number[]|null){if(!b)return true;const [w,s,e,n]=b;const lon=((point[0]+180)%360+360)%360-180; if(point[1]<s||point[1]>n)return false;if(e-w>=360)return true;const west=((w+180)%360+360)%360-180,east=((e+180)%360+360)%360-180;return west<=east?lon>=west&&lon<=east:lon>=west||lon<=east;}
 /** Every word of the query must occur in the record's title, place, description or aliases, in any order. */

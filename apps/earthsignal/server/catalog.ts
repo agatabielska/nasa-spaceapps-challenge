@@ -4,6 +4,9 @@ import { dirname } from 'node:path';
 import { eventSchema, searchSchema, type CatalogEvent, type SearchInput } from './contracts.ts';
 import { inBounds, normalize } from '../src/domain.ts';
 
+/** Bump when data/events.seed.json changes. */
+const SEED_VERSION='2';
+
 export class Catalog {
   db: DatabaseSync;
   constructor(filename:string, seed?:unknown) {
@@ -28,9 +31,12 @@ export class Catalog {
       PRAGMA user_version=1;
       COMMIT;
     `);
-    if(seed && !this.db.prepare("SELECT value FROM metadata WHERE key='seeded'").get()) {
+    // The bundled seed is re-imported (upsert) whenever its version changes, so an existing local database
+    // picks up new and corrected catalog entries without a manual `npm run db:import`.
+    const seeded=this.db.prepare("SELECT value FROM metadata WHERE key='seeded'").get() as {value:string}|undefined;
+    if(seed && seeded?.value!==SEED_VERSION) {
       this.import(seed);
-      this.db.prepare("INSERT INTO metadata(key,value) VALUES('seeded','1')").run();
+      this.db.prepare("INSERT INTO metadata(key,value) VALUES('seeded',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").run(SEED_VERSION);
     }
   }
   import(input:unknown) {

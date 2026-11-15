@@ -422,7 +422,7 @@ export default function Landing(){
       <a className="sp-brand" href="#home" aria-label="EarthSignal, back to the start"><span className="sp-logo" aria-hidden="true"/><span><b>EarthSignal</b><small>Dancing with the SARs</small></span></a>
       <div className="sp-nav-actions">
         <span className="sp-signal" aria-hidden="true"><i/>NISAR</span>
-        <a className="sp-small-button" href={EXPLORER_PATH}><span className="sp-hide-sm">Open</span> Dashboard <ArrowUpRight size={16} aria-hidden="true"/></a>
+        <a className="sp-small-button" href={EXPLORER_PATH}><span className="sp-hide-sm">Open the</span> App <ArrowUpRight size={16} aria-hidden="true"/></a>
       </div>
     </header>
     <nav className="sp-rail" aria-label="Journey chapters">
@@ -490,8 +490,8 @@ export default function Landing(){
           <div className="sp-reveal">
             <span className="sp-index">04 / Your turn</span>
             <h2 id="discover-title" className="sp-title"><span className="sp-title-line">Discover more</span> <span className="sp-title-line sp-title-accent">yourself</span></h2>
-            <p className="sp-lead">Open the EarthSignal dashboard to explore the event map, filter the catalog and ask Orbit, our guide.</p>
-            <a className="sp-button sp-button-large" href={EXPLORER_PATH}>Open the dashboard <Rocket size={24} aria-hidden="true"/></a>
+            <p className="sp-lead">Open the EarthSignal app to explore the globe, open the full analyses and ask Orbit, our guide.</p>
+            <a className="sp-button sp-button-large" href={EXPLORER_PATH}>Open the app <Rocket size={24} aria-hidden="true"/></a>
           </div>
         </section>
         <footer className="sp-footer">

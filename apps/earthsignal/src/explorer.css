@@ -365,3 +365,81 @@
   .app .map-area:has(.detail,.chat,.guide) .map-legend{display:none}
 }
 @media(prefers-reduced-motion:reduce){.app *,.app *:before,.app *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- App view: globe, analysed events, full analysis ---------- */
+/* The globe floats in space: stars behind the map canvas, which is transparent outside the planet. */
+.app .map-area{background:radial-gradient(1200px 700px at 70% 20%,#0b1f45 0,#030814 60%),#030814}
+.app .map-area:before{content:'';position:absolute;inset:0;opacity:.7;pointer-events:none;background-image:radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 31% 72%,#cfe6ff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 58% 33%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 77% 81%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 88% 12%,#cfe6ff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 44% 91%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 6% 55%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 67% 58%,#cfe6ff 50%,transparent 51%);background-size:420px 380px}
+/* Events with a finished analysis pulse gently; the rest are small, grey and clearly not ready yet. */
+.app .map-marker:not(.inactive):not(.selected){animation:beacon 2.6s ease-out infinite}
+@keyframes beacon{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--marker) 55%,transparent),0 5px 18px #000a}70%,100%{box-shadow:0 0 0 16px transparent,0 5px 18px #000a}}
+@media(prefers-reduced-motion:reduce){.app .map-marker{animation:none!important}}
+.app .map-marker.inactive{width:calc(26px * var(--ui-scale));height:calc(26px * var(--ui-scale));border:1.5px dashed #8b97ad;background:#0b1424cc;color:#8b97ad;box-shadow:none;opacity:.75}
+.app .map-marker.inactive svg{width:calc(14px * var(--ui-scale));height:calc(14px * var(--ui-scale))}
+.app .map-marker.inactive:hover,.app .map-marker.inactive.selected{background:#1b2740;color:#d3ddf2;border-color:#d3ddf2;box-shadow:0 0 0 2px #ffffff40;opacity:1}
+.app .map-marker.inactive.selected{width:calc(32px * var(--ui-scale));height:calc(32px * var(--ui-scale))}
+.app .event-row.inactive{opacity:.6}
+.app .event-row.inactive .row-icon{background:#8b97ad22;color:#8b97ad}
+.app .row-badge{border-color:#8b97ad99;color:#b4c3df}
+/* Event card: tag, title, two sentences, three numbers, one button. */
+.app .detail .detail-top .tag{margin-bottom:0}
+.app .facts{display:grid;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.app .facts li{display:flex;align-items:baseline;gap:10px;padding:9px 12px;border:1px solid var(--line-soft);border-radius:var(--radius);background:#8fd6ff0a}
+.app .facts strong{flex:none;font:800 19px Manrope,sans-serif;color:var(--accent);white-space:nowrap}
+.app .facts span{font-size:14px;line-height:1.35;color:var(--text-2)}
+.app .detail.soon{width:300px}
+.app .detail.soon h2{font-size:20px}
+.app .detail.soon dl{display:grid;gap:8px;margin:12px 0 0}
+.app .detail.soon dl div{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.app .detail.soon dt{color:var(--text-3)}
+.app .detail.soon dd{margin:0;font-weight:600;color:var(--text)}
+.app .soon-badge{display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:6px 12px;border:1px dashed #8b97ad;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#d3ddf2}
+/* Full analysis: covers the workspace below the top bar. */
+.app .main{position:relative}
+.app .analysis{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;background:var(--bg);animation:enter .25s ease-out}
+.app .an-head{display:flex;align-items:center;gap:20px;flex-shrink:0;padding:12px 20px;border-bottom:1px solid var(--line-soft);background:var(--surface)}
+.app .an-back{display:flex;align-items:center;gap:8px;flex-shrink:0;padding:9px 14px;border:1px solid #44748c;background:#0a1b2cb8;font:800 13px Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--text);white-space:nowrap}
+.app .an-back:hover{border-color:#9fe6ff}
+.app .an-title{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;flex:1;min-width:0}
+.app .an-title .tag{margin:0}
+.app .an-title h1{margin:0;font:800 22px/1.2 Manrope,sans-serif;letter-spacing:-.02em}
+.app .an-title small{font-size:14px;color:var(--text-3)}
+.app .an-tabs{display:flex;gap:6px;flex-shrink:0}
+.app .an-tabs button{padding:9px 16px;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:700;color:var(--text-2);white-space:nowrap}
+.app .an-tabs button[aria-selected=true]{border-color:var(--accent);background:var(--accent);color:var(--ink)}
+.app .an-summary{display:flex;align-items:center;gap:24px;flex-shrink:0;padding:12px 20px;border-bottom:1px solid var(--line-soft)}
+.app .an-summary p{flex:1;min-width:0;margin:0;font-size:17px;line-height:1.45;color:var(--text)}
+.app .an-summary .facts{display:flex;flex:none;gap:8px;margin:0}
+.app .an-summary .facts li{flex-direction:column;gap:2px;max-width:190px;padding:7px 12px}
+.app .an-summary .facts span{font-size:12.5px}
+.app .an-frame{flex:1;width:100%;min-height:0;border:0;background:#0b1420}
+.app .an-figures{flex:1;min-height:0;padding:24px 20px 60px;overflow:auto}
+.app .an-figures figure{max-width:1200px;margin:0 auto 44px}
+.app .an-figures h2{margin:0 0 4px;font:800 21px Manrope,sans-serif}
+.app .an-figures figcaption p{margin:0 0 14px;font-size:16px;line-height:1.5;color:var(--text-2)}
+.app .an-figures img{display:block;width:100%;height:auto;border:1px solid var(--line-soft);border-radius:var(--radius);background:#fff}
+.app .an-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.app .an-pair a{position:relative;display:block}
+.app .an-pair span{position:absolute;left:10px;top:10px;padding:5px 10px;border-radius:6px;background:#030814d9;font-size:14px;font-weight:700;color:var(--text)}
+@media(max-width:1000px){.app .an-head{flex-wrap:wrap;gap:10px}.app .an-summary{flex-direction:column;align-items:stretch;gap:10px}.app .an-summary .facts{flex-wrap:wrap}}
+@media(max-width:640px){.app .an-pair{grid-template-columns:1fr}.app .an-summary p{font-size:15px}.app .an-title h1{font-size:18px}}
+/* Orbit chat, minimal: a small card with messages and one input. */
+.app .chat{top:auto;width:340px;height:min(460px,calc(100% - 36px))}
+.app .chat-header{padding:9px 12px}
+.app .chat-avatar{width:30px;height:33px}
+.app .chat-avatar svg{width:30px;height:36px}
+.app .chat-header strong{font-size:16px}
+.app .message{padding:9px 12px;font-size:14.5px;line-height:1.45}
+.app .message.thinking{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.app .message.thinking button{font-size:13px;color:var(--text-3)}
+.app .dots{display:inline-flex;gap:5px}
+.app .dots i{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:dot 1.1s ease-in-out infinite}
+.app .dots i:nth-child(2){animation-delay:.18s}.app .dots i:nth-child(3){animation-delay:.36s}
+@keyframes dot{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.app .chat-error{padding:8px 11px;font-size:13.5px}
+.app .suggestions{padding:6px 12px}
+.app .suggestions button{padding:5px 10px}
+.app .chat form{margin:2px 12px 12px}
+.app .chat form textarea{min-height:36px;max-height:110px;resize:none;padding:7px 8px}
+.app .map-area.panels-low .chat{top:auto}
+@media(max-width:640px){.app .chat{left:10px;right:10px;width:auto;height:min(420px,calc(100% - 110px));bottom:12px;top:auto}}
