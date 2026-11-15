@@ -1,0 +1,71 @@
+// Camera maths for the landing journey. World units are CSS pixels: x right, y down, z towards the viewer.
+// A scene seen from exactly one focal length away is drawn at scale 1, so text at rest is never resampled.
+export type Vec=[number,number,number];
+export const add=(a:Vec,b:Vec):Vec=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]];
+export const sub=(a:Vec,b:Vec):Vec=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+export const scale=(a:Vec,k:number):Vec=>[a[0]*k,a[1]*k,a[2]*k];
+export const dot=(a:Vec,b:Vec)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+export const cross=(a:Vec,b:Vec):Vec=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+export const norm=(a:Vec):Vec=>{const d=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/d,a[1]/d,a[2]/d];};
+export const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
+export const smooth=(a:number,b:number,x:number)=>{const t=clamp((x-a)/(b-a));return t*t*(3-2*t);};
+
+export type Camera={pos:Vec;fwd:Vec;right:Vec;down:Vec;focal:number;w:number;h:number};
+export function makeCamera(pos:Vec,fwd:Vec,roll:number,focal:number,w:number,h:number):Camera{
+  const f=norm(fwd),r0=norm(cross(f,[0,1,0])),d0=cross(r0,f),c=Math.cos(roll),s=Math.sin(roll);
+  return {pos,fwd:f,right:add(scale(r0,c),scale(d0,s)),down:sub(scale(d0,c),scale(r0,s)),focal,w,h};
+}
+// Screen position of a world point, its distance along the view axis and its scale; null when behind the camera.
+export function project(cam:Camera,q:Vec,near=1){
+  const v=sub(q,cam.pos),d=dot(v,cam.fwd);if(d<near)return null;
+  const s=cam.focal/d;
+  return {x:cam.w/2+dot(v,cam.right)*s,y:cam.h/2+dot(v,cam.down)*s,d,s};
+}
+const bezier=(a:Vec,b:Vec,c:Vec,d:Vec,u:number):Vec=>{const v=1-u;return add(add(scale(a,v*v*v),scale(b,3*v*v*u)),add(scale(c,3*v*u*u),scale(d,u*u*u)));};
+const bezierTangent=(a:Vec,b:Vec,c:Vec,d:Vec,u:number):Vec=>{const v=1-u;return add(add(scale(sub(b,a),3*v*v),scale(sub(c,b),6*v*u)),scale(sub(d,c),3*u*u));};
+
+export type SceneSize={id:string;height:number;hold:number};
+export type PlacedScene={id:string;anchor:Vec;start:number;end:number;pan:number;hold:number};
+export type Layout={w:number;h:number;focal:number;gap:number;travel:number;total:number;scenes:PlacedScene[]};
+// Where each scene floats, relative to the previous one, in viewport widths and heights.
+const DRIFT:[number,number][]=[[0,0],[.24,.1],[-.28,-.06],[.3,.12],[-.26,.04],[.2,-.08],[-.22,.08],[0,.1]];
+
+// Scroll distance is split into holds (the camera rests on a scene, panning down if it is taller than
+// the viewport) and travels (the camera flies a curved path to the next scene).
+export function layoutJourney(sizes:SceneSize[],w:number,h:number):Layout{
+  const focal=Math.max(700,h*1.1),gap=focal*3,travel=h*1.2;
+  let s=0,y=0;
+  const scenes=sizes.map((size,i)=>{
+    if(i>0)s+=travel;
+    const pan=Math.max(0,size.height-h),hold=Math.max(pan,size.hold),[dx,dy]=DRIFT[i%DRIFT.length];
+    const anchor:Vec=[dx*w,y+dy*h,-i*gap];
+    y=anchor[1]+pan;
+    const placed={id:size.id,anchor,start:s,end:s+hold,pan,hold};
+    s+=hold;return placed;
+  });
+  return {w,h,focal,gap,travel,total:s,scenes};
+}
+// Camera position resting on scene i, scrolled `offset` pixels into it.
+function rest(l:Layout,i:number,offset:number):Vec{
+  const sc=l.scenes[i];
+  return [sc.anchor[0],sc.anchor[1]+l.h/2+clamp(offset,0,sc.pan),sc.anchor[2]+l.focal];
+}
+export type Shot={pos:Vec;fwd:Vec;roll:number;chapter:number};
+export function shotAt(l:Layout,s:number):Shot{
+  s=clamp(s,0,l.total);
+  for(let i=0;i<l.scenes.length;i++){
+    const sc=l.scenes[i];
+    if(s>sc.end&&i<l.scenes.length-1)continue;
+    if(s>=sc.start||i===0)return {pos:rest(l,i,s-sc.start),fwd:[0,0,-1],roll:0,chapter:i};
+    // Curved flight from scene i-1 to scene i: a cubic that swings out to one side and climbs a little.
+    const t=clamp((s-(sc.start-l.travel))/l.travel),u=t*t*(3-2*t),side=i%2?1:-1;
+    const a=rest(l,i-1,Infinity),d=rest(l,i,0);
+    const b=add(a,[side*.34*l.w,-.22*l.h,-l.gap*.42]),c=add(d,[side*.16*l.w,-.1*l.h,l.gap*.42]);
+    const tangent=norm(bezierTangent(a,b,c,d,u)),bend=Math.sin(Math.PI*t);
+    const fwd=norm(add(scale([0,0,-1],1-bend*.45),scale(tangent,bend*.45)));
+    return {pos:bezier(a,b,c,d,u),fwd,roll:-tangent[0]*.32*bend,chapter:t<.5?i-1:i};
+  }
+  return {pos:rest(l,0,0),fwd:[0,0,-1],roll:0,chapter:0};
+}
+// How far through its hold a scene is (0 before it, 1 after it).
+export function holdProgress(sc:PlacedScene,s:number){return sc.hold>0?clamp((s-sc.start)/sc.hold):s>=sc.start?1:0;}

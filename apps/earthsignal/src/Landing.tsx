@@ -1,8 +1,9 @@
-import {useEffect,useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent,type ReactNode} from 'react';
+import {useContext,useEffect,useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent,type ReactNode} from 'react';
 import {Activity,ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,Flame,ImageOff,Menu,Mountain,Pause,Play,Rocket,Snowflake,Sprout,X} from 'lucide-react';
 import {Astronaut} from './Astronaut';
 import EarthGlobe from './EarthGlobe';
 import Starfield from './Starfield';
+import {Journey,JourneyContext} from './journey/engine';
 import {EXPLORER_PATH} from './routes';
 import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
@@ -14,6 +15,8 @@ const chapters=[
   {id:'nepal',label:'Nepal · flood',nav:'work'},{id:'discover',label:'Discover',nav:'discover'},
 ];
 const navLinks=[{id:'home',label:'Home'},{id:'about',label:'About'},{id:'work',label:'Work'},{id:'discover',label:'Discover'}];
+// Screens of scrolling the camera spends on the drone flight.
+const FLIGHT_HOLD=3.6;
 const eventIcons={wildfires:Flame,earthquakes:Activity,farming:Sprout,glaciers:Snowflake,volcanoes:Mountain};
 
 function useReducedMotion(){
@@ -84,8 +87,13 @@ function CaseViewer({study}:{study:CaseStudy}){
   </div>;
 }
 
+// One stop of the camera journey. In motion mode it floats in 3D space; with reduced motion it is a plain block.
+function Scene({id,hold,children}:{id:string;hold?:number;children:ReactNode}){
+  return <div id={id} className="sp-scene" data-scene data-hold={hold}>{children}</div>;
+}
+
 function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
-  return <section id={study.id} className={`sp-section sp-case sp-case-${study.id}`} aria-labelledby={`${study.id}-title`}>
+  return <Scene id={study.id}><section className={`sp-section sp-case sp-case-${study.id}`} aria-labelledby={`${study.id}-title`}>
     <div className="sp-case-grid">
       <div className="sp-case-text sp-reveal">
         <span className="sp-index">Case {study.index} / {study.kind}</span>
@@ -98,7 +106,7 @@ function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
       <div className="sp-reveal"><CaseViewer study={study}/></div>
     </div>
     {children}
-  </section>;
+  </section></Scene>;
 }
 
 // The detected event types orbit the globe; Orbit the astronaut drifts from one to the next.
@@ -157,30 +165,28 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
   </div>;
 }
 
-// Scroll-scrubbed fly-through along the detected flood trace, rendered ahead of time so it works offline.
-function Flight({reduced}:{reduced:boolean}){
-  const section=useRef<HTMLElement>(null),canvas=useRef<HTMLCanvasElement>(null);
+// Fly-through along the detected flood trace, rendered ahead of time so it works offline. The camera rests on
+// this scene for several screens of scrolling, and that hold progress picks the frame.
+function Flight({reduced,near}:{reduced:boolean;near:boolean}){
+  const journey=useContext(JourneyContext);
+  const canvas=useRef<HTMLCanvasElement>(null),startLoad=useRef<()=>void>(()=>{}),nearRef=useRef(near);
   const [progress,setProgress]=useState(0),[loaded,setLoaded]=useState(0),[failed,setFailed]=useState(false);
+  nearRef.current=near;
+  useEffect(()=>{if(near)startLoad.current();},[near]);
   useEffect(()=>{
-    const el=section.current,cv=canvas.current,ctx=cv?.getContext('2d');
-    if(reduced||!el||!cv||!ctx)return;
+    const cv=canvas.current,ctx=cv?.getContext('2d');
+    if(reduced||!journey||!cv||!ctx)return;
     const images:(HTMLImageElement|undefined)[]=new Array(flight.count);
-    let frame=0,drawn=-1,started=false,disposed=false;
+    let drawn=-1,started=false,disposed=false,p=0;
     const nearest=(i:number)=>{for(let d=0;d<flight.count;d++){if(images[i-d])return i-d;if(images[i+d])return i+d;}return -1;};
     function render(){
-      frame=0;
-      const rect=el!.getBoundingClientRect(),vh=window.innerHeight;
-      const p=clamp(-rect.top/Math.max(1,rect.height-vh));
-      el!.style.setProperty('--enter',clamp(1-rect.top/vh).toFixed(3));
-      setProgress(prev=>Math.abs(prev-p)>.003||p===0||p===1?p:prev);
       const i=nearest(Math.round(p*(flight.count-1)));
       if(i<0||i===drawn)return;
       const img=images[i]!,scale=Math.max(cv!.width/img.width,cv!.height/img.height),w=img.width*scale,h=img.height*scale;
       ctx!.drawImage(img,(cv!.width-w)/2,(cv!.height-h)/2,w,h);drawn=i;
     }
-    const schedule=()=>{if(!frame)frame=requestAnimationFrame(render);};
-    const resize=()=>{const dpr=Math.min(window.devicePixelRatio||1,1.5);cv.width=Math.round(cv.clientWidth*dpr);cv.height=Math.round(cv.clientHeight*dpr);drawn=-1;schedule();};
-    function load(){
+    const resize=()=>{const dpr=Math.min(window.devicePixelRatio||1,1.5);cv.width=Math.round(cv.clientWidth*dpr);cv.height=Math.round(cv.clientHeight*dpr);drawn=-1;render();};
+    startLoad.current=()=>{
       if(started)return;started=true;
       // A coarse pass first, so scrubbing works before every frame has arrived.
       const order=[...Array(flight.count).keys()].sort((a,b)=>Number(a%6!==0)-Number(b%6!==0)||a-b);
@@ -188,27 +194,30 @@ function Flight({reduced}:{reduced:boolean}){
       const pump=()=>{
         while(!disposed&&busy<6&&next<order.length){
           const i=order[next++],img=new Image();busy++;
-          img.onload=()=>{busy--;images[i]=img;setLoaded(n=>n+1);schedule();pump();};
+          img.onload=()=>{busy--;images[i]=img;setLoaded(n=>n+1);render();pump();};
           img.onerror=()=>{busy--;if(i===0)setFailed(true);pump();};
           img.src=flight.frame(i);
         }
       };
       pump();
-    }
-    const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting)load();},{rootMargin:'150% 0px'});
-    observer.observe(el);resize();
-    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',resize);
-    return()=>{disposed=true;observer.disconnect();cancelAnimationFrame(frame);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',resize);};
-  },[reduced]);
+    };
+    if(nearRef.current)startLoad.current();
+    const off=journey.subscribe(frame=>{
+      const next=frame.hold.flight??0;if(next===p)return;
+      p=next;setProgress(prev=>Math.abs(prev-p)>.003||p===0||p===1?p:prev);render();
+    });
+    const observer=new ResizeObserver(resize);observer.observe(cv);
+    return()=>{disposed=true;off();observer.disconnect();startLoad.current=()=>{};};
+  },[reduced,journey]);
   const beatIndex=flight.beats.reduce((found,beat,i)=>progress>=beat.from?i:found,0),beat=flight.beats[beatIndex];
   const credit=<p className="sp-flight-credit">Imagery: Esri World Imagery · Terrain: AWS Terrain Tiles · Overlay: EarthSignal model on NISAR data</p>;
   const legend=<div className="sp-flight-legend"><span><i style={{background:'#ff1459'}}/>Confirmed by both methods</span><span><i style={{background:'#ffb826'}}/>One method only</span></div>;
-  if(reduced)return <section id="flight" className="sp-section sp-flight-static" aria-labelledby="flight-title">
+  if(reduced)return <Scene id="flight"><section className="sp-section sp-flight-static" aria-labelledby="flight-title">
     <header className="sp-heading"><span className="sp-index">Flight path / Rasuwa, Nepal</span><h2 id="flight-title">Follow the flood, from its origin to Syabrubesi</h2></header>
     <div className="sp-stills">{[0,44,80,131].map((index,i)=><figure key={index}><img src={flight.frame(index)} width={flight.width} height={flight.height} loading="lazy" alt={`3D view of the flood trace: ${flight.beats[i].stop}`}/><figcaption><strong>{flight.beats[i].stop}</strong>{flight.beats[i].text}</figcaption></figure>)}</div>
     {legend}{credit}
-  </section>;
-  return <section id="flight" className="sp-flight" ref={section} aria-labelledby="flight-title">
+  </section></Scene>;
+  return <Scene id="flight" hold={FLIGHT_HOLD}><section className="sp-flight" aria-labelledby="flight-title">
     <div className="sp-flight-stage">
       <div className="sp-flight-window">
         <canvas ref={canvas} role="img" aria-label="Drone-style flight over a 3D map of the Bhote Koshi valley, following the detected flood trace from its origin to Syabrubesi"/>
@@ -225,36 +234,46 @@ function Flight({reduced}:{reduced:boolean}){
       </div>
       {credit}
     </div>
-  </section>;
+  </section></Scene>;
 }
 
 export default function Landing(){
   const reduced=useReducedMotion();
   const [paused,setPaused]=useState(false),[menu,setMenu]=useState(false),[chapter,setChapter]=useState('home');
-  const root=useRef<HTMLDivElement>(null),hero=useRef<HTMLElement>(null);
+  const [journey,setJourney]=useState<Journey|null>(null);
+  const root=useRef<HTMLDivElement>(null),world=useRef<HTMLElement>(null),spacer=useRef<HTMLDivElement>(null);
   useEffect(()=>{
     document.title='EarthSignal — Dancing with the SARs';
+    const close=(e:KeyboardEvent)=>{if(e.key==='Escape')setMenu(false);};
+    window.addEventListener('keydown',close);return()=>window.removeEventListener('keydown',close);
+  },[]);
+  // Motion mode: one camera flies through scenes placed in 3D space.
+  useEffect(()=>{
+    if(reduced||!root.current||!world.current||!spacer.current)return;
+    const engine=new Journey(root.current,world.current,spacer.current,id=>setChapter(id));
+    setJourney(engine);
+    return()=>{engine.destroy();setJourney(null);};
+  },[reduced]);
+  // Reduced motion: an ordinary scrolling page with gentle reveals.
+  useEffect(()=>{
+    if(!reduced)return;
     let frame=0;
     const update=()=>{
       frame=0;
       const line=window.innerHeight*.45;let current='home';
       for(const item of chapters){const el=document.getElementById(item.id);if(el&&el.getBoundingClientRect().top<=line)current=item.id;}
       setChapter(current);
-      hero.current?.style.setProperty('--hero-p',clamp(window.scrollY/window.innerHeight).toFixed(3));
     };
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
-    const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}},{rootMargin:'0px 0px -12% 0px',threshold:.08});
-    root.current?.querySelectorAll('.sp-reveal').forEach(el=>observer.observe(el));
-    // Open a deep link (/#etna) at its section once the page has laid out.
     const anchor=requestAnimationFrame(()=>{const hash=window.location.hash.slice(1);if(hash)document.getElementById(hash)?.scrollIntoView({behavior:'instant',block:'start'});schedule();});
-    const close=(e:KeyboardEvent)=>{if(e.key==='Escape')setMenu(false);};
-    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);window.addEventListener('keydown',close);
-    return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(anchor);observer.disconnect();window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);window.removeEventListener('keydown',close);};
-  },[]);
+    window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);
+    return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(anchor);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
+  },[reduced]);
   const still=paused||reduced,activeNav=chapters.find(item=>item.id===chapter)?.nav;
-  return <div className={'landing'+(still?' sp-paused':'')} ref={root}>
+  const chapterIndex=chapters.findIndex(item=>item.id===chapter);
+  return <JourneyContext.Provider value={journey}><div className={'landing'+(reduced?' sp-flow':' sp-engine')+(still?' sp-paused':'')} ref={root}>
     <div className="sp-space" aria-hidden="true"/>
-    <Starfield paused={paused}/>
+    <Starfield paused={paused} journey={journey}/>
     <a className="sp-skip" href="#about">Skip to the journey</a>
     <header className="sp-nav">
       <a className="sp-brand" href="#home" aria-label="EarthSignal, back to the top">earth<span>signal</span></a>
@@ -271,18 +290,18 @@ export default function Landing(){
       {chapters.map(item=><a key={item.id} href={`#${item.id}`} aria-current={chapter===item.id?'step':undefined}><span>{item.label}</span><i/></a>)}
     </nav>
 
-    <main>
-      <section id="home" className="sp-hero" ref={hero} aria-labelledby="hero-title">
+    <main className="sp-world" ref={world}>
+      <Scene id="home"><section className="sp-hero" aria-labelledby="hero-title">
         <div className="sp-hero-inner">
           <p className="sp-kicker"><i/>NASA Space Apps Challenge 2026 · EarthSignal</p>
           <h1 id="hero-title" className="sp-title"><span className="sp-title-line">Dancing with</span> <span className="sp-title-line sp-title-accent">the SARs</span></h1>
           <p className="sp-lead">Follow a changing planet with NISAR radar, through cloud, smoke and darkness.</p>
           <a className="sp-button" href="#about">Start the journey <ArrowDown size={20} aria-hidden="true"/></a>
         </div>
-        <a className="sp-scroll-cue" href="#about"><span>Scroll to explore</span><ChevronsDown size={22} aria-hidden="true"/></a>
-      </section>
+        <a className="sp-scroll-cue" href="#about"><span>Scroll to fly</span><ChevronsDown size={22} aria-hidden="true"/></a>
+      </section></Scene>
 
-      <section id="about" className="sp-section sp-about" aria-labelledby="about-title">
+      <Scene id="about"><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
           <h2 id="about-title">One radar. Five kinds of change.</h2>
@@ -294,9 +313,9 @@ export default function Landing(){
           <li><strong>Through cloud</strong><span>Radar waves pass through cloud and smoke.</span></li>
           <li><strong>Every 12 days</strong><span>Repeat passes over the same place reveal change.</span></li>
         </ul>
-      </section>
+      </section></Scene>
 
-      <section id="work" className="sp-section sp-work" aria-labelledby="work-title">
+      <Scene id="work"><section className="sp-section sp-work" aria-labelledby="work-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">02 / Case studies</span>
           <h2 id="work-title">Three events, seen by radar.</h2>
@@ -308,7 +327,7 @@ export default function Landing(){
           </a>)}
         </div>
         <p className="sp-disclaimer sp-reveal">The colour images are radar composites, not natural-colour photographs. Coloured areas are detections by our model, not validated damage maps.</p>
-      </section>
+      </section></Scene>
 
       <CaseSection study={spain}/>
 
@@ -323,23 +342,25 @@ export default function Landing(){
         </div>
       </CaseSection>
 
-      <Flight reduced={reduced}/>
+      <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='spain')}/>
 
       <CaseSection study={nepal}/>
 
-      <section id="discover" className="sp-cta" aria-labelledby="discover-title">
-        <div className="sp-reveal">
-          <span className="sp-index">04 / Your turn</span>
-          <h2 id="discover-title" className="sp-title"><span className="sp-title-line">Discover more</span> <span className="sp-title-line sp-title-accent">yourself</span></h2>
-          <p className="sp-lead">Open the EarthSignal dashboard to explore the event map, filter the catalog and ask Orbit, our guide.</p>
-          <a className="sp-button sp-button-large" href={EXPLORER_PATH}>Open the dashboard <Rocket size={24} aria-hidden="true"/></a>
-        </div>
-      </section>
+      <Scene id="discover">
+        <section className="sp-cta" aria-labelledby="discover-title">
+          <div className="sp-reveal">
+            <span className="sp-index">04 / Your turn</span>
+            <h2 id="discover-title" className="sp-title"><span className="sp-title-line">Discover more</span> <span className="sp-title-line sp-title-accent">yourself</span></h2>
+            <p className="sp-lead">Open the EarthSignal dashboard to explore the event map, filter the catalog and ask Orbit, our guide.</p>
+            <a className="sp-button sp-button-large" href={EXPLORER_PATH}>Open the dashboard <Rocket size={24} aria-hidden="true"/></a>
+          </div>
+        </section>
+        <footer className="sp-footer">
+          <p><strong>EarthSignal</strong> · Built for the NASA International Space Apps Challenge 2026, “Dancing with the SARs”. An independent team project, not an official NASA or ISRO service.</p>
+          <p>Data and imagery: NISAR L2 GCOV/GUNW (NASA/ISRO, ASF DAAC) · Sentinel-2 (Copernicus/ESA) · Blue Marble (NASA Earth Observatory) · Esri World Imagery · AWS Terrain Tiles.</p>
+        </footer>
+      </Scene>
     </main>
-
-    <footer className="sp-footer">
-      <p><strong>EarthSignal</strong> · Built for the NASA International Space Apps Challenge 2026, “Dancing with the SARs”. An independent team project, not an official NASA or ISRO service.</p>
-      <p>Data and imagery: NISAR L2 GCOV/GUNW (NASA/ISRO, ASF DAAC) · Sentinel-2 (Copernicus/ESA) · Blue Marble (NASA Earth Observatory) · Esri World Imagery · AWS Terrain Tiles.</p>
-    </footer>
-  </div>;
+    <div className="sp-spacer" ref={spacer} aria-hidden="true"/>
+  </div></JourneyContext.Provider>;
 }

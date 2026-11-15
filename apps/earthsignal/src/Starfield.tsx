@@ -1,12 +1,16 @@
 import {useEffect,useRef} from 'react';
+import {add,makeCamera,scale,smooth,type Camera} from './journey/path';
+import type {Journey} from './journey/engine';
 
-type Star={x:number;y:number;z:number;r:number;phase:number;tint:string;ox:number;oy:number};
+type Star={x:number;y:number;z:number;r:number;phase:number;tint:string;ox:number;oy:number;sx:number;sy:number;seen:boolean};
 const tints=['#ffffff','#ffffff','#d6e9ff','#a9d4ff','#ffe8c7'];
 const REPEL_RADIUS=150;
+const mod=(a:number,n:number)=>((a%n)+n)%n;
 
-// Deep-space backdrop for the whole landing journey. Stars sit on depth layers: nearer ones drift further
-// with the pointer and with scrolling, are pushed aside by the cursor and stretch a little while scrolling.
-export default function Starfield({paused}:{paused:boolean}){
+// Deep-space backdrop seen through the journey camera. Stars fill a volume that wraps around the camera, so
+// flying forward streams them past the viewer (with streaks at speed) and panning gives depth parallax.
+// The pointer nudges the camera a little and pushes nearby stars aside.
+export default function Starfield({paused,journey}:{paused:boolean;journey:Journey|null}){
   const ref=useRef<HTMLCanvasElement>(null);
   const pausedRef=useRef(paused);
   const refresh=useRef<()=>void>(()=>{});
@@ -15,74 +19,83 @@ export default function Starfield({paused}:{paused:boolean}){
     const canvas=ref.current,ctx=canvas?.getContext('2d');
     if(!canvas||!ctx)return;
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
-    let w=0,h=0,stars:Star[]=[],frame=0;
+    let w=0,h=0,stars:Star[]=[],still:Camera|null=null,lastCamera:Camera|null=null,lastSpeed=0;
     const pointer={x:.5,y:.5,tx:.5,ty:.5,px:-9999,py:-9999};
-    let smoothScroll=window.scrollY;
     const animated=()=>!pausedRef.current&&!reduced.matches&&!document.hidden;
     function build(){
       const dpr=Math.min(window.devicePixelRatio||1,2);
       w=window.innerWidth;h=window.innerHeight;
       canvas!.width=Math.round(w*dpr);canvas!.height=Math.round(h*dpr);
       ctx!.setTransform(dpr,0,0,dpr,0,0);
-      const count=Math.round(Math.min(1000,Math.max(240,w*h/1700)));
-      stars=Array.from({length:count},()=>{
-        const z=Math.random()**1.7*.9+.1;
-        return {x:Math.random(),y:Math.random(),z,r:.45+z*1.25*Math.random()+(Math.random()<.025?1.1:0),phase:Math.random()*6.283,tint:tints[Math.floor(Math.random()*tints.length)],ox:0,oy:0};
-      });
+      const count=Math.round(Math.min(1600,Math.max(500,w*h/1100)));
+      stars=Array.from({length:count},()=>({x:Math.random(),y:Math.random(),z:Math.random(),r:.5+Math.random()*1.1+(Math.random()<.03?1.2:0),
+        phase:Math.random()*6.283,tint:tints[Math.floor(Math.random()*tints.length)],ox:0,oy:0,sx:0,sy:0,seen:false}));
+      still=makeCamera([0,0,0],[0,0,-1],0,Math.max(700,h*1.1),w,h);
     }
-    function draw(time:number){
-      frame=0;
+    function draw(camera:Camera,speed:number,time:number){
       const live=animated();
-      if(live){
-        pointer.x+=(pointer.tx-pointer.x)*.05;pointer.y+=(pointer.ty-pointer.y)*.05;
-        smoothScroll+=(window.scrollY-smoothScroll)*.14;
-      }else smoothScroll=window.scrollY;
-      const lag=live?window.scrollY-smoothScroll:0,span=h+40;
+      if(live){pointer.x+=(pointer.tx-pointer.x)*.05;pointer.y+=(pointer.ty-pointer.y)*.05;}
+      const f=camera.focal,boxX=w*4,boxY=h*4,boxZ=f*7;
+      // Pointer parallax: shift the eye, not the scene, so near stars move more than far ones.
+      const eye=live?add(camera.pos,add(scale(camera.right,(pointer.x-.5)*-f*.12),scale(camera.down,(pointer.y-.5)*-f*.12))):camera.pos;
       ctx!.clearRect(0,0,w,h);
+      const streaks=live&&speed>.25;
       for(const s of stars){
-        let x=s.x*w+(.5-pointer.x)*70*s.z;
-        let y=((s.y*span-smoothScroll*s.z*.32)%span+span)%span-20+(.5-pointer.y)*70*s.z;
+        // Wrap each star into a box around the eye: an endless field without allocating new stars.
+        const rx=mod(s.x*boxX-eye[0]+boxX/2,boxX)-boxX/2,ry=mod(s.y*boxY-eye[1]+boxY/2,boxY)-boxY/2,rz=mod(s.z*boxZ-eye[2],boxZ)-boxZ;
+        const d=rx*camera.fwd[0]+ry*camera.fwd[1]+rz*camera.fwd[2];
+        if(d<20){s.seen=false;continue;}
+        const k=f/d;
+        let x=w/2+(rx*camera.right[0]+ry*camera.right[1]+rz*camera.right[2])*k;
+        let y=h/2+(rx*camera.down[0]+ry*camera.down[1]+rz*camera.down[2])*k;
+        if(x<-80||x>w+80||y<-80||y>h+80){s.seen=false;continue;}
         if(live){
-          const dx=x-pointer.px,dy=y-pointer.py,d=Math.hypot(dx,dy);
+          const dx=x-pointer.px,dy=y-pointer.py,dist=Math.hypot(dx,dy),near=Math.min(1,k*2);
           let tx=0,ty=0;
-          if(d<REPEL_RADIUS&&d>.01){const push=(1-d/REPEL_RADIUS)**2*52*s.z;tx=dx/d*push;ty=dy/d*push;}
-          s.ox+=(tx-s.ox)*.12;s.oy+=(ty-s.oy)*.12;
-          x+=s.ox;y+=s.oy;
+          if(dist<REPEL_RADIUS&&dist>.01){const push=(1-dist/REPEL_RADIUS)**2*52*near;tx=dx/dist*push;ty=dy/dist*push;}
+          s.ox+=(tx-s.ox)*.12;s.oy+=(ty-s.oy)*.12;x+=s.ox;y+=s.oy;
         }
-        const twinkle=live?.78+.22*Math.sin(time*.0011*(.6+s.z)+s.phase):.9;
-        ctx!.globalAlpha=(.3+.7*s.z)*twinkle;
+        const size=Math.min(3.4,Math.max(.35,s.r*k*1.6));
+        const fade=(1-smooth(boxZ*.55,boxZ*.98,d))*smooth(20,f*.25,d);
+        const twinkle=live?.8+.2*Math.sin(time*.0011*(.6+k)+s.phase):.9;
+        ctx!.globalAlpha=Math.min(1,(.35+.65*Math.min(1,k*2.2))*fade*twinkle);
         ctx!.fillStyle=ctx!.strokeStyle=s.tint;
-        const streak=Math.max(-70,Math.min(70,lag*s.z*.22));
-        if(Math.abs(streak)>1.5){ctx!.lineWidth=s.r;ctx!.beginPath();ctx!.moveTo(x,y);ctx!.lineTo(x,y+streak);ctx!.stroke();}
-        else if(s.r<1.2)ctx!.fillRect(x,y,s.r*1.35,s.r*1.35);
+        const mx=x-s.sx,my=y-s.sy,moved=Math.hypot(mx,my);
+        if(streaks&&s.seen&&moved>1.2&&moved<220){
+          // Streak back along the star's own screen motion: radial when flying forward, vertical when panning.
+          const len=Math.min(2.2,.7+speed*.7);
+          ctx!.lineWidth=size;ctx!.beginPath();ctx!.moveTo(x,y);ctx!.lineTo(x-mx*len,y-my*len);ctx!.stroke();
+        }else if(size<1.2)ctx!.fillRect(x,y,size*1.35,size*1.35);
         else{
-          ctx!.beginPath();ctx!.arc(x,y,s.r*.8,0,6.283);ctx!.fill();
-          if(s.r>2){ctx!.globalAlpha*=.22;ctx!.beginPath();ctx!.arc(x,y,s.r*2.6,0,6.283);ctx!.fill();}
+          ctx!.beginPath();ctx!.arc(x,y,size*.8,0,6.283);ctx!.fill();
+          if(size>2.2){ctx!.globalAlpha*=.22;ctx!.beginPath();ctx!.arc(x,y,size*2.6,0,6.283);ctx!.fill();}
         }
+        s.sx=x;s.sy=y;s.seen=true;
       }
       ctx!.globalAlpha=1;
-      if(live)frame=requestAnimationFrame(draw);
     }
-    const schedule=()=>{if(!frame)frame=requestAnimationFrame(draw);};
-    const onResize=()=>{build();schedule();};
-    const onPointer=(e:PointerEvent)=>{
-      if(e.pointerType==='touch')return;
-      pointer.tx=e.clientX/w;pointer.ty=e.clientY/h;pointer.px=e.clientX;pointer.py=e.clientY;
-    };
+    let frame=0;
+    // Without the journey engine (reduced motion) the field is a still picture.
+    const drawStill=()=>{frame=0;if(still)draw(still,0,performance.now());if(!journey&&animated())frame=requestAnimationFrame(drawStill);};
+    const onResize=()=>{build();if(journey&&lastCamera)draw(lastCamera,0,performance.now());else drawStill();};
+    const onPointer=(e:PointerEvent)=>{if(e.pointerType==='touch')return;pointer.tx=e.clientX/w;pointer.ty=e.clientY/h;pointer.px=e.clientX;pointer.py=e.clientY;};
     const onLeave=()=>{pointer.px=pointer.py=-9999;pointer.tx=pointer.ty=.5;};
-    refresh.current=schedule;
-    build();schedule();
+    build();
+    const off=journey?.subscribe(next=>{
+      // Redraw while moving or animating; a still camera with paused motion needs no new frame.
+      if(!next.moved&&!animated()&&lastSpeed<.01)return;
+      lastCamera=next.camera;lastSpeed=next.speed;draw(next.camera,next.speed,next.time);
+    });
+    refresh.current=()=>{if(journey&&lastCamera)draw(lastCamera,0,performance.now());else if(!frame)drawStill();};
+    if(!journey)drawStill();
     window.addEventListener('resize',onResize);
     window.addEventListener('pointermove',onPointer,{passive:true});
-    window.addEventListener('scroll',schedule,{passive:true});
     document.documentElement.addEventListener('pointerleave',onLeave);
-    document.addEventListener('visibilitychange',schedule);
-    reduced.addEventListener('change',schedule);
     return()=>{
-      cancelAnimationFrame(frame);
-      window.removeEventListener('resize',onResize);window.removeEventListener('pointermove',onPointer);window.removeEventListener('scroll',schedule);
-      document.documentElement.removeEventListener('pointerleave',onLeave);document.removeEventListener('visibilitychange',schedule);reduced.removeEventListener('change',schedule);
+      off?.();cancelAnimationFrame(frame);refresh.current=()=>{};
+      window.removeEventListener('resize',onResize);window.removeEventListener('pointermove',onPointer);
+      document.documentElement.removeEventListener('pointerleave',onLeave);
     };
-  },[]);
+  },[journey]);
   return <canvas ref={ref} className="sp-starfield" aria-hidden="true"/>;
 }
