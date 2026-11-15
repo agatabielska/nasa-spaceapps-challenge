@@ -20,7 +20,7 @@ export default function JourneyBar({chapters,chapter,autopilot,paused,onPause}:{
     const show=(p:number)=>{
       progress.current=p;if(Math.abs(p-shown)<.0005)return;shown=p;
       fill.current!.style.transform=`scaleX(${p.toFixed(4)})`;knob.current!.style.left=`${(p*100).toFixed(2)}%`;
-      const value=Math.round(p*100);percent.current!.textContent=`${String(value).padStart(3,'0')}%`;track.current!.setAttribute('aria-valuenow',String(value));
+      const value=Math.round(p*100);percent.current!.textContent=`${value}%`;track.current!.setAttribute('aria-valuenow',String(value));
     };
     if(journey)return journey.subscribe(frame=>{show(frame.progress);if(frame.marks!==lastMarks){lastMarks=frame.marks;setMarks(frame.marks);}});
     const update=()=>{
@@ -61,7 +61,7 @@ export default function JourneyBar({chapters,chapter,autopilot,paused,onPause}:{
           <span className="sp-bar-fill" ref={fill}/>
           <span className="sp-bar-knob" ref={knob}/>
         </div>
-        <span className="sp-bar-percent" ref={percent} aria-hidden="true">000%</span>
+        <span className="sp-bar-percent" ref={percent} aria-hidden="true">0%</span>
       </div>
       <p className="sp-bar-chapter" aria-live="polite">{chapters[index].label}</p>
     </div>

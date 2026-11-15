@@ -123,6 +123,8 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-bar-center{min-width:0}
 .sp-bar-row{display:flex;align-items:center;gap:14px}
 .sp-bar-count,.sp-bar-percent{font:800 14px Manrope,sans-serif;letter-spacing:.14em;font-variant-numeric:tabular-nums;color:var(--sp-text);white-space:nowrap}
+/* Room for 100%, so the track keeps its length as the number grows. */
+.sp-bar-percent{min-width:3.4em}
 .sp-bar-track{position:relative;flex:1;min-width:60px;height:30px;cursor:crosshair;touch-action:none}
 .landing .sp-bar-track:focus-visible{outline-offset:2px}
 .sp-bar-rail,.sp-bar-fill{position:absolute;left:0;right:0;top:50%}
