@@ -3,10 +3,11 @@
    the smallest label is 14px and reading text starts at 17px for projected presentations. */
 html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:84px}
 .landing{
-  --sp-bg:#030814;--sp-panel:#071230;--sp-panel-2:#0c1d47;
-  --sp-line:#8fd6ff47;--sp-line-strong:#8fd6ff;
-  --sp-text:#f4f7ff;--sp-text-2:#d3ddf2;--sp-text-3:#b4c3df;
-  --sp-accent:#8fd6ff;--sp-accent-2:#c9b8ff;--sp-ink:#04101f;
+  /* Shared tokens (tokens.css) under the landing page's own names. */
+  --sp-bg:var(--es-bg);--sp-panel:var(--es-panel);--sp-panel-2:var(--es-panel-2);
+  --sp-line:var(--es-line);--sp-line-strong:var(--es-line-strong);
+  --sp-text:var(--es-text);--sp-text-2:var(--es-text-2);--sp-text-3:var(--es-text-3);
+  --sp-accent:var(--es-accent);--sp-accent-2:var(--es-accent-2);--sp-ink:var(--es-ink);
   position:relative;min-height:100vh;overflow:clip;color:var(--sp-text);
   font-family:'DM Sans',system-ui,sans-serif;font-size:clamp(17px,.55vw + 10.5px,21px);line-height:1.6;
 }

@@ -1,6 +1,6 @@
 import {lazy,Suspense} from 'react';
 import {createRoot} from 'react-dom/client';
-import './styles.css';
+import './tokens.css';
 import {EXPLORER_PATH} from './routes';
 const Explorer=lazy(()=>import('./Explorer'));
 const Landing=lazy(()=>import('./Landing'));
