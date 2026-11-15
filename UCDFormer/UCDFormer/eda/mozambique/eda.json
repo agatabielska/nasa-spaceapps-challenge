@@ -1,0 +1,61 @@
+{
+  "event": "mozambique",
+  "before": "2026-01-05T03:42:32+00:00",
+  "after": "2026-01-17T03:42:32+00:00",
+  "event_context": {
+    "anchor": "2026-01-17",
+    "status": "NASA-documented pre/during observation dates; flood onset not fixed here",
+    "source": "https://svs.gsfc.nasa.gov/5661",
+    "note": "NASA compares January 5 and January 17. Flooding developed over a longer rainfall interval: January 5 is the comparison image, not proven entirely pre-flood. January 17 is a during-flood acquisition; Beta calibration caveats apply."
+  },
+  "brackets_anchor_date": false,
+  "same_day_after": true,
+  "bbox_wgs84": [
+    32.950600775417264,
+    -24.644915558749553,
+    33.049399224582736,
+    -24.55508444125045
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:32736",
+  "shape": [
+    995,
+    1000
+  ],
+  "valid_fraction": 1.0,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -21.108235054016113,
+        -3.512491054534908
+      ],
+      "pre_median_db": -14.711490631103516,
+      "post_median_db": -11.724662780761719,
+      "signed_median_db": 2.9893550872802734,
+      "absolute_median_db": 4.07338809967041,
+      "absolute_p95_db": 10.067843532562254
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -27.542469024658203,
+        -11.71905870437622
+      ],
+      "pre_median_db": -21.70708465576172,
+      "post_median_db": -20.36737060546875,
+      "signed_median_db": 1.4151697158813477,
+      "absolute_median_db": 2.883927345275879,
+      "absolute_p95_db": 8.310673570632932
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

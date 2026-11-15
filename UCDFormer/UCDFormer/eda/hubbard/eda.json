@@ -1,0 +1,61 @@
+{
+  "event": "hubbard",
+  "before": "2025-11-26T13:32:27+00:00",
+  "after": "2025-12-08T13:32:28+00:00",
+  "event_context": {
+    "anchor": "2025-12-06",
+    "status": "Earthquake date independently documented",
+    "source": "https://science.nasa.gov/earth/earth-observatory/landslide-and-avalanche-debris-litter-hubbard-glacier/",
+    "note": "November 26/December 8 bracket the earthquake. Snow, ice motion and terrain can mimic deposit-related backscatter change; Beta data."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    -139.89107282236728,
+    60.40508444125045,
+    -139.70892717763275,
+    60.494915558749554
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:3413",
+  "shape": [
+    1123,
+    1121
+  ],
+  "valid_fraction": 0.9922661597622654,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -15.27124912261963,
+        0.6970690751075819
+      ],
+      "pre_median_db": -8.525445938110352,
+      "post_median_db": -7.235620021820068,
+      "signed_median_db": 1.098691463470459,
+      "absolute_median_db": 2.1675777435302734,
+      "absolute_p95_db": 7.599187755584715
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -24.467103309631348,
+        -6.341437816619873
+      ],
+      "pre_median_db": -18.40890121459961,
+      "post_median_db": -17.16131019592285,
+      "signed_median_db": 1.0373268127441406,
+      "absolute_median_db": 2.2372493743896484,
+      "absolute_p95_db": 8.19823122024535
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

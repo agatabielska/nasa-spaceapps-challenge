@@ -1,0 +1,18 @@
+{
+  "UCDFormer": {
+    "changed_fraction": 0.12078837540716612,
+    "valid_area_km2": 94.3104,
+    "changed_area_km2": 11.3916
+  },
+  "no_translation": {
+    "changed_fraction": 0.1499304424538545,
+    "valid_area_km2": 94.3104,
+    "changed_area_km2": 14.14
+  },
+  "log_change_otsu": {
+    "changed_fraction": 0.2803706038980076,
+    "valid_area_km2": 99.5996,
+    "changed_area_km2": 27.9248
+  },
+  "caveat": "Method agreement and changed area are diagnostics, not accuracy. Baseline has more valid coverage; compare on common support for quantitative agreement."
+}

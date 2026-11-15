@@ -1,0 +1,16 @@
+{
+  "native_shape": [
+    32040,
+    33120
+  ],
+  "display_step": 16,
+  "display_sampling": "nearest decimation, viewing only; no flood area measurement",
+  "crs": "EPSG:32736",
+  "native_frame_extent": [
+    329760.0,
+    660960.0,
+    7070400.0,
+    7390800.0
+  ],
+  "limitation": "Flood may extend beyond acquisition footprint. This figure does not delineate its complete boundary."
+}

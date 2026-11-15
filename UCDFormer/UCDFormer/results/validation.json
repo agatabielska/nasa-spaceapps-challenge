@@ -1,0 +1,66 @@
+{
+  "runs": [
+    {
+      "location": "etna",
+      "status": "passed",
+      "changed_pixels": 2521,
+      "coverage_fraction": 0.9991285140562249,
+      "native_and_wgs84_shape": [
+        498,
+        500
+      ]
+    },
+    {
+      "location": "hubbard",
+      "status": "passed",
+      "changed_pixels": 15178,
+      "coverage_fraction": 0.9487092922853038,
+      "native_and_wgs84_shape": [
+        1123,
+        1121
+      ]
+    },
+    {
+      "location": "mozambique",
+      "status": "passed",
+      "changed_pixels": 1658,
+      "coverage_fraction": 1.0,
+      "native_and_wgs84_shape": [
+        995,
+        1000
+      ]
+    },
+    {
+      "location": "nepal_rasuwagadhi",
+      "status": "passed",
+      "changed_pixels": 9042,
+      "coverage_fraction": 0.8388595344072969,
+      "native_and_wgs84_shape": [
+        1009,
+        1014
+      ]
+    },
+    {
+      "location": "nepal_shyar_khola",
+      "status": "passed",
+      "changed_pixels": 6260,
+      "coverage_fraction": 0.7619042996808436,
+      "native_and_wgs84_shape": [
+        1012,
+        1018
+      ]
+    },
+    {
+      "location": "spain_navaluenga_corrected",
+      "status": "passed",
+      "changed_pixels": 2392,
+      "coverage_fraction": 1.0,
+      "native_and_wgs84_shape": [
+        509,
+        519
+      ]
+    }
+  ],
+  "broken_embedded_images": [],
+  "accuracy": "not evaluated: no independent reference masks"
+}
