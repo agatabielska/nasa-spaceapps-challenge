@@ -5,6 +5,7 @@ import EarthGlobe from './EarthGlobe';
 import Starfield from './Starfield';
 import JourneyBar from './JourneyBar';
 import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
+import {CLOSE_DEPTH} from './journey/path';
 import {EXPLORER_PATH} from './routes';
 import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
@@ -310,6 +311,31 @@ export default function Landing(){
     setJourney(engine);
     return()=>{engine.destroy();setJourney(null);setAutopilot(false);};
   },[reduced]);
+  // The About globe shows through behind the hero title. Measure where it lands on the start screen (its centre and
+  // radius, seen from the hero, i.e. scaled by the extra distance) so the hero can centre its title on it and
+  // put the lead and button below it.
+  useEffect(()=>{
+    if(reduced)return;
+    const hero=document.getElementById('home'),about=document.getElementById('about'),globe=about?.querySelector<HTMLElement>('.sp-orbit-globe'),title=hero?.querySelector<HTMLElement>('.sp-title');
+    if(!hero||!about||!globe||!title)return;
+    const seen=1/(1+CLOSE_DEPTH);
+    const update=()=>{
+      let y=0,node:HTMLElement|null=globe;
+      while(node&&node!==about){y+=node.offsetTop;node=node.offsetParent as HTMLElement|null;}
+      // The globe box is placed at top:50% and pulled up by half its height, so its offsetTop is its centre.
+      const h=window.innerHeight,radius=globe.offsetHeight/2*.91*seen;
+      // Behind the title the globe should be about as tall as the two title lines. Where it would look smaller,
+      // About enlarges it while it waits (--globe-boost) and lets the enlargement go as the camera approaches;
+      // capped so the globe still only grows on the way in.
+      const lines=2*.94*parseFloat(getComputedStyle(title).fontSize),boost=Math.min(1.45,Math.max(1,lines*1.05/(2*radius||1)));
+      about.style.setProperty('--globe-boost',boost.toFixed(3));
+      hero.style.setProperty('--globe-y',`${(h/2+(y-h/2)*seen).toFixed(1)}px`);
+      hero.style.setProperty('--globe-r',`${(radius*boost).toFixed(1)}px`);
+    };
+    const observer=new ResizeObserver(update);observer.observe(about);observer.observe(globe);observer.observe(title);
+    update();
+    return()=>{observer.disconnect();hero.style.removeProperty('--globe-y');hero.style.removeProperty('--globe-r');about.style.removeProperty('--globe-boost');};
+  },[reduced]);
   // Reduced motion: an ordinary scrolling page with gentle reveals.
   useEffect(()=>{
     if(!reduced)return;
@@ -349,8 +375,10 @@ export default function Landing(){
         <div className="sp-hero-inner">
           <p className="sp-kicker"><i/>NASA Space Apps Challenge 2026 · EarthSignal</p>
           <h1 id="hero-title" className="sp-title"><span className="sp-title-line">Dancing with</span> <span className="sp-title-line sp-title-accent">the SARs</span></h1>
-          <p className="sp-lead">Follow a changing planet with NISAR radar, through cloud, smoke and darkness.</p>
-          <a className="sp-button" href="#about">Start the journey <ArrowDown size={20} aria-hidden="true"/></a>
+          <div className="sp-hero-foot">
+            <p className="sp-lead">Follow a changing planet with NISAR radar, through cloud, smoke and darkness.</p>
+            <a className="sp-button" href="#about">Start the journey <ArrowDown size={20} aria-hidden="true"/></a>
+          </div>
         </div>
         <a className="sp-scroll-cue" href="#about"><span>Scroll to fly</span><ChevronsDown size={22} aria-hidden="true"/></a>
       </section></Scene>

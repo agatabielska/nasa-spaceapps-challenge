@@ -235,6 +235,8 @@ export class Journey{
       el.style.zIndex=String(Math.round(1e5-p.d));
       // --arrive: 0 while the scene waits in the distance, 1 once the camera has arrived (scenes fill in their
       // details with it, e.g. About shows only the globe behind the hero title).
+      // --approach: 0 while a close scene waits behind the previous one, rising evenly to 1 as the camera reaches it.
+      el.style.setProperty('--approach',clamp((f*(1+CLOSE_DEPTH)-p.d)/(f*CLOSE_DEPTH)).toFixed(3));
       el.style.setProperty('--arrive',p.d<=f*1.03?'1':(1-smooth(f*1.03,f*(1+CLOSE_DEPTH*.3),p.d)).toFixed(3));
       el.style.pointerEvents=opacity>.9&&Math.abs(p.s-1)<.1?'auto':'none';
     });

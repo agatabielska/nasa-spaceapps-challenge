@@ -153,7 +153,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-hero-inner{display:flex;flex-direction:column;align-items:center}
 .sp-kicker{display:flex;align-items:center;gap:12px;font:700 max(14px,.82em) Manrope,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--sp-text-2)}
 .sp-kicker i{width:9px;height:9px;border-radius:50%;background:var(--sp-accent);box-shadow:0 0 18px var(--sp-accent)}
-.landing .sp-title{margin:.22em 0 .3em;font:800 clamp(48px,10.2vw,184px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
+.landing .sp-title{margin:.22em 0 .3em;font:800 clamp(48px,9vw,164px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
 /* The gradient is clipped to the text, so the box must reach below descenders (g, y): extra bottom padding,
    taken back with a negative margin so the line spacing stays the same. */
 .sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.18em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
@@ -162,6 +162,20 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-hero .sp-button{margin-top:2em}
 .sp-scroll-cue{position:absolute;left:50%;bottom:calc(var(--sp-bar) + 16px);display:flex;flex-direction:column;align-items:center;gap:4px;transform:translateX(-50%);font:700 14px Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--sp-text-2)}
 .sp-scroll-cue svg{color:var(--sp-accent);animation:sp-nudge 1.8s ease-in-out infinite}
+/* Motion mode: the hero is composed around the About globe that shows through behind it (its centre --globe-y
+   and radius --globe-r are measured by Landing.tsx). The title is centred on the globe, the kicker sits above the
+   title, and the lead and button start below whichever ends lower, the title or the globe. */
+.sp-engine .sp-hero{--fs:clamp(48px,9vw,164px);display:block;height:100vh;height:100svh;padding:0}
+.sp-engine .sp-hero-inner{position:absolute;inset:0;display:block}
+.sp-engine .sp-hero .sp-kicker{position:absolute;left:0;right:0;justify-content:center;top:calc(var(--globe-y,45vh) - .94*var(--fs) - 64px)}
+.sp-engine .sp-hero .sp-title{position:absolute;left:0;right:0;top:var(--globe-y,45vh);margin:0;transform:translateY(-50%)}
+.sp-engine .sp-hero-foot{position:absolute;left:50%;display:flex;flex-direction:column;align-items:center;width:min(760px,calc(100% - 40px));transform:translateX(-50%);top:calc(var(--globe-y,45vh) + max(.94*var(--fs) + 30px,var(--globe-r,0px) + 34px))}
+.sp-engine .sp-hero .sp-button{margin-top:1.5em}
+/* Behind the title the globe is dimmed so the text stays readable; it brightens as the camera arrives. */
+.sp-engine .sp-orbit-globe canvas{filter:brightness(calc(.78 + .22*var(--arrive,1))) saturate(calc(.85 + .15*var(--arrive,1)))}
+/* Enlarged while waiting behind the title (see --globe-boost in Landing.tsx), back to its own size on arrival. */
+.sp-engine .sp-orbit-globe,.sp-engine .sp-globe-rings{scale:calc(1 + (var(--globe-boost,1) - 1)*(1 - var(--approach,1)))}
+@media(max-height:820px){.sp-engine .sp-scroll-cue{display:none}}
 
 /* 2. About: globe, orbiting events and Orbit the astronaut */
 .sp-orbit-wrap{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,34px)}
