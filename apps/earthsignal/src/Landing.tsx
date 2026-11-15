@@ -380,7 +380,7 @@ export default function Landing(){
             <a className="sp-button" href="#about">Start the journey <ArrowDown size={20} aria-hidden="true"/></a>
           </div>
         </div>
-        <a className="sp-scroll-cue" href="#about"><span>Scroll to fly</span><ChevronsDown size={22} aria-hidden="true"/></a>
+        <a className="sp-scroll-cue" href="#about"><span>Scroll to travel</span><ChevronsDown size={22} aria-hidden="true"/></a>
       </section></Scene>
 
       {/* About waits right behind the hero title: from the start screen only its turning globe and orbits show;

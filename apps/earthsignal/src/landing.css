@@ -155,8 +155,8 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-kicker i{width:9px;height:9px;border-radius:50%;background:var(--sp-accent);box-shadow:0 0 18px var(--sp-accent)}
 .landing .sp-title{margin:.22em 0 .3em;font:800 clamp(48px,9vw,164px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
 /* The gradient is clipped to the text, so the box must reach below descenders (g, y): extra bottom padding,
-   taken back with a negative margin so the line spacing stays the same. */
-.sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.18em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
+   taken back with a negative margin that also tightens the gap between the two title lines. */
+.sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.27em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
 .sp-title-accent{background-image:linear-gradient(90deg,var(--sp-accent),var(--sp-accent-2))}
 .sp-lead{max-width:760px;font-size:max(19px,1.2em);line-height:1.5;color:var(--sp-text-2)}
 .sp-hero .sp-button{margin-top:2em}
