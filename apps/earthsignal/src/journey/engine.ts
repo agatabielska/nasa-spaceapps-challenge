@@ -27,7 +27,7 @@ function contentBlocks(scene:HTMLElement){
   return blocks;
 }
 // Seconds an autopilot move takes to reach full speed, and to stop again.
-const RAMP=1.4;
+const RAMP=.8;
 // Position along a move at time t (0..1): accelerate for the first r, glide, decelerate for the last r.
 export function easeMove(t:number,r:number){
   if(r<=0)return t;
@@ -60,7 +60,7 @@ export class Journey{
 
   constructor(private root:HTMLElement,world:HTMLElement,private spacer:HTMLElement,private events:JourneyEvents){
     this.scenes=[...world.querySelectorAll<HTMLElement>('[data-scene]')].map(el=>({el,id:el.id,minHold:Number(el.dataset.hold??.3),
-      steps:el.dataset.steps?el.dataset.steps.split(',').map(Number):undefined,dwell:Number(el.dataset.dwell??6),pace:Number(el.dataset.pace??.2)}));
+      steps:el.dataset.steps?el.dataset.steps.split(',').map(Number):undefined,dwell:Number(el.dataset.dwell??6),pace:Number(el.dataset.pace??.75)}));
     history.scrollRestoration='manual';
     this.measure();
     // Open a deep link (/#etna) on its scene, without flying through everything before it.
