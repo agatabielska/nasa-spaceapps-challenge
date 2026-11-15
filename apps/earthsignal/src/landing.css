@@ -155,8 +155,8 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-kicker i{width:9px;height:9px;border-radius:50%;background:var(--sp-accent);box-shadow:0 0 18px var(--sp-accent)}
 .landing .sp-title{margin:.22em 0 .3em;font:800 clamp(48px,9vw,164px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
 /* The gradient is clipped to the text, so the box must reach below descenders (g, y): extra bottom padding,
-   taken back with a negative margin that also tightens the gap between the two title lines. */
-.sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.27em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
+   taken back in part with a negative margin, leaving a clear gap between the two title lines. */
+.sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.1em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
 .sp-title-accent{background-image:linear-gradient(90deg,var(--sp-accent),var(--sp-accent-2))}
 .sp-lead{max-width:760px;font-size:max(19px,1.2em);line-height:1.5;color:var(--sp-text-2)}
 .sp-hero .sp-button{margin-top:2em}
@@ -167,9 +167,9 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
    title, and the lead and button start below whichever ends lower, the title or the globe. */
 .sp-engine .sp-hero{--fs:clamp(48px,9vw,164px);display:block;height:100vh;height:100svh;padding:0}
 .sp-engine .sp-hero-inner{position:absolute;inset:0;display:block}
-.sp-engine .sp-hero .sp-kicker{position:absolute;left:0;right:0;justify-content:center;top:calc(var(--globe-y,45vh) - .94*var(--fs) - 64px)}
+.sp-engine .sp-hero .sp-kicker{position:absolute;left:0;right:0;justify-content:center;top:calc(var(--globe-y,45vh) - 1.04*var(--fs) - 64px)}
 .sp-engine .sp-hero .sp-title{position:absolute;left:0;right:0;top:var(--globe-y,45vh);margin:0;transform:translateY(-50%)}
-.sp-engine .sp-hero-foot{position:absolute;left:50%;display:flex;flex-direction:column;align-items:center;width:min(760px,calc(100% - 40px));transform:translateX(-50%);top:calc(var(--globe-y,45vh) + max(.94*var(--fs) + 30px,var(--globe-r,0px) + 34px))}
+.sp-engine .sp-hero-foot{position:absolute;left:50%;display:flex;flex-direction:column;align-items:center;width:min(760px,calc(100% - 40px));transform:translateX(-50%);top:calc(var(--globe-y,45vh) + max(1.04*var(--fs) + 30px,var(--globe-r,0px) + 34px))}
 .sp-engine .sp-hero .sp-button{margin-top:1.5em}
 /* Behind the title the globe is dimmed so the text stays readable; it brightens as the camera arrives. */
 .sp-engine .sp-orbit-globe canvas{filter:brightness(calc(.78 + .22*var(--arrive,1))) saturate(calc(.85 + .15*var(--arrive,1)))}
