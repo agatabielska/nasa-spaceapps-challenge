@@ -72,7 +72,8 @@
         "hold": 6000,
         "text": "Cały ślad ma około 40 km. Tak wygląda skutek katastrofy widziany z orbity, bez względu na chmury."
       }
-    ]
+    ],
+    "tour_label": "Przelot wzdłuż doliny"
   },
   "etna": {
     "kind": "volcano",
@@ -88,7 +89,73 @@
     "gcov_before": "NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001",
     "gcov_after": "NISAR_L2_PR_GCOV_029_043_A_021_2005_DHDH_A_20260828T040828_20260828T040903_P05023_N_F_J_001",
     "gunw": "NISAR_L2_PR_GUNW_026_043_A_021_028_2000_SH_20260723T040829_20260723T040904_20260816T040828_20260816T040903_P05023_N_F_J_001",
-    "gunw_ref": "NISAR_L2_PR_GUNW_024_043_A_021_026_2000_SH_20260629T040831_20260629T040905_20260723T040829_20260723T040904_P05023_N_F_J_001"
+    "gunw_ref": "NISAR_L2_PR_GUNW_024_043_A_021_026_2000_SH_20260629T040831_20260629T040905_20260723T040829_20260723T040904_P05023_N_F_J_001",
+    "title_pl": "Etna: erupcja w sierpniu 2026",
+    "tour": [
+      {
+        "lon": 15.02,
+        "lat": 37.75,
+        "zoom": 10.9,
+        "pitch": 50,
+        "bearing": -20,
+        "hold": 4500,
+        "on": [
+          "both",
+          "single"
+        ],
+        "text": "Etna, Sycylia. Od 6 do 21 sierpnia 2026 trwała główna faza erupcji. Porównujemy obrazy radarowe NISAR sprzed i po niej."
+      },
+      {
+        "lon": 14.993,
+        "lat": 37.748,
+        "zoom": 13.0,
+        "bearing": 70,
+        "name": "Kratery szczytowe",
+        "hold": 5000,
+        "text": "Okolice kraterów szczytowych. Różowe pole to miejsca, gdzie dwie niezależne metody radarowe zgodnie pokazały zmianę: tylko {both_km2} km²."
+      },
+      {
+        "lon": 15.045,
+        "lat": 37.747,
+        "zoom": 12.6,
+        "bearing": 250,
+        "hold": 5500,
+        "text": "Pas zmiany schodzi ze szczytu na wschód, w stronę Valle del Leone i Valle del Bove. Według raportów wulkanologów tam spływała lawa."
+      },
+      {
+        "lon": 15.075,
+        "lat": 37.84,
+        "zoom": 12.2,
+        "bearing": 200,
+        "hold": 5500,
+        "text": "Na północno-wschodnim zboczu zmianę widzi tylko jedna metoda ({single_km2} km² w całym obszarze). Nie wiemy, czy to skutek erupcji, dlatego pokazujemy to osobno."
+      },
+      {
+        "lon": 15.01,
+        "lat": 37.75,
+        "zoom": 11.3,
+        "pitch": 45,
+        "bearing": 0,
+        "hold": 6500,
+        "on": [
+          "disp"
+        ],
+        "text": "Radar mierzy też ruch gruntu. Kolory pokazują przesunięcia do ±{disp_cm} cm między 23 lipca a 16 sierpnia, czyli na początku erupcji. Część tego sygnału może pochodzić z atmosfery, nie z ruchu wulkanu."
+      },
+      {
+        "lon": 15.02,
+        "lat": 37.75,
+        "zoom": 10.9,
+        "pitch": 55,
+        "bearing": 30,
+        "hold": 6000,
+        "on": [
+          "both",
+          "single"
+        ],
+        "text": "Wniosek: na wulkanie obie metody rzadko się pokrywają, więc pewny ślad jest mały. Na zdjęciu optycznym z 16 sierpnia szczyt zakrywały chmury; radar widział go mimo to."
+      }
+    ]
   },
   "spain_fire_v2": {
     "kind": "fire",
@@ -102,7 +169,79 @@
     ],
     "note": "Same granules as the first nisar_before_after.py run (track 023 descending, frame 068). Sentinel-2 dNBR is the ground truth (validate_fire.py).",
     "gcov_before": "NISAR_L2_PR_GCOV_026_023_D_068_2005_DHDH_A_20260721T191744_20260721T191819_P05023_N_F_J_001",
-    "gcov_after": "NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001"
+    "gcov_after": "NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001",
+    "title_pl": "Hiszpania: pożar lasu koło Ávili",
+    "tour": [
+      {
+        "lon": -4.75,
+        "lat": 40.42,
+        "zoom": 10.2,
+        "pitch": 45,
+        "bearing": 0,
+        "hold": 4500,
+        "on": [],
+        "text": "22 lipca 2026 koło Burgohondo w prowincji Ávila wybuchł pożar lasu."
+      },
+      {
+        "lon": -4.67,
+        "lat": 40.37,
+        "zoom": 11.0,
+        "pitch": 50,
+        "bearing": -15,
+        "hold": 5500,
+        "on": [
+          "ref_only"
+        ],
+        "text": "Białe pole: obszar spalony według zdjęć optycznych Sentinel-2, razem {ref_km2} km². To nasz niezależny punkt odniesienia."
+      },
+      {
+        "lon": -4.62,
+        "lat": 40.41,
+        "zoom": 11.6,
+        "bearing": 230,
+        "hold": 5500,
+        "on": [
+          "ref_only",
+          "hit"
+        ],
+        "text": "Różowy: tu radar NISAR wykrył zmianę i optyka ją potwierdza ({hit_km2} km²). Las po pożarze słabiej odbija fale radarowe."
+      },
+      {
+        "lon": -4.72,
+        "lat": 40.33,
+        "zoom": 11.4,
+        "bearing": 20,
+        "hold": 5500,
+        "on": [
+          "ref_only",
+          "hit"
+        ],
+        "text": "Białe pozostało to, czego radar nie wykrył. NISAR znalazł {recall_pct}% obszaru spalonego według optyki."
+      },
+      {
+        "lon": -4.96,
+        "lat": 40.47,
+        "zoom": 11.2,
+        "bearing": 100,
+        "name": "Tylko radar",
+        "hold": 5500,
+        "on": [
+          "ref_only",
+          "hit",
+          "radar_only"
+        ],
+        "text": "Żółty: radar zgłasza zmianę, której optyka nie potwierdza ({radar_only_km2} km²). Przyczyny nie znamy; mogą to być np. prace polowe albo zmiana wilgotności."
+      },
+      {
+        "lon": -4.75,
+        "lat": 40.4,
+        "zoom": 10.4,
+        "pitch": 50,
+        "bearing": 10,
+        "hold": 6500,
+        "text": "Wniosek: przy pożarach radar i optyka się uzupełniają. Radar widzi przez dym i w nocy, optyka dokładniej rysuje spalony obszar."
+      }
+    ]
   },
   "silesia": {
     "kind": "subsidence",
@@ -136,6 +275,54 @@
       "NISAR_L2_PR_GUNW_029_152_D_063_030_2000_SH_20260904T175957_20260904T180032_20260916T175957_20260916T180032_P05023_N_F_J_001",
       "NISAR_L2_PR_GUNW_030_152_D_063_031_2000_SH_20260916T175957_20260916T180032_20260928T175957_20260928T180032_P05023_N_F_J_001",
       "NISAR_L2_PR_GUNW_031_152_D_063_032_2000_SH_20260928T175957_20260928T180032_20261010T175957_20261010T180032_P05023_N_F_J_001"
+    ],
+    "title_pl": "Górny Śląsk: teren opada nad kopalniami"
+  },
+  "krzyzowice": {
+    "kind": "subsidence",
+    "title": "Krzyżowice / Pniówek / Zofiówka, 20 m detail",
+    "event_date": null,
+    "bbox": [
+      18.58,
+      49.925,
+      18.76,
+      50.025
+    ],
+    "note": "Zoom on the fastest-sinking cluster of the Silesia case. Same pairs, but the 20 m wrapped interferogram is read too.",
+    "gunw_series": [
+      "NISAR_L2_PR_GUNW_023_057_A_027_024_2000_SH_20260618T033018_20260618T033053_20260630T033017_20260630T033053_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_024_057_A_027_025_2000_SH_20260630T033017_20260630T033053_20260712T033017_20260712T033052_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_025_057_A_027_026_2000_SH_20260712T033017_20260712T033052_20260724T033016_20260724T033051_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_026_057_A_027_028_2000_SH_20260724T033016_20260724T033051_20260817T033015_20260817T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_028_057_A_027_029_2000_SH_20260817T033015_20260817T033050_20260829T033015_20260829T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_029_057_A_027_030_2000_SH_20260829T033015_20260829T033050_20260910T033014_20260910T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_030_057_A_027_031_2000_SH_20260910T033014_20260910T033050_20260922T033015_20260922T033054_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_031_057_A_027_032_2000_SH_20260922T033015_20260922T033054_20261004T033015_20261004T033050_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_032_057_A_027_033_2000_SH_20261004T033015_20261004T033050_20261016T033015_20261016T033050_P05023_N_F_J_001"
+    ],
+    "gunw_series_check": [
+      "NISAR_L2_PR_GUNW_023_152_D_063_024_2000_SH_20260624T180001_20260624T180036_20260706T180000_20260706T180035_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_024_152_D_063_025_2000_SH_20260706T180000_20260706T180035_20260718T175959_20260718T180035_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_025_152_D_063_027_2000_SH_20260718T175959_20260718T180035_20260811T175958_20260811T180033_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_027_152_D_063_028_2000_SH_20260811T175958_20260811T180033_20260823T175957_20260823T180033_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_028_152_D_063_029_2000_SH_20260823T175957_20260823T180033_20260904T175957_20260904T180032_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_028_152_D_063_029_2000_SH_20260823T175957_20260823T180033_20260904T175957_20260904T180032_P05023_N_F_J_002",
+      "NISAR_L2_PR_GUNW_029_152_D_063_030_2000_SH_20260904T175957_20260904T180032_20260916T175957_20260916T180032_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_030_152_D_063_031_2000_SH_20260916T175957_20260916T180032_20260928T175957_20260928T180032_P05023_N_F_J_001",
+      "NISAR_L2_PR_GUNW_031_152_D_063_032_2000_SH_20260928T175957_20260928T180032_20261010T175957_20261010T180032_P05023_N_F_J_001"
+    ],
+    "title_pl": "Krzyżowice i okolice: teren opada nad kopalniami",
+    "events": [
+      {
+        "name": "Zapadlisko w Krzyżowicach",
+        "date": "2026-10-28",
+        "date_label": "koniec października 2026",
+        "lon": 18.6766,
+        "lat": 49.9868,
+        "approximate": true,
+        "source": null,
+        "note": "Zdarzenie zgłoszone przez zespół, bez potwierdzonego źródła. Dokładna data i miejsce nie są znane: punkt postawiono przy środku niecki w Krzyżowicach. Po ostatnim pomiarze NISAR (16.10)."
+      }
     ]
   }
 }
