@@ -29,7 +29,7 @@ export const searchSchema = z.object({
 }).strict().refine(s => !s.from || !s.to || s.from <= s.to, 'Start must precede end');
 export type SearchInput = z.infer<typeof searchSchema>;
 export const chatSchema = z.object({
-  message: z.string().trim().min(1).max(4000),
+  message: z.string().trim().min(1).max(8000),
   sessionId: z.string().uuid().optional(),
   context: z.object({
     selectedEventId: z.string().max(100).nullable(), bounds: boundsSchema.nullable(),

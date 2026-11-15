@@ -12,11 +12,11 @@ npm ci
 cp .env.example .env.local   # first setup only; preserve an existing config
 ```
 
-Set the exact LM Studio model identifier in `.env.local`. Tested local configuration:
+Download `mlx-community/Qwen3.6-35B-A3B-4bit` in LM Studio, run `npm run lmstudio:setup`, then load **earthsignal/orbit-qwen3.6** (context 8192, parallel 1, Thinking off). The profile reuses the downloaded weights and exposes the reasoning switch required by this LM Studio installation. See [LM_STUDIO.md](LM_STUDIO.md). Tested local configuration:
 
 ```dotenv
 LMSTUDIO_BASE_URL=http://127.0.0.1:1234/v1
-LMSTUDIO_MODEL=google/gemma-4-26b-a4b-qat
+LMSTUDIO_MODEL=earthsignal/orbit-qwen3.6
 LMSTUDIO_API_KEY=
 API_PORT=8787
 EARTHSIGNAL_DB_PATH=.local/earthsignal.sqlite
@@ -78,7 +78,7 @@ SQLite files, journals and `.env.local` are ignored by Git. The seed and schema 
 
 The local model receives the message, recent conversation and map context. It requests typed tools; the backend validates arguments and queries SQLite. UI actions use existing event IDs. No arbitrary SQL or code execution is exposed.
 
-Tools: `search_events`, `get_event`, `focus_event`, `start_guide`, `reset_map`. Search supports category, country/ISO2, continent, dates, text, provenance, available analysis and viewport bounds. A single result opens its card; multiple results remain on the map.
+Tools: `search_events`, `get_event`, `focus_event`, `start_guide`, `reset_map`, `catalog_help`. Search supports category, country/ISO2, continent, dates, text, provenance, available analysis and viewport bounds. A single result opens its card; multiple results remain on the map.
 
 Examples are suggestions, not a fixed list of supported prompts:
 
@@ -88,7 +88,7 @@ Examples are suggestions, not a fixed list of supported prompts:
 - „Pokaż tylko wydarzenia z gotową analizą NISAR”.
 - „Otwórz drugie wydarzenie z ostatniej listy”.
 
-Conversation state is in API memory, expires after an hour of inactivity, and resets on server restart. Expiration is explicit. Delayed navigation is skipped if the user changes the map/filters while waiting; the browser sends the ordered list it actually shows, so follow-ups such as "the second one" never refer to results that were not displayed. A pending answer shows its elapsed time and can be cancelled, which also stops the model call on the API (including through the Vite dev proxy). Orbit answers in the language of the latest message and keeps catalog titles unchanged. When LM Studio is unavailable, the catalog still works and chat shows an error; no keyword or cloud fallback is used.
+Conversation state is in API memory, expires after an hour of inactivity, and resets on server restart. Expiration is explicit. Delayed navigation is skipped if the user changes the map/filters while waiting; the browser sends the ordered list it actually shows, so follow-ups such as "the second one" never refer to results that were not displayed. A pending answer shows its elapsed time and can be cancelled, which also stops the model call on the API (including through the Vite dev proxy). Orbit answers in the language of the latest message (or the explicitly requested language) and keeps catalog titles unchanged. The multiline composer accepts up to 8000 characters; Enter sends and Shift+Enter adds a line. Conversation history and tool output are bounded to keep generation responsive. Every answer requires a successful tool cycle; an ungrounded no-result claim is retried rather than accepted. Empty results are described as missing from this local catalog, not as evidence that an event never happened. When LM Studio is unavailable, the catalog still works and chat shows an error; no keyword or cloud fallback is used.
 
 ## API
 
@@ -110,7 +110,7 @@ npm run build
 npm run test:live
 ```
 
-Unit tests cover persistence, atomic imports, filters, validation, fabricated IDs, partial model failures and sessions. The live test calls the configured real model and checks Polish search, conversational refinement, IDs/navigation and no-result behavior. Re-run it after changing models or their chat templates.
+Unit tests cover persistence, atomic imports, filters, validation, fabricated IDs, partial model failures and sessions. The live test calls the configured real model and checks Polish, English, German, French and Spanish, including language switches, exact result IDs, navigation, no results, unavailable analysis and long questions. It saves timings/transcript in ignored `.local/orbit-live-report.json`. Re-run it after changing models or their chat templates.
 
 ## Data and licenses
 

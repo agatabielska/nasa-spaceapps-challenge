@@ -250,7 +250,7 @@
 .app .suggestions button:hover{border-color:var(--accent);background:#8fd6ff0d}
 .app .chat form{display:flex;gap:8px;margin:4px 14px 14px;padding:6px;border:1px solid var(--line);border-radius:var(--radius);background:#050d1f}
 .app .chat form:focus-within{border-color:var(--accent)}
-.app .chat form input{flex:1;height:40px;padding:0 8px;border:0;outline:0;background:transparent;color:var(--text);font-size:15px}
+.app .chat form textarea{flex:1;min-width:0;min-height:60px;max-height:160px;resize:vertical;padding:8px;font:inherit;line-height:1.45;border:0;outline:0;background:transparent;color:var(--text);font-size:15px}
 .app .chat form button{display:grid;place-items:center;width:42px;border-radius:6px;background:var(--accent);color:var(--ink)}
 .app .chat form button:hover{background:#fff;color:var(--ink)}
 

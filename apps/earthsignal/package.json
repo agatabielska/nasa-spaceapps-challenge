@@ -11,6 +11,7 @@
     "dev:api": "node --env-file-if-exists=.env.local --experimental-strip-types server/index.ts",
     "start": "node --env-file-if-exists=.env.local --experimental-strip-types server/index.ts",
     "db:import": "node --env-file-if-exists=.env.local --experimental-strip-types server/import.ts",
+    "lmstudio:setup": "node scripts/setup-lmstudio.mjs",
     "test:live": "node --env-file-if-exists=.env.local --experimental-strip-types server/live-check.ts"
   },
   "dependencies": {

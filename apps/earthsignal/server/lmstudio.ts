@@ -35,12 +35,14 @@ export class LMStudio {
       return {available:!!selected&&models.includes(selected),model:selected,models,message:!models.length?'Load a model in LM Studio.':!selected?'Choose a model in .env.local (LMSTUDIO_MODEL).':!models.includes(selected)?'The configured model is not available.':'Local model ready'};
     }catch(e){return {available:false,model:null,models:[] as string[],message:e instanceof Error?e.message:'LM Studio unavailable'};}
   }
-  async complete(model:string,messages:Message[],tools:unknown[],signal?:AbortSignal){
-    const data=await this.request('/chat/completions',{model,messages,tools,tool_choice:'auto',temperature:0.1,max_tokens:1600,stream:false},90000,signal);
+  async complete(model:string,messages:Message[],tools:unknown[],signal?:AbortSignal,toolChoice:'auto'|'required'='auto'){
+    const data=await this.request('/chat/completions',{model,messages,tools,tool_choice:toolChoice,temperature:0.2,top_p:0.8,top_k:20,max_tokens:900,stream:false,...(model.includes('orbit-qwen3.6')?{reasoning_effort:'none'}:{})},60000,signal);
     const choice=data.choices?.[0];
+    if(model.includes('orbit-qwen3.6')&&(data.usage?.completion_tokens_details?.reasoning_tokens>0||choice?.message?.reasoning_content?.trim()))throw new ServiceError(502,'MODEL_THINKING','Orbit’s fast model profile is not active. Reload earthsignal/orbit-qwen3.6 with thinking disabled.');
     if(!choice?.message||choice.finish_reason==='length')throw new ServiceError(502,'MODEL_OUTPUT','The model did not finish its answer. Try a shorter question or increase the context length.');
     const parsed=outputSchema.safeParse(choice.message);
     if(!parsed.success)throw new ServiceError(502,'MODEL_OUTPUT','The model returned an invalid answer or tool format. Check the chat template in LM Studio.');
+    if(/<\/?(?:think|tool_call|function)(?:[\s=>]|$)/i.test(parsed.data.content??''))throw new ServiceError(502,'MODEL_OUTPUT','The model returned internal tool syntax. Reload the Orbit model profile and check the chat template.');
     return {...parsed.data,content:parsed.data.content??null} as Message;
   }
 }

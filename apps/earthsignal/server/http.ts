@@ -7,9 +7,9 @@ import type { LMStudio } from './lmstudio.ts';
 import type { Orbit } from './orbit.ts';
 import { chatSchema,searchSchema,ServiceError } from './contracts.ts';
 
-// Largest request body accepted. A chat message may hold 4000 characters (up to 4 bytes each in UTF-8) plus the
+// Largest request body accepted. A chat message may hold 8000 characters (up to 4 bytes each in UTF-8) plus the
 // map context the browser sends with it.
-export const BODY_LIMIT=40000;
+export const BODY_LIMIT=64000;
 function json(res:ServerResponse,status:number,data:unknown){if(res.destroyed)return;res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));}
 async function body(req:IncomingMessage){let content='';for await(const chunk of req){content+=chunk;if(Buffer.byteLength(content)>BODY_LIMIT)throw new ServiceError(413,'BODY_LIMIT','Message too large');}try{return JSON.parse(content);}catch{throw new ServiceError(400,'INVALID_JSON','Invalid JSON body');}}
 // A malformed percent-encoding in the URL is the client's mistake: answer 400 instead of failing with 500.

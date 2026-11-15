@@ -1,61 +1,84 @@
-# LM Studio setup for Orbit
+# LM Studio setup for Orbit — Qwen3.6
 
-Model requests originate from the app's local API. No external inference service, tunnel, public endpoint or API subscription is required.
+Orbit uses **mlx-community/Qwen3.6-35B-A3B-4bit** through a local LM Studio profile named **earthsignal/orbit-qwen3.6**. The profile reuses the downloaded weights; it does not train, modify or duplicate them. No paid API or hosting is needed. Tested hardware: Apple M4 Pro, 48 GB unified memory; LM Studio 0.4.26+4.
 
-## Model for this laptop
+## One-time setup
 
-This machine has an Apple M4 Pro and 48 GB unified memory. **`google/gemma-4-26b-a4b-qat`** was already loaded and is the initial configuration tested against the real catalog/tool workflow. No model weights were downloaded or trained during this integration.
-
-A `gpt-oss-20b-MLX-8bit` variant is also downloaded and is a reasonable alternative to test. The live checks here use Gemma. The API may expose similar names for different variants: copy the exact identifier from `/v1/models`. Avoid loading a large F16 variant by mistake.
-
-Orbit does not need fine-tuning on the catalog or HDF5 files in its context. The model queries current records through tools.
-
-## LM Studio interface settings
-
-1. Load **Gemma 4 26B A4B QAT** from downloaded models.
-2. Start with context length **8192**. Keep the default Apple Silicon GPU placement.
-3. Preserve the default model-specific chat template, including tool formatting.
-4. Open **Developer → Local Server**.
-5. Select port **1234**, binding **127.0.0.1**. Keep **Serve on Local Network** off.
-6. Keep **CORS off**: the app backend connects to the model, not the browser.
-7. Start the server: `http://127.0.0.1:1234/v1`.
-
-The app supplies temperature **0.1**, an output token budget, conversation context and tools. Do not paste the database into LM Studio's chat or configure an MCP server. Initial loading/prefill may be slower than later questions. Test when changing models or context settings; no local model guarantees flawless interpretation.
-
-## Authentication and model ID
-
-A personal loopback-only setup can use LM Studio's default local API. If **Require Authentication** is enabled, create a token and put it in `LMSTUDIO_API_KEY` inside `.env.local`. It is not a paid OpenAI cloud API key. The token stays on the backend and is ignored by Git.
+Download the model in LM Studio, then from `apps/earthsignal` run:
 
 ```sh
-curl http://127.0.0.1:1234/v1/models
+npm run lmstudio:setup
 ```
 
-For the tested setup:
+The script creates `~/.lmstudio/hub/models/earthsignal/orbit-qwen3.6/model.yaml`. It refuses to overwrite an independently edited profile. This is a model-specific preset, not a global LM Studio configuration change.
 
-```dotenv
-LMSTUDIO_MODEL=google/gemma-4-26b-a4b-qat
-```
+Load **earthsignal/orbit-qwen3.6** in LM Studio, with:
 
-The models list can include downloaded models available for just-in-time loading. Presence is not a guarantee that inference is loaded or that tool tests passed. `lms ps` lists loaded models. With authentication enabled, use the local bearer token when checking the endpoint; keep it outside source/committed commands.
+- Context length: **8192** initially; increase to 16384 for unusually long conversations/input if needed.
+- Parallel predictions: **1** for interactive single-user use.
+- Thinking: **off** (the profile default).
+- Preserve the model-specific Jinja template and tool formatting.
+- Leave the usual Apple Silicon GPU placement enabled.
+- Unload other large models if they are not in use. Their downloaded files remain available.
 
-## CLI alternative
+CLI equivalent (standard macOS path: `~/.lmstudio/bin/lms`):
 
 ```sh
-lms ps
+lms load earthsignal/orbit-qwen3.6 --context-length 8192 --parallel 1 --yes
 lms server start --bind 127.0.0.1 --port 1234
 ```
 
-Standard macOS CLI location: `~/.lmstudio/bin/lms`. For model load keys/settings use `lms ls` and `lms load --help`. Keep LAN sharing disabled; the application accepts only loopback model endpoints.
+The server must bind to **127.0.0.1:1234**. LAN sharing and CORS are unnecessary: the browser connects to EarthSignal's backend, and that backend connects to LM Studio.
+
+`.env.local` (ignored by Git):
+
+```dotenv
+LMSTUDIO_BASE_URL=http://127.0.0.1:1234/v1
+LMSTUDIO_MODEL=earthsignal/orbit-qwen3.6
+LMSTUDIO_API_KEY=
+API_PORT=8787
+EARTHSIGNAL_DB_PATH=.local/earthsignal.sqlite
+```
+
+Restart `npm run dev` after changing `.env.local`. If LM Studio requires authentication, put its local token in `LMSTUDIO_API_KEY`; do not commit it or put it in browser code.
+
+## Why a profile is necessary
+
+The directly downloaded model appears as `qwen3.6-35b-a3b` in this installation. It did not advertise a reasoning switch. A real API test with `chat_template_kwargs.enable_thinking=false` and another with `reasoning_effort=none` still spent the output budget on reasoning, leaving the user's answer empty.
+
+The profile exposes `enableThinking` as a model-specific field whose effect sets the Jinja variable `enable_thinking`. Its default is false, and the backend also requests `reasoning_effort=none`. A direct API check confirmed zero reasoning tokens. Backend validation rejects unexpected reasoning or raw tool markup rather than displaying it to the user. If you select the original raw model instead, these profile settings do not automatically apply.
+
+The backend supplies temperature **0.2**, top_p **0.8**, top_k **20**, a **900-token** output limit and a **60-second** per-call timeout. These are tested application settings, not a reproduction of the producer's general benchmarks. A complete answer can require multiple model calls; the loop is bounded to four. Initial loading/prefill can take longer than a warm request.
+
+## Multilingual conversations and long questions
+
+Orbit is instructed to answer in the latest message's language, or a language explicitly requested. Event titles stay as stored; explanations and no-result messages use the user's language. Country/category expressions are translated into structured tool filters. The live suite covers Polish, English, German, French and Spanish, including switching languages within a conversation. This is verification of those scenarios, not a guarantee for all possible languages/questions.
+
+The chat supports **8000 characters**, multiline input and pasting long questions. Enter sends; Shift+Enter inserts a line break. Recent history is bounded by turns and size. Once tools have selected the facts, previous assistant prose is removed from the current generation context to avoid anchoring the answer to an earlier language. Follow-up planning retains recent conversation, map selection and the ordered result list.
+
+Tools: `search_events`, `get_event`, `focus_event`, `start_guide`, `reset_map`, `catalog_help`. The last tool provides help/scope and clarification context without claiming that a database search occurred. A successful tool cycle is required before committing an answer. Some local runtimes do not enforce `tool_choice=required`, so the backend also detects an ungrounded answer and requests a tool call again. Malformed arguments, invented IDs and unknown tools cannot cause navigation.
+
+No matches are returned as an explicit zero-result tool response. Orbit explains that nothing matching the constraints was found **in the local catalog**, not that no such real-world event occurred. It must not silently broaden the search or invent a substitute. Missing analysis/measurements must be disclosed; this system does not infer damage or ice volume from text.
+
+## Verification
+
+```sh
+npm test
+npm run build
+# With EarthSignal API and the profile loaded in LM Studio:
+npm run test:live
+```
+
+The live suite checks exact result IDs, conversation refinement, language cues, ordered navigation, empty results, unavailable analysis, a long question and greetings against the actual local model. It prints answer text for manual language review and saves timing/transcript in ignored `.local/orbit-live-report.json`. Test fixtures currently expect the existing 13-entry catalog; update expectations deliberately after catalog changes. Unit tests verify orchestration and validation without invoking a model.
 
 ## Troubleshooting
 
-- **LM Studio is not responding:** start the server and check port 1234.
-- **Orbit is still answering the previous question:** wait for the answer or press Cancel in the chat.
-- **Model not configured:** copy the exact ID into `.env.local` and restart the app. Auto-selection works only when exactly one model is advertised.
-- **HTTP 401:** set the local API token.
-- **HTTP error/no tools:** check model support, chat template and LM Studio logs.
-- **Session expired:** resend the question. Restarting the backend clears conversations but preserves event data.
-- **No matching events:** the search covers this project's database, not the internet.
-- **Map changed while waiting:** text remains, but stale navigation is skipped deliberately.
+- **Model not available:** load the profile, check `lms ps`, verify the exact ID in `/v1/models`. Advertised models may include downloaded-but-unloaded JIT models.
+- **Fast profile not active / MODEL_THINKING:** reload the profile with Thinking off. Selecting the raw download bypasses its defaults.
+- **Model output empty/truncated:** check the loaded profile, output budget and actual model context length.
+- **No completed analyses found:** inspect SQLite. Landing case studies in `cases.ts` are not automatically imported into the event database.
+- **Session expired:** resend the question; API restart clears conversations but preserves SQLite.
+- **Long wait:** check for another large model or active prediction; use one parallel slot and avoid memory pressure. Cancel remains available in chat.
+- **Map changed while answering:** the answer remains visible but stale navigation is skipped; ask again to apply it.
 
-References: https://lmstudio.ai/docs/developer/openai-compat/tools , https://lmstudio.ai/docs/developer/core/authentication , https://lmstudio.ai/docs/developer/core/server/serve-on-network .
+References: [LM Studio model.yaml](https://lmstudio.ai/docs/app/modelyaml), [LM Studio tool use](https://lmstudio.ai/docs/developer/openai-compat/tools), [Qwen3.6 model card](https://huggingface.co/Qwen/Qwen3.6-35B-A3B), [downloaded variant](https://huggingface.co/mlx-community/Qwen3.6-35B-A3B-4bit).
