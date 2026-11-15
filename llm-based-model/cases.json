@@ -73,7 +73,70 @@
         "text": "Cały ślad ma około 40 km. Tak wygląda skutek katastrofy widziany z orbity, bez względu na chmury."
       }
     ],
-    "tour_label": "Przelot wzdłuż doliny"
+    "tour_label": "Przelot wzdłuż doliny",
+    "tour_en": [
+      {
+        "lon": 85.41,
+        "lat": 28.235,
+        "zoom": 10.6,
+        "pitch": 50,
+        "bearing": 20,
+        "title": "A glacier gives way",
+        "text": "On 26 August 2026 a glacier collapsed in the mountains north of Langtang. A wave of water and debris rushed down the Bhote Koshi valley."
+      },
+      {
+        "lon": 85.4952,
+        "lat": 28.3117,
+        "zoom": 12.0,
+        "title": "Where the trace begins",
+        "text": "This is the upper end of the trace. Pink marks places where two independent radar methods both see a changed surface.",
+        "name": "Trace origin"
+      },
+      {
+        "lon": 85.4422,
+        "lat": 28.3362,
+        "title": "No sunlight needed",
+        "text": "NISAR is a radar: it sees at night and through cloud. We compare the image taken before the event with the one taken after."
+      },
+      {
+        "lon": 85.3778,
+        "lat": 28.2779,
+        "title": "Timure",
+        "text": "Timure, at the border with China. The detected change follows the valley floor exactly, the way the flood wave travelled.",
+        "name": "Timure"
+      },
+      {
+        "lon": 85.348,
+        "lat": 28.1892,
+        "title": "A weaker signal",
+        "text": "Yellow means only one of the two methods sees a change. It is a weaker signal, so we show it separately."
+      },
+      {
+        "lon": 85.3408,
+        "lat": 28.1626,
+        "title": "Syabrubesi",
+        "text": "Almost 30 km downstream from the start of the trace, the change is still visible.",
+        "name": "Syabrubesi"
+      },
+      {
+        "lon": 85.2467,
+        "lat": 28.092,
+        "zoom": 12.0,
+        "title": "To the edge of the scene",
+        "text": "The trace continues down the Trishuli valley, all the way to the edge of the analysed area."
+      },
+      {
+        "lon": 85.39,
+        "lat": 28.22,
+        "zoom": 10.8,
+        "pitch": 58,
+        "bearing": 35,
+        "title": "The whole picture",
+        "text": "About 40 km of valley and {both_km2} km² of change confirmed by both methods, mapped from orbit five days after the disaster."
+      }
+    ],
+    "tour_label_en": "Fly down the valley",
+    "title_en": "Nepal: Rasuwa glacier-collapse flood"
   },
   "etna": {
     "kind": "volcano",
@@ -155,7 +218,73 @@
         ],
         "text": "Wniosek: na wulkanie obie metody rzadko się pokrywają, więc pewny ślad jest mały. Na zdjęciu optycznym z 16 sierpnia szczyt zakrywały chmury; radar widział go mimo to."
       }
-    ]
+    ],
+    "tour_en": [
+      {
+        "lon": 15.02,
+        "lat": 37.75,
+        "zoom": 10.9,
+        "pitch": 50,
+        "bearing": -20,
+        "on": [
+          "both",
+          "single"
+        ],
+        "title": "A volcano wakes up",
+        "text": "Mount Etna, Sicily. The main eruptive phase lasted from 6 to 21 August 2026. We compare NISAR radar images from before and after it."
+      },
+      {
+        "lon": 14.993,
+        "lat": 37.748,
+        "zoom": 13.0,
+        "bearing": 70,
+        "title": "The summit craters",
+        "text": "Pink marks places where two independent radar methods both see a change: only {both_km2} km², right at the summit.",
+        "name": "Summit craters"
+      },
+      {
+        "lon": 15.045,
+        "lat": 37.747,
+        "zoom": 12.6,
+        "bearing": 250,
+        "title": "Where the lava went",
+        "text": "A band of change runs east from the summit, towards Valle del Leone and Valle del Bove. Volcanologists reported lava flowing there."
+      },
+      {
+        "lon": 15.075,
+        "lat": 37.84,
+        "zoom": 12.2,
+        "bearing": 200,
+        "title": "An open question",
+        "text": "On the north-east flank only one method sees a change ({single_km2} km² across the scene). We do not know whether the eruption caused it, so it is shown separately."
+      },
+      {
+        "lon": 15.01,
+        "lat": 37.75,
+        "zoom": 11.3,
+        "pitch": 45,
+        "bearing": 0,
+        "on": [
+          "disp"
+        ],
+        "title": "The ground itself moves",
+        "text": "Radar also measures ground motion. Colours show shifts of up to ±{disp_cm} cm between 23 July and 16 August, as the eruption began. Part of this signal may come from the atmosphere rather than the volcano."
+      },
+      {
+        "lon": 15.02,
+        "lat": 37.75,
+        "zoom": 10.9,
+        "pitch": 55,
+        "bearing": 30,
+        "on": [
+          "both",
+          "single"
+        ],
+        "title": "What we learned",
+        "text": "On a volcano the two methods rarely overlap, so the confirmed trace is small. In the optical image of 16 August the summit was under cloud; radar saw it anyway."
+      }
+    ],
+    "title_en": "Etna: eruption of August 2026"
   },
   "spain_fire_v2": {
     "kind": "fire",
@@ -241,7 +370,79 @@
         "hold": 6500,
         "text": "Wniosek: przy pożarach radar i optyka się uzupełniają. Radar widzi przez dym i w nocy, optyka dokładniej rysuje spalony obszar."
       }
-    ]
+    ],
+    "tour_en": [
+      {
+        "lon": -4.75,
+        "lat": 40.42,
+        "zoom": 10.2,
+        "pitch": 45,
+        "bearing": 0,
+        "on": [],
+        "title": "A forest on fire",
+        "text": "On 22 July 2026 a wildfire broke out near Burgohondo, in the province of Ávila, Spain."
+      },
+      {
+        "lon": -4.67,
+        "lat": 40.37,
+        "zoom": 11.0,
+        "pitch": 50,
+        "bearing": -15,
+        "on": [
+          "ref_only"
+        ],
+        "title": "What optical satellites saw",
+        "text": "White: the area burnt according to Sentinel-2 optical images, {ref_km2} km² in total. This is our independent reference."
+      },
+      {
+        "lon": -4.62,
+        "lat": 40.41,
+        "zoom": 11.6,
+        "bearing": 230,
+        "on": [
+          "ref_only",
+          "hit"
+        ],
+        "title": "Where radar agrees",
+        "text": "Pink: NISAR detected a change and optical imagery confirms it ({hit_km2} km²). Burnt forest reflects radar waves more weakly."
+      },
+      {
+        "lon": -4.72,
+        "lat": 40.33,
+        "zoom": 11.4,
+        "bearing": 20,
+        "on": [
+          "ref_only",
+          "hit"
+        ],
+        "title": "What radar missed",
+        "text": "What stays white, radar did not detect. NISAR found {recall_pct}% of the area burnt according to optical imagery."
+      },
+      {
+        "lon": -4.96,
+        "lat": 40.47,
+        "zoom": 11.2,
+        "bearing": 100,
+        "on": [
+          "ref_only",
+          "hit",
+          "radar_only"
+        ],
+        "title": "Unconfirmed detections",
+        "text": "Yellow: radar reports a change that optical imagery does not confirm ({radar_only_km2} km²). We do not know the cause; field work or a change in soil moisture are possible.",
+        "name": "Radar only"
+      },
+      {
+        "lon": -4.75,
+        "lat": 40.4,
+        "zoom": 10.4,
+        "pitch": 50,
+        "bearing": 10,
+        "title": "What we learned",
+        "text": "For wildfires, radar and optical imagery complement each other. Radar sees through smoke and at night; optical imagery outlines the burn more precisely."
+      }
+    ],
+    "title_en": "Spain: Ávila wildfire"
   },
   "silesia": {
     "kind": "subsidence",
