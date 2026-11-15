@@ -1,0 +1,20 @@
+# Tested numerical core, Python 3.12; separate from legacy dependency inventory.
+# Existing host torch==2.15.0+cu132 was retained and tested on RTX 5070 Ti.
+# Install GPU torch separately for your driver; do not replace it via this file.
+numpy==1.26.4
+scipy==1.14.1
+scikit-learn==1.5.2
+scikit-image==0.24.0
+joblib==1.4.2
+threadpoolctl==3.5.0
+lazy-loader==0.4
+networkx==3.4.2
+imageio==2.36.1
+tifffile==2024.9.20
+h5py==3.16.0
+rasterio==1.5.2
+matplotlib==3.11.2
+Pillow==13.0.0
+requests==2.34.2
+python-dotenv
+gdown==6.5.1

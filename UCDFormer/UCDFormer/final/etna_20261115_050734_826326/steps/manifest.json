@@ -1,0 +1,1004 @@
+[
+  {
+    "name": "physical_abs_db_change",
+    "shape": [
+      2,
+      498,
+      500
+    ],
+    "finite_count": 497982,
+    "minimum": 5.7220458984375e-06,
+    "maximum": 18.53632164001465
+  },
+  {
+    "name": "baseline_score",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248991,
+    "minimum": 0.0014306261235800166,
+    "maximum": 7.336208260620728
+  },
+  {
+    "name": "baseline_mask",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248991,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "model_support",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "otsu_threshold",
+    "shape": [
+      1
+    ],
+    "finite_count": 1,
+    "minimum": 1.0758609436768731,
+    "maximum": 1.0758609436768731
+  },
+  {
+    "name": "aligned_raw_power_pre",
+    "shape": [
+      2,
+      498,
+      500
+    ],
+    "finite_count": 497998,
+    "minimum": 0.0004519820213317871,
+    "maximum": 30.554443359375
+  },
+  {
+    "name": "aligned_raw_power_post",
+    "shape": [
+      2,
+      498,
+      500
+    ],
+    "finite_count": 497998,
+    "minimum": 0.0004473738372325897,
+    "maximum": 36.4150390625
+  },
+  {
+    "name": "raw_valid",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "filtered_power_pre",
+    "shape": [
+      2,
+      498,
+      500
+    ],
+    "finite_count": 497982,
+    "minimum": 0.0014231064124032855,
+    "maximum": 12.3529052734375
+  },
+  {
+    "name": "filtered_power_post",
+    "shape": [
+      2,
+      498,
+      500
+    ],
+    "finite_count": 497982,
+    "minimum": 0.0009946421487256885,
+    "maximum": 10.83401107788086
+  },
+  {
+    "name": "filtered_valid",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "physical_features_pre",
+    "shape": [
+      3,
+      498,
+      500
+    ],
+    "finite_count": 746973,
+    "minimum": -28.467626571655273,
+    "maximum": 18.734209060668945
+  },
+  {
+    "name": "physical_features_post",
+    "shape": [
+      3,
+      498,
+      500
+    ],
+    "finite_count": 746973,
+    "minimum": -30.023330688476562,
+    "maximum": 22.223529815673828
+  },
+  {
+    "name": "percentile_scaled_pre",
+    "shape": [
+      3,
+      498,
+      500
+    ],
+    "finite_count": 746973,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "percentile_scaled_post",
+    "shape": [
+      3,
+      498,
+      500
+    ],
+    "finite_count": 746973,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "vgg_input_pre",
+    "shape": [
+      3,
+      498,
+      500
+    ],
+    "finite_count": 746973,
+    "minimum": -2.5540257199254195,
+    "maximum": 3.1090722342683006
+  },
+  {
+    "name": "vgg_input_post",
+    "shape": [
+      3,
+      498,
+      500
+    ],
+    "finite_count": 746973,
+    "minimum": -2.5540257199254195,
+    "maximum": 3.1090722342683006
+  },
+  {
+    "name": "standardization_fit_support",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "normalized_patch_pre",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": -2.554025650024414,
+    "maximum": 3.109072208404541
+  },
+  {
+    "name": "normalized_patch_post",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": -2.554025650024414,
+    "maximum": 3.109072208404541
+  },
+  {
+    "name": "translated_patch",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": -2.777029037475586,
+    "maximum": 4.171995162963867
+  },
+  {
+    "name": "patch_valid",
+    "shape": [
+      256,
+      256
+    ],
+    "finite_count": 65536,
+    "minimum": 1.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "vgg_pre_block_0_channel_mean",
+    "shape": [
+      256,
+      256
+    ],
+    "finite_count": 65536,
+    "minimum": 0.17210349440574646,
+    "maximum": 1.3790030479431152
+  },
+  {
+    "name": "vgg_pre_block_0_first_channels",
+    "shape": [
+      4,
+      256,
+      256
+    ],
+    "finite_count": 262144,
+    "minimum": 0.0,
+    "maximum": 6.69523286819458
+  },
+  {
+    "name": "vgg_pre_block_1_channel_mean",
+    "shape": [
+      128,
+      128
+    ],
+    "finite_count": 16384,
+    "minimum": 0.35461995005607605,
+    "maximum": 2.7808046340942383
+  },
+  {
+    "name": "vgg_pre_block_1_first_channels",
+    "shape": [
+      4,
+      128,
+      128
+    ],
+    "finite_count": 65536,
+    "minimum": 0.0,
+    "maximum": 21.5557804107666
+  },
+  {
+    "name": "vgg_pre_block_2_channel_mean",
+    "shape": [
+      64,
+      64
+    ],
+    "finite_count": 4096,
+    "minimum": 0.6456137299537659,
+    "maximum": 3.733281135559082
+  },
+  {
+    "name": "vgg_pre_block_2_first_channels",
+    "shape": [
+      4,
+      64,
+      64
+    ],
+    "finite_count": 16384,
+    "minimum": 0.0,
+    "maximum": 33.40140151977539
+  },
+  {
+    "name": "vgg_pre_block_3_channel_mean",
+    "shape": [
+      32,
+      32
+    ],
+    "finite_count": 1024,
+    "minimum": 0.3190223276615143,
+    "maximum": 2.034350872039795
+  },
+  {
+    "name": "vgg_pre_block_3_first_channels",
+    "shape": [
+      4,
+      32,
+      32
+    ],
+    "finite_count": 4096,
+    "minimum": 0.0,
+    "maximum": 23.23586654663086
+  },
+  {
+    "name": "vgg_post_block_0_channel_mean",
+    "shape": [
+      256,
+      256
+    ],
+    "finite_count": 65536,
+    "minimum": 0.17419491708278656,
+    "maximum": 1.5428636074066162
+  },
+  {
+    "name": "vgg_post_block_0_first_channels",
+    "shape": [
+      4,
+      256,
+      256
+    ],
+    "finite_count": 262144,
+    "minimum": 0.0,
+    "maximum": 6.027534484863281
+  },
+  {
+    "name": "vgg_post_block_1_channel_mean",
+    "shape": [
+      128,
+      128
+    ],
+    "finite_count": 16384,
+    "minimum": 0.3174590468406677,
+    "maximum": 2.797995090484619
+  },
+  {
+    "name": "vgg_post_block_1_first_channels",
+    "shape": [
+      4,
+      128,
+      128
+    ],
+    "finite_count": 65536,
+    "minimum": 0.0,
+    "maximum": 18.993671417236328
+  },
+  {
+    "name": "vgg_post_block_2_channel_mean",
+    "shape": [
+      64,
+      64
+    ],
+    "finite_count": 4096,
+    "minimum": 0.7069624662399292,
+    "maximum": 4.463974475860596
+  },
+  {
+    "name": "vgg_post_block_2_first_channels",
+    "shape": [
+      4,
+      64,
+      64
+    ],
+    "finite_count": 16384,
+    "minimum": 0.0,
+    "maximum": 29.732851028442383
+  },
+  {
+    "name": "vgg_post_block_3_channel_mean",
+    "shape": [
+      32,
+      32
+    ],
+    "finite_count": 1024,
+    "minimum": 0.29405444860458374,
+    "maximum": 2.279669761657715
+  },
+  {
+    "name": "vgg_post_block_3_first_channels",
+    "shape": [
+      4,
+      32,
+      32
+    ],
+    "finite_count": 4096,
+    "minimum": 0.0,
+    "maximum": 25.112157821655273
+  },
+  {
+    "name": "score_block_0_saturated_translated_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_0_saturated_post_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_1_saturated_translated_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_1_saturated_post_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_2_saturated_translated_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_2_saturated_post_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_3_saturated_translated_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "score_block_3_saturated_post_first_channels",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "translated_patch_score",
+    "shape": [
+      256,
+      256
+    ],
+    "finite_count": 65536,
+    "minimum": 5.099050045013428,
+    "maximum": 13.649330139160156
+  },
+  {
+    "name": "initial_feature_difference",
+    "shape": [
+      256,
+      256
+    ],
+    "finite_count": 65536,
+    "minimum": 0.0,
+    "maximum": 0.9999942183494568
+  },
+  {
+    "name": "change_weight",
+    "shape": [
+      256,
+      256
+    ],
+    "finite_count": 65536,
+    "minimum": 0.0,
+    "maximum": 0.9999942183494568
+  },
+  {
+    "name": "normalized_training_pre",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": -2.554025650024414,
+    "maximum": 3.109072208404541
+  },
+  {
+    "name": "normalized_training_post",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": -2.554025650024414,
+    "maximum": 3.109072208404541
+  },
+  {
+    "name": "mixed_style_target",
+    "shape": [
+      3,
+      256,
+      256
+    ],
+    "finite_count": 196608,
+    "minimum": -2.554025650024414,
+    "maximum": 3.109072208404541
+  },
+  {
+    "name": "content_feature_channel_mean",
+    "shape": [
+      32,
+      32
+    ],
+    "finite_count": 1024,
+    "minimum": 0.3190223276615143,
+    "maximum": 2.034350872039795
+  },
+  {
+    "name": "model_support",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "input_valid",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "guard_safe",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "overlap_weight_sum",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 249000,
+    "minimum": 0.01,
+    "maximum": 1.3301104257439558
+  },
+  {
+    "name": "translated_score",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 4.862774848937988,
+    "maximum": 15.08819580078125
+  },
+  {
+    "name": "no_translation_score",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 4.761465549468994,
+    "maximum": 14.669984817504883
+  },
+  {
+    "name": "comparison_strict_fcm_center_history",
+    "shape": [
+      42,
+      3
+    ],
+    "finite_count": 126,
+    "minimum": 0.27189230348335275,
+    "maximum": 0.5286610835405513
+  },
+  {
+    "name": "comparison_strict_fcm_clusters",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 2.0
+  },
+  {
+    "name": "comparison_strict_fcm_high_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_fcm_low_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_fcm_membership_0",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 7.805052177484173e-14,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_fcm_membership_1",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 2.745795669827078e-13,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_fcm_membership_2",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 2.0149432523961647e-13,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_normalized_feature_score",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 0.9999955296516418
+  },
+  {
+    "name": "comparison_strict_gaussian_local_mean",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.3010751008987427,
+    "maximum": 0.46399107575416565
+  },
+  {
+    "name": "comparison_strict_gaussian_threshold",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.6021502017974854,
+    "maximum": 0.9279821515083313
+  },
+  {
+    "name": "comparison_strict_gaussian_adaptive_raw",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_gaussian_adaptive_clean",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "comparison_strict_combined_seed_labels",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": -1.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "fcm_center_history",
+    "shape": [
+      42,
+      3
+    ],
+    "finite_count": 126,
+    "minimum": 0.27189230348335275,
+    "maximum": 0.5286610835405513
+  },
+  {
+    "name": "fcm_clusters",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 2.0
+  },
+  {
+    "name": "fcm_high_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "fcm_low_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "fcm_membership_0",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 7.805052177484173e-14,
+    "maximum": 1.0
+  },
+  {
+    "name": "fcm_membership_1",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 2.745795669827078e-13,
+    "maximum": 1.0
+  },
+  {
+    "name": "fcm_membership_2",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 2.0149432523961647e-13,
+    "maximum": 1.0
+  },
+  {
+    "name": "physical_fcm_agreement_raw",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "normalized_feature_score",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 0.9999955296516418
+  },
+  {
+    "name": "physical_relative_per_pol",
+    "shape": [
+      2,
+      498,
+      500
+    ],
+    "finite_count": 497566,
+    "minimum": -0.9723715782165527,
+    "maximum": 0.9124412536621094
+  },
+  {
+    "name": "physical_score",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.00030064693419262767,
+    "maximum": 0.8470803499221802
+  },
+  {
+    "name": "physical_high_threshold",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.13597047328948975,
+    "maximum": 0.8705012798309326
+  },
+  {
+    "name": "physical_low_threshold",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.09489133954048157,
+    "maximum": 0.6353270411491394
+  },
+  {
+    "name": "physical_high_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "physical_weak_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "physical_fcm_agreement_clean",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "combined_seed_labels",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": -1.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "connected_candidate_support",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "rf_votes",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "rf_vote_binary",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "rf_raw_mask",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "final_mask",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "pseudo_labels",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": -1.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "morphology_removed",
+    "shape": [
+      498,
+      500
+    ],
+    "finite_count": 248783,
+    "minimum": 0.0,
+    "maximum": 1.0
+  },
+  {
+    "name": "rf_feature_importance",
+    "shape": [
+      11
+    ],
+    "finite_count": 11,
+    "minimum": 1.7438989439958007e-05,
+    "maximum": 0.2946028175032632
+  }
+]

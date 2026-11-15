@@ -1,0 +1,18 @@
+{
+  "study_id": "nepal_rasuwagadhi",
+  "before": "data/raw/NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001.h5",
+  "after": "data/raw/NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001.h5",
+  "bbox": [
+    85.3239,
+    28.2087,
+    85.4786,
+    28.3435
+  ],
+  "_comment_previous_bbox": "Previous bbox retained below for reference only; JSON does not support comment syntax.",
+  "previous_bbox": [
+    85.32667662532783,
+    28.232498771250448,
+    85.42868045467218,
+    28.32232988874955
+  ]
+}
