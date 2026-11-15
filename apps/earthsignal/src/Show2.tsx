@@ -2,20 +2,19 @@ import {useEffect,useRef,useState,type CSSProperties} from 'react';
 import {Astronaut} from './Astronaut';
 import {etnaCloud,flight} from './cases';
 import {EXPLORER_PATH} from './routes';
-import {TEAM,TEAM_NAME} from './team';
+import {TEAM,TEAM_NAME,portrait} from './team';
 import './show.css';
 import './show2.css';
 
-// /show2: the second cut of the 30-second presentation (the first one stays at /show). Six scenes: the title with
-// the team, why NISAR, the app's own globe with Orbit, the Nepal flight, the Silesia case study and the closing line.
+// /show2: the second cut of the 30-second presentation (the first one stays at /show). Seven scenes: the title with
+// the team, why NISAR, the app's own globe with Orbit, the Nepal flight, a card announcing our local case study,
+// the Silesia timeline with the app's own chart of one bowl, and the closing line.
 // As in /show, everything is loaded before the clock starts and every scene is drawn from the clock time.
 // ?auto starts it once loaded; ?t=12.5 freezes it at that second (for checking a frame).
-const AT={title:0,why:3,app:8,nepal:15.2,silesia:20.6,outro:27.4},END=30;
-const ORDER=['title','why','app','nepal','silesia','outro'] as const;
+const AT={title:0,why:1.5,app:6.5,nepal:13.7,local:19.1,silesia:21.1,outro:28.7},END=30;
+const ORDER=['title','why','app','nepal','local','silesia','outro'] as const;
 type SceneId=typeof ORDER[number];
 const sceneAt=(t:number):SceneId=>ORDER.reduce<SceneId>((found,id)=>t>=AT[id]?id:found,'title');
-// Photos in public/media/team/, keyed by the names in team.ts.
-const PHOTO:Record<string,string>={'Agata Bielska':'agata','Michał Leszczyński':'michal','Maria Musiał':'marysia','Oliwier Necelman':'oliwier','Jakub Radziejewski':'kuba','Martyna Stasiak':'martyna'};
 const WHY=['Sees through clouds, smoke and darkness','Returns to the same place every 12 days','One radar for floods, fires, volcanoes and sinking ground','Measures ground motion down to centimetres','Open and free data'];
 // The app scene, in seconds after it starts: two flights over the globe, then Orbit, then the zoom to Nepal.
 const START={lon:42,lat:30},ETNA={name:'Etna',what:'Eruption',lon:15,lat:37.75,color:'#ff6b6b'},SPAIN={name:'Spain',what:'Wildfire',lon:-4.8,lat:40.4,color:'#ffa94d'},NEPAL={lon:85.4,lat:28.2};
@@ -34,6 +33,8 @@ function inFrame<T>(frame:HTMLIFrameElement|null,code:string):T|null{
 // The app's map, which the explorer exposes on its window in ?embed mode.
 type AppMap={loaded():boolean;areTilesLoaded():boolean;getZoom():number;jumpTo(o:{center:[number,number];zoom:number;padding?:{top:number;bottom:number;left:number;right:number}}):void;project(p:[number,number]):{x:number;y:number}};
 const appMap=(frame:HTMLIFrameElement|null)=>{try{return (frame?.contentWindow as unknown as {__earthsignalMap?:AppMap}|null)?.__earthsignalMap??null;}catch{return null;}};
+// The chart is drawn for a 360 px panel; scale it with the screen.
+const CHART_ZOOM=()=>clamp(window.innerWidth/1050,1,2.2).toFixed(2);
 type Timeline={dates:string[];measured:number;event:{lon:number;lat:number}|null};
 
 export default function Show2(){
@@ -47,7 +48,7 @@ export default function Show2(){
   // Load everything first: pictures, flight frames, the app's globe and the timeline page with its map tiles.
   useEffect(()=>{
     let cancelled=false,done=0;
-    const stills=[etnaCloud.before.src,etnaCloud.after.src,...TEAM.map(n=>`/media/team/${PHOTO[n]}.webp`)];
+    const stills=[etnaCloud.before.src,etnaCloud.after.src,...TEAM.map(portrait)];
     const total=stills.length+FRAMES.length+2;
     const tick=()=>{done++;if(!cancelled){setLoaded(done/total);if(done>=total)setReady(true);}};
     for(const src of stills){const img=new Image();img.onload=img.onerror=tick;img.src=src;}
@@ -69,7 +70,10 @@ export default function Show2(){
           if(data){
             timeline.current=data;
             // Only the map stays: its own (Polish) panels are replaced by this page's headline and date.
-            const css=f!.contentDocument!.createElement('style');css.textContent='.panel,#chart,#time,#ev,.src,.maplibregl-ctrl{display:none!important}';f!.contentDocument!.head.append(css);
+            // Its chart of one bowl stays too, enlarged in the top-right corner: measurements and the forecast.
+            const css=f!.contentDocument!.createElement('style');css.textContent='.panel,#time,#ev,.src,.maplibregl-ctrl,#chart .x,.boom{display:none!important}#chart{display:block!important;left:auto!important;bottom:auto!important;right:2.2vw!important;top:4vh!important;width:360px!important;zoom:'+CHART_ZOOM()+';box-shadow:0 20px 60px #000c}';f!.contentDocument!.head.append(css);
+            // The bowl nearest to the sinkhole; the map is refitted so the chart and the caption do not cover the bowls.
+            inFrame(f,`(()=>{const e=C.events[0];let k=0,d=1e9;if(e)C.bowls.forEach((b,i)=>{const q=(b.lon-e.lon)**2+(b.lat-e.lat)**2;if(q<d){d=q;k=i;}});sel=k;map.setFeatureState({source:'bowls',id:k},{on:true});draw(k);const w=innerWidth,h=innerHeight;map.fitBounds([[BW,BS],[BE,BN]],{padding:{top:h*.08,bottom:h*.3,left:w*.03,right:w*.4},duration:0});})()`);
             inFrame(f,'show(0)');
           }
           tick();
@@ -109,8 +113,8 @@ export default function Show2(){
       if(flags.sent!==was.sent){was.sent=flags.sent;setSent(flags.sent);}
       if(n!==was.typed){was.typed=n;setTyped(n);}
       // Nepal: one steady pass along the whole flight.
-      if(t>=AT.nepal-.6&&t<AT.silesia+.6){
-        const p=clamp((t-AT.nepal)/(AT.silesia-AT.nepal)),cv=canvas.current,ctx=cv?.getContext('2d');
+      if(t>=AT.nepal-.6&&t<AT.local+.6){
+        const p=clamp((t-AT.nepal)/(AT.local-AT.nepal)),cv=canvas.current,ctx=cv?.getContext('2d');
         let i=Math.round(p*(FRAMES.length-1));while(i>0&&!images.current[i])i--;
         const img=images.current[i];
         if(cv&&ctx&&img&&i!==drawn){
@@ -122,9 +126,9 @@ export default function Show2(){
       // Silesia: the measurements play from the first to the last radar pass, then the sinkhole is pointed out.
       const tl=timeline.current;
       if(tl&&t>=AT.silesia-.2){
-        const last=tl.measured-1,i=Math.round(clamp((t-AT.silesia-.7)/3.6)*last);
+        const last=tl.measured-1,i=Math.round(clamp((t-AT.silesia-.7)/3.9)*last);
         if(i!==stop){stop=i;inFrame(frame.current,`show(${i})`);setDate(day(tl.dates[i]));}
-        const point=t>=AT.silesia+4.5&&!!tl.event;
+        const point=t>=AT.silesia+4.9&&!!tl.event;
         if(point!==was.hole){
           was.hole=point;
           const p=point?inFrame<[number,number]>(frame.current,`(p=>[p.x,p.y])(map.project([${tl.event!.lon},${tl.event!.lat}]))`):null;
@@ -153,7 +157,7 @@ export default function Show2(){
       <h1>Dancing with<br/><em>the SARs</em></h1>
       <p className="sh-line">A changing planet, seen by NISAR radar.</p>
       <p className="s2-team-name">Team <b>{TEAM_NAME}</b></p>
-      <ul className="s2-team">{TEAM.map(name=><li key={name}><img src={`/media/team/${PHOTO[name]}.webp`} alt=""/><span>{name}</span></li>)}</ul>
+      <ul className="s2-team">{TEAM.map(name=><li key={name}><img src={portrait(name)} alt=""/><span>{name}</span></li>)}</ul>
       {state==='idle'&&<div className="sh-start">{ready?<button type="button" onClick={start} autoFocus>▶ Start</button>:<span className="sh-loading"><i style={{transform:`scaleX(${loaded})`}}/></span>}</div>}
     </section>
     <section className={on('why')}>
@@ -182,11 +186,15 @@ export default function Show2(){
       <div className="sh-caption"><p className="sh-kicker">Nepal · glacier collapse</p><h2>The flood path, <em>traced from orbit.</em></h2>
         <p className="s2-key"><i/>Red and orange: the flood impact area detected by our model</p><span className="sh-route"><i ref={route}/></span></div>
     </section>
+    <section className={on('local')}>
+      <p className="sh-kicker">Our local case study</p>
+      <h2>Poland's mining region,<br/><em>explored with NISAR for the first time.</em></h2>
+    </section>
     <section className={on('silesia')}>
       <iframe ref={frame} src={TIMELINE} title="Subsidence timeline" tabIndex={-1}/>
-      <div className="sh-caption s2-case"><p className="sh-kicker">Case study · made with our app</p><h2>Poland's mining region, <em>explored with NISAR for the first time.</em></h2>
+      <div className="sh-caption s2-case"><p className="sh-kicker">Case study · Krzyżowice, Poland</p><h2>The ground sinks <em>above the mines.</em></h2>
         <p className="sh-date">{date}</p></div>
-      {hole&&<div className={'s2-hole'+(hole.x>window.innerWidth*.55?' left':'')} style={{left:hole.x,top:hole.y}}>
+      {hole&&<div className="s2-hole" style={{left:hole.x,top:hole.y}}>
         <i/><div><strong>The sinkhole actually appeared where we mapped the ground sinking</strong><span>Last radar pass: <b>16 Oct</b> · Sinkhole: <b>28 Oct</b></span><small>Approximate location</small></div>
       </div>}
     </section>

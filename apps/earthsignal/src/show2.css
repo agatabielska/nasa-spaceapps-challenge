@@ -55,19 +55,16 @@
 @keyframes s2-pop{from{opacity:0;transform:scale(.6)}}
 .s2-hole::before{content:'';position:absolute;left:-13px;top:-13px;width:26px;height:26px;border:4px solid #ff4d4d;border-radius:50%;background:#ff4d4d55;box-shadow:0 0 0 0 #ff4d4d;animation:s2-ping 1.2s ease-out infinite}
 @keyframes s2-ping{to{box-shadow:0 0 0 26px #ff4d4d00}}
-/* The arrow: a line from the callout down to the point, with a head at the point */
-.s2-hole i{position:absolute;left:9px;bottom:9px;width:min(9vw,150px);height:4px;background:#ff4d4d;transform-origin:0 50%;transform:rotate(-38deg);box-shadow:0 0 10px #000}
-.s2-hole i::before{content:'';position:absolute;left:-2px;top:-7px;border:9px solid transparent;border-right-color:#ff4d4d;border-left:0}
-.s2-hole>div{position:absolute;left:min(7.6vw,126px);bottom:min(5.6vw,92px);width:min(34vw,520px);padding:1.6vh 1.3vw;border:2px solid #ff4d4d;border-radius:14px;background:#1a0509f2;box-shadow:0 20px 60px #000c}
-.s2-hole strong{display:block;font:800 clamp(17px,1.7vw,28px)/1.2 var(--es-display);color:#fff}
-.s2-hole span{display:block;margin-top:.8vh;font:600 clamp(15px,1.35vw,22px) var(--es-body);color:#ffd0d0}
+/* The arrow: a short line from the callout straight down to the point, with a head at the point */
+.s2-hole i{position:absolute;left:-2px;bottom:20px;width:4px;height:min(6vh,60px);background:#ff4d4d;box-shadow:0 0 10px #000}
+.s2-hole i::before{content:'';position:absolute;left:-7px;bottom:-4px;border:9px solid transparent;border-top-color:#ff4d4d;border-bottom:0}
+.s2-hole>div{position:absolute;left:-9vw;bottom:calc(18px + min(6vh,60px));width:min(27vw,460px);padding:1.4vh 1.1vw;border:2px solid #ff4d4d;border-radius:14px;background:#1a0509f2;box-shadow:0 20px 60px #000c}
+.s2-hole strong{display:block;font:800 clamp(16px,1.5vw,25px)/1.2 var(--es-display);color:#fff}
+.s2-hole span{display:block;margin-top:.8vh;font:600 clamp(14px,1.25vw,21px) var(--es-body);color:#ffd0d0}
 .s2-hole span b{color:#fff}
 .s2-hole small{display:block;margin-top:.5vh;font:500 clamp(12px,.95vw,15px) var(--es-body);color:#ffb3b3b3}
-.s2-hole.left i{left:auto;right:9px;transform-origin:100% 50%;transform:rotate(38deg)}
-.s2-hole.left i::before{left:auto;right:-2px;border:9px solid transparent;border-left-color:#ff4d4d;border-right:0}
-.s2-hole.left>div{left:auto;right:min(7.6vw,126px)}
-@media(max-width:800px){.s2-chat{width:66vw}.s2-hole>div{width:70vw}.show2 .sh-silesia .s2-case{right:4vw;max-width:none}}
+@media(max-width:800px){.s2-chat{width:66vw}.s2-hole>div{left:-30vw;width:70vw}.show2 .sh-silesia .s2-case{right:4vw;max-width:none}}
 @media(prefers-reduced-motion:reduce){.s2-astro,.s2-orbit.awake .s2-astro{animation:none}}
 /* Closing line */
-.sh-outro{flex-direction:column;gap:0;text-align:center;background:radial-gradient(1200px 800px at 50% 40%,#0b1f45 0,#030814 66%)}
-.sh-outro h2{font-size:clamp(30px,4.6vw,76px);line-height:1.12}
+.sh-outro,.sh-local{flex-direction:column;gap:0;text-align:center;background:radial-gradient(1200px 800px at 50% 40%,#0b1f45 0,#030814 66%)}
+.sh-outro h2,.sh-local h2{font-size:clamp(30px,4.6vw,76px);line-height:1.12}
