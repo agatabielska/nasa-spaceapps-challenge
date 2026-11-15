@@ -72,13 +72,17 @@ export function holdProgress(sc:PlacedScene,s:number){return sc.hold>0?clamp((s-
 
 // Places the presenter can step to with the keyboard or the bar: every scene start, plus evenly spaced points
 // through a scene that pans (taller than the screen) or plays something during its hold (the drone flight).
-export function journeyStops(l:Layout,steps:(number|undefined)[]):number[]{
+// `steps` gives, per scene, explicit stops as fractions of its hold; the journey always ends on the very last pixel.
+export function journeyStops(l:Layout,steps:(number[]|undefined)[]):number[]{
   const stops:number[]=[];
   l.scenes.forEach((sc,i)=>{
-    const given=steps[i],span=given?sc.hold:sc.pan,n=given??(sc.pan>0?Math.ceil(sc.pan/(l.h*.75)):0);
     stops.push(sc.start);
-    for(let k=1;k<=n;k++)stops.push(sc.start+span*k/n);
+    const given=steps[i];
+    if(given){for(const f of given)stops.push(sc.start+sc.hold*f);return;}
+    const n=sc.pan>0?Math.ceil(sc.pan/(l.h*.75)):0;
+    for(let k=1;k<=n;k++)stops.push(sc.start+sc.pan*k/n);
   });
+  if(stops[stops.length-1]<l.total-.5)stops.push(l.total);
   return stops;
 }
 export const nextStop=(stops:number[],y:number)=>stops.find(s=>s>y+1)??stops[stops.length-1];

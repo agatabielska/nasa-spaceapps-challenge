@@ -65,11 +65,14 @@ export const flight={
   count:132,width:1280,height:720,km:28.8,
   frame:(i:number)=>`/media/cases/nepal/flight/f_${String(i).padStart(3,'0')}.webp`,
   source:'data/event_visualisation/Nepal/map3d.html',
+  // Stop positions are measured along the recorded camera route (frames are evenly spaced by distance), at the
+  // points map3d.html captions: trace start, upper valley, Timure (0.54) and Syabrubesi; the one-method-only
+  // (yellow) area lies just above Syabrubesi, at about 0.90.
   beats:[
     {from:0,at:0,stop:'Trace origin',text:'The trace begins high in the mountains. Pink marks change confirmed by two independent radar methods.'},
-    {from:.24,at:.3,stop:'Bhote Koshi valley',text:'Yellow marks change seen by one method only. It is a weaker signal, so we show it separately.'},
-    {from:.5,at:.57,stop:'Timure',text:'Near the border crossing the detected change follows the valley floor, the way the flood wave travelled.'},
-    {from:.82,at:1,stop:'Syabrubesi',text:'About 29 km downstream from the origin, the change is still visible from orbit.'},
+    {from:.17,at:.228,stop:'Upper valley',text:'The change runs down a narrow valley. Radar needs neither sunlight nor a clear sky, so it still sees the valley floor.'},
+    {from:.48,at:.541,stop:'Timure',text:'Near the border crossing the detected change follows the valley floor, the way the flood wave travelled.'},
+    {from:.84,at:1,stop:'Syabrubesi',text:'Yellow marks change seen by one method only: a weaker signal, shown separately. About 29 km downstream, the change is still visible from orbit.'},
   ],
 };
 

@@ -90,8 +90,8 @@ function CaseViewer({study}:{study:CaseStudy}){
 
 // One stop of the camera journey. In motion mode it floats in 3D space; with reduced motion it is a plain block.
 // hold/steps/dwell/pace tune how long the camera and the autopilot stay on it (see src/journey/engine.ts).
-function Scene({id,hold,steps,dwell,pace,children}:{id:string;hold?:number;steps?:number;dwell?:number;pace?:number;children:ReactNode}){
-  return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps} data-dwell={dwell} data-pace={pace}>{children}</div>;
+function Scene({id,hold,steps,dwell,pace,children}:{id:string;hold?:number;steps?:number[];dwell?:number;pace?:number;children:ReactNode}){
+  return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps?.join(',')} data-dwell={dwell} data-pace={pace}>{children}</div>;
 }
 
 function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
@@ -216,10 +216,10 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
   const legend=<div className="sp-flight-legend"><span><i style={{background:'#ff1459'}}/>Confirmed by both methods</span><span><i style={{background:'#ffb826'}}/>One method only</span></div>;
   if(reduced)return <Scene id="flight"><section className="sp-section sp-flight-static" aria-labelledby="flight-title">
     <header className="sp-heading"><span className="sp-index">Flight path / Rasuwa, Nepal</span><h2 id="flight-title">Follow the flood, from its origin to Syabrubesi</h2></header>
-    <div className="sp-stills">{[0,44,80,131].map((index,i)=><figure key={index}><img src={flight.frame(index)} width={flight.width} height={flight.height} loading="lazy" alt={`3D view of the flood trace: ${flight.beats[i].stop}`}/><figcaption><strong>{flight.beats[i].stop}</strong>{flight.beats[i].text}</figcaption></figure>)}</div>
+    <div className="sp-stills">{flight.beats.map(beat=>Math.round(beat.at*(flight.count-1))).map((index,i)=><figure key={index}><img src={flight.frame(index)} width={flight.width} height={flight.height} loading="lazy" alt={`3D view of the flood trace: ${flight.beats[i].stop}`}/><figcaption><strong>{flight.beats[i].stop}</strong>{flight.beats[i].text}</figcaption></figure>)}</div>
     {legend}{credit}
   </section></Scene>;
-  return <Scene id="flight" hold={FLIGHT_HOLD} steps={3} dwell={1.5} pace={.4}><section className="sp-flight" aria-labelledby="flight-title">
+  return <Scene id="flight" hold={FLIGHT_HOLD} steps={flight.beats.slice(1).map(beat=>beat.at)} dwell={1.5} pace={.4}><section className="sp-flight" aria-labelledby="flight-title">
     <div className="sp-flight-stage">
       <div className="sp-flight-window">
         <canvas ref={canvas} role="img" aria-label="Drone-style flight over a 3D map of the Bhote Koshi valley, following the detected flood trace from its origin to Syabrubesi"/>
@@ -230,7 +230,7 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
       <div className="sp-flight-bottom">
         <div className="sp-flight-caption sp-frame" aria-live="polite"><strong>{beat.stop}</strong><p>{beat.text}</p></div>
         <div className="sp-flight-route sp-frame">
-          <div className="sp-route-bar" aria-hidden="true"><i style={{width:`${progress*100}%`}}/>{flight.beats.map((stop,i)=><span key={stop.stop} className={i<=beatIndex?'passed':''} style={{left:`${stop.at*100}%`}}><b/>{stop.stop}</span>)}</div>
+          <div className="sp-route-bar" aria-hidden="true"><i style={{width:`${progress*100}%`}}/>{flight.beats.map((stop,i)=><span key={stop.stop} className={progress>=stop.at-.002?'passed':''} style={{left:`${stop.at*100}%`}}><b/>{stop.stop}</span>)}</div>
           <div className="sp-route-meta"><strong>{(progress*flight.km).toFixed(1)} <small>/ {flight.km} km</small></strong>{legend}</div>
         </div>
       </div>

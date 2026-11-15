@@ -212,8 +212,9 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-route-bar span:first-of-type{transform:none}
 .sp-route-bar span:last-of-type{transform:translateX(-100%)}
 .sp-route-bar span b{position:absolute;left:50%;bottom:-19px;width:12px;height:12px;border:2px solid var(--sp-text-2);border-radius:50%;background:var(--sp-bg);transform:translateX(-50%)}
-.sp-route-bar span:first-of-type b{left:0;transform:none}
-.sp-route-bar span:last-of-type b{left:auto;right:0;transform:none}
+/* Every dot is centred on its point of the route, so the line starts and ends inside the end dots. */
+.sp-route-bar span:first-of-type b{left:0;transform:translateX(-50%)}
+.sp-route-bar span:last-of-type b{left:auto;right:0;transform:translateX(50%)}
 .sp-route-bar span.passed{color:#fff}
 .sp-route-bar span.passed b{border-color:var(--sp-accent);background:var(--sp-accent)}
 .sp-route-meta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px}

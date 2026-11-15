@@ -36,11 +36,12 @@ test('chapter switches halfway through a flight and hold progress drives the fli
   assert.equal(holdProgress(flight,flight.start-1),0);assert.equal(holdProgress(flight,flight.start+flight.hold/2),.5);assert.equal(holdProgress(flight,flight.end+5),1);
 });
 test('stops cover scene starts, pan steps and the playing scene, and step both ways',()=>{
-  const stops=journeyStops(layout,[undefined,undefined,3,undefined]),[home,about,flight,end]=layout.scenes;
-  assert.deepEqual(stops,[home.start,about.start,about.start+600,flight.start,flight.start+flight.hold/3,flight.start+flight.hold*2/3,flight.end,end.start,end.start+200]);
+  const stops=journeyStops(layout,[undefined,undefined,[1/3,2/3,1],undefined]),[home,about,flight,end]=layout.scenes;
+  assert.deepEqual(stops,[home.start,about.start,about.start+600,flight.start,flight.start+flight.hold/3,flight.start+flight.hold*2/3,flight.end,end.start,end.start+200,end.end]);
+  assert.equal(stops.at(-1),layout.total);
   assert.equal(nextStop(stops,home.start),about.start);
   assert.equal(nextStop(stops,about.start+100),about.start+600);
-  assert.equal(nextStop(stops,end.start+200),end.start+200);
+  assert.equal(nextStop(stops,end.start+200),end.end);assert.equal(nextStop(stops,end.end),end.end);
   assert.equal(prevStop(stops,flight.start+10),flight.start);
   assert.equal(prevStop(stops,flight.start-300),about.start+600);
   assert.equal(prevStop(stops,0),0);

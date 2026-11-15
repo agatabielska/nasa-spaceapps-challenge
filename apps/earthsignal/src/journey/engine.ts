@@ -2,9 +2,10 @@ import {createContext} from 'react';
 import {clamp,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
 
 export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;hold:Record<string,number>;progress:number;chapter:number;marks:number[]};
-// data-hold: minimum screens to rest on a scene · data-steps: stops while it plays · data-dwell: autopilot pause
+// data-hold: minimum screens to rest on a scene · data-steps: stops while it plays, as fractions of its hold ·
+// data-dwell: autopilot pause
 // in seconds · data-pace: autopilot speed through the scene, in screens per second.
-type Scene={el:HTMLElement;id:string;minHold:number;steps?:number;dwell:number;pace:number};
+type Scene={el:HTMLElement;id:string;minHold:number;steps?:number[];dwell:number;pace:number};
 type Autopilot={phase:'arrive'|'rest'|'move'|'linger';wait:number;y:number};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
 const editable='input,textarea,select,[contenteditable=""],[contenteditable=true],[role=slider]';
@@ -31,7 +32,7 @@ export class Journey{
 
   constructor(private root:HTMLElement,world:HTMLElement,private spacer:HTMLElement,private events:JourneyEvents){
     this.scenes=[...world.querySelectorAll<HTMLElement>('[data-scene]')].map(el=>({el,id:el.id,minHold:Number(el.dataset.hold??.3),
-      steps:el.dataset.steps?Number(el.dataset.steps):undefined,dwell:Number(el.dataset.dwell??6),pace:Number(el.dataset.pace??.2)}));
+      steps:el.dataset.steps?el.dataset.steps.split(',').map(Number):undefined,dwell:Number(el.dataset.dwell??6),pace:Number(el.dataset.pace??.2)}));
     history.scrollRestoration='manual';
     this.measure();
     // Open a deep link (/#etna) on its scene, without flying through everything before it.
@@ -58,7 +59,7 @@ export class Journey{
   next(){this.setAutopilot(false);this.scrollTo(nextStop(this.stops,window.scrollY));}
   prev(){this.setAutopilot(false);this.scrollTo(prevStop(this.stops,window.scrollY));}
   first(){this.setAutopilot(false);this.scrollTo(0);}
-  last(){this.setAutopilot(false);this.scrollTo(this.layout.scenes[this.layout.scenes.length-1].start);}
+  last(){this.setAutopilot(false);this.scrollTo(this.layout.total);}
   seek(fraction:number){this.setAutopilot(false);this.scrollTo(clamp(fraction)*this.layout.total);}
   get autopilot(){return this.auto!==null;}
   // Guided flight: rest on each scene, move through what it pans or plays, then fly on to the next one.
@@ -129,7 +130,7 @@ export class Journey{
     if(a.phase==='arrive'){if(Math.abs(this.cam-a.y)<l.h*.01){a.phase='rest';a.wait=info.dwell;}return;}
     if(a.phase==='rest'){a.wait-=dt;if(a.wait<=0)a.phase='move';return;}
     if(a.phase==='move'){
-      const end=info.steps?sc.end:sc.start+sc.pan;
+      const end=info.steps||i===l.scenes.length-1?sc.end:sc.start+sc.pan;
       if(a.y<end-.5){a.y=Math.min(end,a.y+info.pace*l.h*dt);this.scrollTo(a.y);}
       else{a.phase='linger';a.wait=end>sc.start+.5?2.5:0;}
       return;
