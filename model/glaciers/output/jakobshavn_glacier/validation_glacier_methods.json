@@ -1,0 +1,119 @@
+{
+  "reference": "Sentinel-2 optical reflectance change",
+  "optical_bands": [
+    "B04",
+    "B8A",
+    "B12"
+  ],
+  "optical_threshold_quantile": 0.9,
+  "optical_threshold": 0.4149821400642395,
+  "common_valid_fraction": 0.7669056209480332,
+  "note": "Exploratory agreement between radar and optical surface changes, not validated glacier retreat.",
+  "ranked": {
+    "HH absolute, filter 15x15": {
+      "AUC": 0.6812942197656222,
+      "best_IoU": 0.17895240839620422,
+      "precision": 0.22557459389669568,
+      "recall": 0.46404690875424337,
+      "threshold": 2.156719323268303
+    },
+    "HH absolute, filter 9x9": {
+      "AUC": 0.6835382679719453,
+      "best_IoU": 0.17583566741566117,
+      "precision": 0.22223341172156388,
+      "recall": 0.4571731874864269,
+      "threshold": 2.2570574594033066
+    },
+    "HH absolute, filter 5x5": {
+      "AUC": 0.6823312521150539,
+      "best_IoU": 0.17173587053701656,
+      "precision": 0.21363951996673192,
+      "recall": 0.4668286870349415,
+      "threshold": 2.3144163578106802
+    },
+    "HH absolute, filter 3x3": {
+      "AUC": 0.6757439651780996,
+      "best_IoU": 0.16544389978213508,
+      "precision": 0.21096397315540652,
+      "recall": 0.43399027306289933,
+      "threshold": 2.5700757932846345
+    },
+    "HH decrease, filter 15x15": {
+      "AUC": 0.5290795304157588,
+      "best_IoU": 0.15282348736713527,
+      "precision": 0.24669300617239912,
+      "recall": 0.28654316542651076,
+      "threshold": 1.939140532016753
+    },
+    "HH decrease, filter 9x9": {
+      "AUC": 0.5270584900411863,
+      "best_IoU": 0.1495811847349799,
+      "precision": 0.23102492338170866,
+      "recall": 0.2979031649693104,
+      "threshold": 1.9327007681803825
+    },
+    "HH decrease, filter 5x5": {
+      "AUC": 0.5244056625449456,
+      "best_IoU": 0.14403717604289895,
+      "precision": 0.22354037446012637,
+      "recall": 0.2882519516739247,
+      "threshold": 2.034069758433562
+    },
+    "HH absolute, filter 1x1": {
+      "AUC": 0.6331988352902153,
+      "best_IoU": 0.13954217078094114,
+      "precision": 0.17849464756021333,
+      "recall": 0.3900333184743225,
+      "threshold": 3.3072717258013213
+    },
+    "HH decrease, filter 3x3": {
+      "AUC": 0.5220407817376411,
+      "best_IoU": 0.13639718747082596,
+      "precision": 0.20470425772115153,
+      "recall": 0.2901550480631851,
+      "threshold": 2.074452231187087
+    },
+    "HH increase, filter 15x15": {
+      "AUC": 0.47092046958424116,
+      "best_IoU": 0.11481995522965557,
+      "precision": 0.202641338860774,
+      "recall": 0.20944775914686417,
+      "threshold": 2.4849107071436345
+    },
+    "HH increase, filter 9x9": {
+      "AUC": 0.4729415099588137,
+      "best_IoU": 0.11457814531682974,
+      "precision": 0.21631002038279262,
+      "recall": 0.1958989130062065,
+      "threshold": 2.896084426097378
+    },
+    "HH increase, filter 5x5": {
+      "AUC": 0.4755943374550544,
+      "best_IoU": 0.11447253855501685,
+      "precision": 0.20209117512485814,
+      "recall": 0.20887911623175484,
+      "threshold": 2.727215510576197
+    },
+    "HH increase, filter 3x3": {
+      "AUC": 0.4779592182623589,
+      "best_IoU": 0.11317208758137628,
+      "precision": 0.20002875227564584,
+      "recall": 0.20674741967561636,
+      "threshold": 2.8765102997192953
+    },
+    "HH decrease, filter 1x1": {
+      "AUC": 0.5109847451436875,
+      "best_IoU": 0.11073590615698507,
+      "precision": 0.15137255598978294,
+      "recall": 0.29203242693367165,
+      "threshold": 2.29784867301354
+    },
+    "HH increase, filter 1x1": {
+      "AUC": 0.4890152548563125,
+      "best_IoU": 0.10502389164252668,
+      "precision": 0.17686666486259092,
+      "recall": 0.20543725496919613,
+      "threshold": 3.3651134193860566
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "case": "jakobshavn_glacier",
+  "kind": "glacier",
+  "title": "Jakobshavn Glacier motion, Greenland",
+  "periods": {
+    "early": "2026-06-18/2026-06-30",
+    "late": "2026-10-04/2026-10-16"
+  },
+  "units": "m/day",
+  "note": "Radar-projected rates, not horizontal glacier speed. Quality thresholds are provisional.",
+  "methods": {
+    "ascending": {
+      "early_valid_fraction": 0.3205893689337398,
+      "late_valid_fraction": 0.46333964049195836,
+      "comparison_valid_fraction": 0.2704579697957181
+    },
+    "descending": {
+      "early_valid_fraction": 0.054961631451697676,
+      "late_valid_fraction": 0.12024948316339044,
+      "comparison_valid_fraction": 0.047156522653211394
+    },
+    "gcov": {
+      "dates": [
+        "2026-06-18",
+        "2026-10-04"
+      ],
+      "polarization": "HH",
+      "pixel_m": 20.0,
+      "threshold_db": 3.0,
+      "valid_fraction": 0.771365523788486,
+      "increase_area_km2": 256.83,
+      "decrease_area_km2": 127.1832,
+      "note": "Areas represent radar backscatter changes across the full scene, not glacier retreat."
+    }
+  }
+}
