@@ -132,8 +132,9 @@ function CaseViewer({study}:{study:CaseStudy}){
 
 // One stop of the camera journey. In motion mode it floats in 3D space; with reduced motion it is a plain block.
 // hold/steps/dwell/pace tune how long the camera and the autopilot stay on it (see src/journey/engine.ts).
-function Scene({id,hold,steps,dwell,pace,children}:{id:string;hold?:number;steps?:number[];dwell?:number;pace?:number;children:ReactNode}){
-  return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps?.join(',')} data-dwell={dwell} data-pace={pace}>{children}</div>;
+// close: the scene waits right behind the previous one and the camera pushes straight through to it.
+function Scene({id,hold,steps,dwell,pace,close,children}:{id:string;hold?:number;steps?:number[];dwell?:number;pace?:number;close?:boolean;children:ReactNode}){
+  return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps?.join(',')} data-dwell={dwell} data-pace={pace} data-close={close?'':undefined}>{children}</div>;
 }
 
 function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
@@ -354,7 +355,9 @@ export default function Landing(){
         <a className="sp-scroll-cue" href="#about"><span>Scroll to fly</span><ChevronsDown size={22} aria-hidden="true"/></a>
       </section></Scene>
 
-      <Scene id="about" dwell={detected.length*SWITCH_MS/1000+1}><section className="sp-section sp-about" aria-labelledby="about-title">
+      {/* About waits right behind the hero title: from the start screen only its turning globe and orbits show;
+          the camera flies through the title, the globe grows to full size and the details fill in on arrival. */}
+      <Scene id="about" close dwell={detected.length*SWITCH_MS/1000+1}><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
           <h2 id="about-title">One radar. Five kinds of change.</h2>

@@ -24,8 +24,12 @@ export function project(cam:Camera,q:Vec,near=1){
 const bezier=(a:Vec,b:Vec,c:Vec,d:Vec,u:number):Vec=>{const v=1-u;return add(add(scale(a,v*v*v),scale(b,3*v*v*u)),add(scale(c,3*v*u*u),scale(d,u*u*u)));};
 const bezierTangent=(a:Vec,b:Vec,c:Vec,d:Vec,u:number):Vec=>{const v=1-u;return add(add(scale(sub(b,a),3*v*v),scale(sub(c,b),6*v*u)),scale(sub(d,c),3*u*u));};
 
-export type SceneSize={id:string;height:number;hold:number};
-export type PlacedScene={id:string;anchor:Vec;start:number;end:number;pan:number;hold:number};
+// close: the scene waits right behind the previous one, centred on it, and the camera flies straight through
+// the previous scene to it (the hero title in front of the About globe).
+export type SceneSize={id:string;height:number;hold:number;close?:boolean};
+export type PlacedScene={id:string;anchor:Vec;start:number;end:number;pan:number;hold:number;close:boolean};
+// How far behind the previous scene a close scene sits, as a fraction of the focal length.
+export const CLOSE_DEPTH=.5;
 export type Layout={w:number;h:number;focal:number;gap:number;travel:number;total:number;scenes:PlacedScene[]};
 // Where each scene floats, relative to the previous one, in viewport widths and heights.
 const DRIFT:[number,number][]=[[0,0],[.24,.1],[-.28,-.06],[.3,.12],[-.26,.04],[.2,-.08],[-.22,.08],[0,.1]];
@@ -34,13 +38,15 @@ const DRIFT:[number,number][]=[[0,0],[.24,.1],[-.28,-.06],[.3,.12],[-.26,.04],[.
 // the viewport) and travels (the camera flies a curved path to the next scene).
 export function layoutJourney(sizes:SceneSize[],w:number,h:number):Layout{
   const focal=Math.max(700,h*1.1),gap=focal*3,travel=h*1.2;
-  let s=0,y=0;
+  let s=0,y=0,x=0,z=0;
   const scenes=sizes.map((size,i)=>{
     if(i>0)s+=travel;
-    const pan=Math.max(0,size.height-h),hold=Math.max(pan,size.hold),[dx,dy]=DRIFT[i%DRIFT.length];
-    const anchor:Vec=[dx*w,y+dy*h,-i*gap];
+    const close=i>0&&!!size.close,pan=Math.max(0,size.height-h),hold=Math.max(pan,size.hold),[dx,dy]=close?[0,0]:DRIFT[i%DRIFT.length];
+    if(i>0)z-=close?focal*CLOSE_DEPTH:gap;
+    if(!close)x=dx*w;
+    const anchor:Vec=[x,y+dy*h,z];
     y=anchor[1]+pan;
-    const placed={id:size.id,anchor,start:s,end:s+hold,pan,hold};
+    const placed={id:size.id,anchor,start:s,end:s+hold,pan,hold,close};
     s+=hold;return placed;
   });
   return {w,h,focal,gap,travel,total:s,scenes};
@@ -60,6 +66,8 @@ export function shotAt(l:Layout,s:number):Shot{
     // Curved flight from scene i-1 to scene i: a cubic that swings out to one side and climbs a little.
     const t=clamp((s-(sc.start-l.travel))/l.travel),u=t*t*(3-2*t),side=i%2?1:-1;
     const a=rest(l,i-1,Infinity),d=rest(l,i,0);
+    // A close scene is reached in a straight push forward, looking ahead the whole way.
+    if(sc.close)return {pos:add(scale(a,1-u),scale(d,u)),fwd:[0,0,-1],roll:0,chapter:t<.5?i-1:i};
     const b=add(a,[side*.34*l.w,-.22*l.h,-l.gap*.42]),c=add(d,[side*.16*l.w,-.1*l.h,l.gap*.42]);
     const tangent=norm(bezierTangent(a,b,c,d,u)),bend=Math.sin(Math.PI*t);
     const fwd=norm(add(scale([0,0,-1],1-bend*.45),scale(tangent,bend*.45)));

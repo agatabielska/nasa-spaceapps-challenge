@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {blockStops,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,sub,type Layout} from './journey/path.ts';
+import {blockStops,CLOSE_DEPTH,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,sub,type Layout} from './journey/path.ts';
 
 const sizes=[{id:'home',height:900,hold:270},{id:'about',height:1500,hold:270},{id:'flight',height:900,hold:3240},{id:'end',height:1100,hold:270}];
 const layout=layoutJourney(sizes,1440,900);
@@ -54,4 +54,15 @@ test('a scene stops at its content blocks and adds steps only for a block that d
   assert.deepEqual(blockStops([{top:0,bottom:1100},{top:1300,bottom:1700}],900,900,96,96),[0,296,900]);
   // A single short block on a scene with a little pan: no extra stop.
   assert.deepEqual(blockStops([{top:0,bottom:790}],900,150,96,96),[0]);
+});
+test('a close scene waits right behind the previous one and is reached in a straight push',()=>{
+  const l=layoutJourney([{id:'home',height:900,hold:270},{id:'about',height:900,hold:270,close:true},{id:'work',height:900,hold:270}],1440,900);
+  const [home,about,work]=l.scenes;
+  assert.equal(about.anchor[0],home.anchor[0]);assert.equal(about.anchor[1],home.anchor[1]);
+  assert.equal(home.anchor[2]-about.anchor[2],l.focal*CLOSE_DEPTH);assert.equal(about.anchor[2]-work.anchor[2],l.gap);
+  // From the hero the globe scene is centred and smaller, then grows to scale 1 without the camera turning.
+  const atHome=project(view(l,home.start),about.anchor)!,mid=shotAt(l,about.start-l.travel/2);
+  assert.ok(Math.abs(atHome.s-1/(1+CLOSE_DEPTH))<1e-9);assert.ok(Math.abs(atHome.x-720)<1e-6);
+  assert.deepEqual(mid.fwd,[0,0,-1]);assert.equal(mid.roll,0);
+  assert.ok(Math.abs(project(view(l,about.start),about.anchor)!.s-1)<1e-9);
 });

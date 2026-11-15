@@ -1,11 +1,11 @@
 import {createContext} from 'react';
-import {blockStops,clamp,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
+import {blockStops,clamp,CLOSE_DEPTH,holdProgress,journeyStops,layoutJourney,makeCamera,nextStop,prevStop,project,sceneAtScroll,shotAt,smooth,type Camera,type Layout} from './path';
 
 export type JourneyFrame={camera:Camera;speed:number;moved:boolean;time:number;hold:Record<string,number>;progress:number;chapter:number;marks:number[]};
 // data-hold: minimum screens to rest on a scene · data-steps: stops while it plays, as fractions of its hold ·
 // data-dwell: autopilot pause on each content block
 // in seconds · data-pace: autopilot speed through the scene, in screens per second.
-type Scene={el:HTMLElement;id:string;minHold:number;steps?:number[];dwell:number;pace:number};
+type Scene={el:HTMLElement;id:string;close:boolean;minHold:number;steps?:number[];dwell:number;pace:number};
 type Autopilot={phase:'arrive'|'rest'|'move';wait:number;y:number;from:number;to:number;time:number;duration:number};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
 // Room left above a content block when the camera stops on it (top bar), and below it (presenter bar).
@@ -59,7 +59,7 @@ export class Journey{
   latest:JourneyFrame|null=null;
 
   constructor(private root:HTMLElement,world:HTMLElement,private spacer:HTMLElement,private events:JourneyEvents){
-    this.scenes=[...world.querySelectorAll<HTMLElement>('[data-scene]')].map(el=>({el,id:el.id,minHold:Number(el.dataset.hold??.3),
+    this.scenes=[...world.querySelectorAll<HTMLElement>('[data-scene]')].map(el=>({el,id:el.id,close:el.dataset.close!==undefined,minHold:Number(el.dataset.hold??.3),
       steps:el.dataset.steps?el.dataset.steps.split(',').map(Number):undefined,dwell:Number(el.dataset.dwell??6),pace:Number(el.dataset.pace??.75)}));
     history.scrollRestoration='manual';
     this.measure();
@@ -114,7 +114,7 @@ export class Journey{
 
   private measure(){
     const w=window.innerWidth,h=window.innerHeight;
-    this.layout=layoutJourney(this.scenes.map(sc=>({id:sc.id,height:sc.el.offsetHeight,hold:sc.minHold*h})),w,h);
+    this.layout=layoutJourney(this.scenes.map(sc=>({id:sc.id,height:sc.el.offsetHeight,hold:sc.minHold*h,close:sc.close})),w,h);
     this.spacer.style.height=`${Math.ceil(this.layout.total+h)}px`;
     // A scene plays through data-steps, or stops at each content block (split at elements marked data-stop),
     // with extra stops only where a block is too tall for the screen.
@@ -220,7 +220,10 @@ export class Journey{
       const placed=l.scenes[i],el=sc.el,p=project(camera,placed.anchor);
       hold[sc.id]=holdProgress(placed,s);
       // Fade in from the distance, stay solid around the resting distance, fade out while passing through.
-      const opacity=p?smooth(l.focal*.36,l.focal*.86,p.d)*(1-smooth(l.focal*2.6,l.focal*3.9,p.d)):0;
+      // A scene with a close scene right behind it fades out in the first part of the push (the camera flies
+      // through it), before the close scene fills in its details.
+      const f=l.focal,nearFade=this.scenes[i+1]?.close?[f*(1-CLOSE_DEPTH*.6),f*(1-CLOSE_DEPTH*.3)]:[f*.36,f*.86];
+      const opacity=p?smooth(nearFade[0],nearFade[1],p.d)*(1-smooth(f*2.6,f*3.9,p.d)):0;
       if(!p||opacity<.004){
         if(el.dataset.shown!=='0'){el.dataset.shown='0';el.style.opacity='0';el.style.transform='translate3d(-400vw,0,0)';el.style.pointerEvents='none';}
         return;
@@ -230,6 +233,9 @@ export class Journey{
       el.style.transform=`translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) scale(${resting?1:p.s.toFixed(4)}) translateX(-50%)`;
       el.style.opacity=opacity>.995?'1':opacity.toFixed(3);
       el.style.zIndex=String(Math.round(1e5-p.d));
+      // --arrive: 0 while the scene waits in the distance, 1 once the camera has arrived (scenes fill in their
+      // details with it, e.g. About shows only the globe behind the hero title).
+      el.style.setProperty('--arrive',p.d<=f*1.03?'1':(1-smooth(f*1.03,f*(1+CLOSE_DEPTH*.3),p.d)).toFixed(3));
       el.style.pointerEvents=opacity>.9&&Math.abs(p.s-1)<.1?'auto':'none';
     });
     if(shot.chapter!==this.chapter){
