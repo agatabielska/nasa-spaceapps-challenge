@@ -171,14 +171,16 @@ function seen(view:GlobeView,lat:number,lon:number){
   return {x:wx,y:c*wy-sn*wz,z:sn*wy+c*wz};
 }
 function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
-  const stage=useRef<HTMLDivElement>(null),world=useRef<HTMLDivElement>(null),globe=useRef<HTMLDivElement>(null),pins=useRef<(HTMLButtonElement|null)[]>([]),card=useRef<HTMLDivElement>(null);
+  const stage=useRef<HTMLDivElement>(null),world=useRef<HTMLDivElement>(null),globe=useRef<HTMLDivElement>(null),pins=useRef<(HTMLButtonElement|null)[]>([]),cardEl=useRef<HTMLDivElement>(null);
   const start=detected[0].place;
   const view=useRef<GlobeView>({lon:toRad(start.lon),lat:toRad(start.lat)});
-  const [active,setActive]=useState(0),[shown,setShown]=useState(false);
+  // active: where the camera is or is flying to (pins, dots). card: the type the card shows, which changes only
+  // when the camera lands, so a card fades out with its own content and the next one grows at its own pin.
+  const [active,setActive]=useState(0),[card,setCard]=useState(0),[shown,setShown]=useState(false);
   const journey=useContext(JourneyContext),autopilot=useContext(AutopilotContext);
   // seen: types whose card has been up for a full stay since the camera arrived (or the autopilot started);
   // steps: the types shown since the visitor started stepping with the arrows, in order (null until then).
-  const st=useRef({active:0,from:{...view.current},to:{...view.current},t0:0,flying:false,here:false,hover:false,next:0,holdUntil:0,still:false,auto:false,visible:false,
+  const st=useRef({active:0,card:0,from:{...view.current},to:{...view.current},t0:0,flying:false,here:false,hover:false,next:0,holdUntil:0,still:false,auto:false,visible:false,
     seen:new Set<number>(),steps:null as number[]|null});
   st.current.still=paused||reduced;st.current.auto=autopilot;
   const go=(i:number)=>{
@@ -228,7 +230,7 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
         view.current={lon:s.from.lon+(s.to.lon-s.from.lon)*e,lat:s.from.lat+(s.to.lat-s.from.lat)*e};
         // The camera pulls back a little mid-flight, as when orbiting to the far side.
         if(world.current)world.current.style.transform=`scale(${(1-.08*Math.sin(Math.PI*t)).toFixed(4)})`;
-        if(t>=1){s.flying=false;s.next=now+STAY_MS;if(s.here)setShown(true);}
+        if(t>=1){s.flying=false;s.next=now+STAY_MS;if(s.here){s.card=s.active;setCard(s.active);setShown(true);}}
       }else if(s.here&&now>s.next){
         s.seen.add(s.active);
         // Left alone, the types take turns for as long as the visitor stays (not while they point at the globe
@@ -237,7 +239,7 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
         if(turn)go((s.active+1)%detected.length);
       }
       sky.lon=view.current.lon;sky.lat=view.current.lat;
-      // Pins on the globe (hidden on the far side) and the card at the active pin.
+      // Pins on the globe (hidden on the far side) and the card at the pin of the type it shows.
       const g=globe.current;
       if(g){
         // The globe box sits at left/top 50% and is pulled back by half its size, so its offset is its centre.
@@ -246,7 +248,7 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
           const pin=pins.current[i];if(!pin)return;const p=seen(view.current,ev.place.lat,ev.place.lon),x=cx+p.x*R,y=cy-p.y*R;
           pin.style.transform=`translate(-50%,-50%) translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(.6+.4*clamp(p.z)).toFixed(3)})`;
           pin.style.opacity=p.z>.05?clamp(p.z*3).toFixed(3):'0';pin.style.visibility=p.z>.05?'visible':'hidden';
-          if(i===s.active&&card.current){card.current.style.left=`${x.toFixed(1)}px`;card.current.style.top=`${y.toFixed(1)}px`;}
+          if(i===s.card&&cardEl.current){cardEl.current.style.left=`${x.toFixed(1)}px`;cardEl.current.style.top=`${y.toFixed(1)}px`;}
         });
       }
       if(visible)frame=requestAnimationFrame(tick);
@@ -255,7 +257,7 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
     observer.observe(el);
     return()=>{observer.disconnect();cancelAnimationFrame(frame);};
   },[]);
-  const ev=detected[active],Icon=eventIcons[ev.id];
+  const ev=detected[card],Icon=eventIcons[ev.id];
   return <div className="sp-orbit-wrap sp-reveal">
     <div className="sp-orbit" ref={stage} onPointerEnter={()=>{st.current.hover=true;}} onPointerLeave={()=>{st.current.hover=false;}}>
       <div className="sp-ag-world" ref={world}>
@@ -267,7 +269,7 @@ function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
           {detected.map((e,i)=>{const PinIcon=eventIcons[e.id];return <button key={e.id} type="button" ref={n=>{pins.current[i]=n;}} className="sp-ag-pin" aria-pressed={active===i} style={{'--event':e.color} as CSSProperties}
             aria-label={`${e.label}, ${e.place.name}`} onClick={()=>pick(i)}><PinIcon size={15} aria-hidden="true"/></button>;})}
         </div>
-        <div className={'sp-ag-card'+(shown?' shown':'')} ref={card} style={{'--event':ev.color} as CSSProperties} aria-live="polite">
+        <div className={'sp-ag-card'+(shown?' shown':'')} ref={cardEl} style={{'--event':ev.color} as CSSProperties} aria-live="polite">
           <div className="sp-ag-astronaut" aria-hidden="true"><Astronaut/></div>
           <div className="sp-ag-pic">{ev.picture?<img src={ev.picture.src} alt={ev.picture.caption} draggable={false}/>:<div className="sp-ag-pic-empty"><ImageOff size={22} aria-hidden="true"/><span>Photo to add</span></div>}</div>
           <div className="sp-ag-body">

@@ -209,7 +209,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 @keyframes sp-breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.75}}
 /* Behind the hero title only the globe and its orbits show; heading, events, astronaut and panel fade in as the
    camera arrives (--arrive comes from the journey engine and is 1 without it). */
-.sp-engine .sp-about .sp-heading,.sp-engine .sp-orbit-events,.sp-engine .sp-ag-card,.sp-engine .sp-ag-dots{opacity:var(--arrive,1)}
+.sp-engine .sp-about .sp-heading,.sp-engine .sp-orbit-events,.sp-engine .sp-ag-dots{opacity:var(--arrive,1)}
 .sp-engine .sp-about .sp-heading{transform:translateY(calc((1 - var(--arrive,1))*-24px))}
 .sp-ag-world{position:absolute;inset:0;transform-origin:50% 50%}
 /* Sites of the five event types, pinned on the globe and hidden when they turn to the far side. */
@@ -217,7 +217,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-ag-pin:hover{background:var(--sp-panel-2)}
 .sp-ag-pin[aria-pressed=true]{background:var(--event);color:var(--sp-ink);box-shadow:0 0 0 2px #fff,0 0 0 9px color-mix(in srgb,var(--event) 30%,transparent)}
 /* The card grows out of the active pin when the camera arrives; a short line ties it to the pin. */
-.sp-ag-card{position:absolute;z-index:8;width:clamp(260px,22vw,340px);border:1px solid color-mix(in srgb,var(--event) 60%,transparent);border-radius:8px;background:linear-gradient(160deg,#0c1d47f7,#071230f7);box-shadow:0 22px 50px #0009;transform:translate(30px,-50%) scale(.6);transform-origin:0 50%;opacity:0;visibility:hidden;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1.2),visibility 0s .45s}
+.sp-ag-card{position:absolute;z-index:8;width:clamp(260px,22vw,340px);border:1px solid color-mix(in srgb,var(--event) 60%,transparent);border-radius:8px;background:linear-gradient(160deg,#0c1d47f7,#071230f7);box-shadow:0 22px 50px #0009;transform:translate(30px,-50%) scale(.6);transform-origin:0 50%;opacity:0;visibility:hidden;transition:opacity .25s ease,transform .3s ease-in,visibility 0s .3s}
 .sp-ag-card.shown{transform:translate(30px,-50%) scale(1);visibility:visible;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1.2)}
 .sp-engine .sp-ag-card.shown{opacity:var(--arrive,1)}
 .sp-flow .sp-ag-card.shown{opacity:1}
