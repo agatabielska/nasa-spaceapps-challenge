@@ -15,15 +15,20 @@ async function body(req:IncomingMessage){let content='';for await(const chunk of
 // A malformed percent-encoding in the URL is the client's mistake: answer 400 instead of failing with 500.
 function decode(part:string){try{return decodeURIComponent(part);}catch{throw new ServiceError(400,'BAD_PATH','Malformed URL encoding');}}
 
-/** The HTTP handler: local API plus the built app. `port` is read per request, so tests can listen on any port. */
-export function createHandler({catalog,lm,orbit,root,port}:{catalog:Catalog;lm:LMStudio;orbit:Orbit;root:string;port:()=>number}){
+/** The API plus built app. Only the configured deployment origin is added to the local allowlist. */
+export function createHandler({catalog,lm,orbit,root,port,publicUrl,orbitEnabled=true}:{catalog:Catalog;lm:LMStudio;orbit:Orbit;root:string;port:()=>number;publicUrl?:string;orbitEnabled?:boolean}){
+  const external=publicUrl?new URL(publicUrl):null;
+  if(external&&(!['http:','https:'].includes(external.protocol)||external.username||external.password))throw new Error('PUBLIC_URL must be an HTTP(S) URL without credentials');
   return async(req:IncomingMessage,res:ServerResponse)=>{
   try {
-    // Keep the local database/model API inaccessible to unrelated browser origins.
+    // Do not trust arbitrary Host, Origin or forwarded-host headers from callers.
     const origin=req.headers.origin;
     const p=port(),origins=new Set(['http://127.0.0.1:5173','http://localhost:5173',`http://127.0.0.1:${p}`,`http://localhost:${p}`]);
+    if(external)origins.add(external.origin);
     if(origin&&!origins.has(origin))throw new ServiceError(403,'ORIGIN','Origin is not permitted');
-    if(req.headers.host&&!['127.0.0.1','localhost','[::1]'].some(h=>req.headers.host===`${h}:${p}`||req.headers.host===h))throw new ServiceError(403,'HOST','Host is not permitted');
+    const hosts=new Set(['127.0.0.1','localhost','[::1]'].flatMap(h=>[h,`${h}:${p}`]));
+    if(external)hosts.add(external.host);
+    if(req.headers.host&&!hosts.has(req.headers.host.toLowerCase()))throw new ServiceError(403,'HOST','Host is not permitted');
     const url=new URL(req.url??'/',`http://127.0.0.1:${p}`);
     if(req.method==='GET'&&url.pathname==='/api/events')return json(res,200,catalog.search({}));
     if(req.method==='POST'&&url.pathname==='/api/events/search')return json(res,200,catalog.search(searchSchema.parse(await body(req))));
@@ -32,8 +37,11 @@ export function createHandler({catalog,lm,orbit,root,port}:{catalog:Catalog;lm:L
       if(!event)throw new ServiceError(404,'NOT_FOUND','Event not found');return json(res,200,event);
     }
     if(req.method==='GET'&&url.pathname==='/api/health')return json(res,200,{ok:true,database:'sqlite',events:catalog.search({}).total});
-    if(req.method==='GET'&&url.pathname==='/api/orbit/status')return json(res,200,await lm.status());
+    if(req.method==='GET'&&url.pathname==='/api/orbit/status')return json(res,200,orbitEnabled?await lm.status():{
+      available:false,model:null,models:[],message:'Orbit is not enabled on this deployment. The map and analyses are available.',
+    });
     if(req.method==='POST'&&url.pathname==='/api/orbit/chat'){
+      if(!orbitEnabled)throw new ServiceError(503,'ORBIT_DISABLED','Orbit is not enabled on this deployment. Explore events directly on the map.');
       const input=chatSchema.parse(await body(req)),controller=new AbortController();
       // Stop the model call when the browser cancels or disconnects, so the session is free again.
       res.on('close',()=>{if(!res.writableFinished)controller.abort();});

@@ -1,5 +1,7 @@
 # EarthSignal — NISAR stories, local catalog and Orbit
 
+Public deployment without Orbit: see [Render Free setup](RENDER.md).
+
 React/TypeScript/MapLibre frontend, local Node.js API, SQLite and a local LM Studio model. No hosted database, paid inference provider or cloud API key is required. Map geometry, fonts and worker are served from this project.
 
 ## Start

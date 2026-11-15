@@ -11,11 +11,11 @@ import {Orbit} from './orbit.ts';
 import {BODY_LIMIT,createHandler} from './http.ts';
 
 // The real handler on a free port, with a throwaway database; LM Studio is never reached by these requests.
-async function start(){
+async function start(options:{publicUrl?:string;orbitEnabled?:boolean}={}){
   const dir=mkdtempSync(join(tmpdir(),'earthsignal-http-')),catalog=new Catalog(join(dir,'events.sqlite'),readSeed());
   const lm=new LMStudio({}),orbit=new Orbit(catalog,lm),root=resolve(fileURLToPath(new URL('..',import.meta.url)));
   let port=0;
-  const server:Server=createServer(createHandler({catalog,lm,orbit,root,port:()=>port}));
+  const server:Server=createServer(createHandler({catalog,lm,orbit,root,port:()=>port,...options}));
   await new Promise<void>(done=>server.listen(0,'127.0.0.1',done));
   port=(server.address() as {port:number}).port;
   return {port,close:()=>new Promise<void>(done=>server.close(()=>{catalog.close();rmSync(dir,{recursive:true,force:true});done();}))};
@@ -45,6 +45,26 @@ test('foreign origins and hosts are refused',async()=>{
     const origin=await call(s.port,'/api/events',{headers:{origin:'https://evil.example'}});assert.equal(origin.status,403);assert.equal(code(origin.text),'ORIGIN');
     assert.equal((await call(s.port,'/api/events',{headers:{origin:'http://localhost:5173'}})).status,200);
     const host=await call(s.port,'/api/health',{headers:{host:'evil.example'}});assert.equal(host.status,403);assert.equal(code(host.text),'HOST');
+  }finally{await s.close();}
+});
+test('configured public deployment serves its own origin without trusting other domains or forwarded headers',async()=>{
+  const s=await start({publicUrl:'https://earthsignal-test.onrender.com'});
+  try{
+    const headers={host:'earthsignal-test.onrender.com',origin:'https://earthsignal-test.onrender.com'};
+    const catalog=await call(s.port,'/api/events',{headers});assert.equal(catalog.status,200);assert.equal(JSON.parse(catalog.text).total,15);
+    const search=await call(s.port,'/api/events/search',{method:'POST',headers:{...headers,'content-type':'application/json'},body:JSON.stringify({countries:['IT']})});
+    assert.equal(search.status,200);assert.equal(JSON.parse(search.text).events[0].id,'etna');
+    assert.equal((await call(s.port,'/api/health',{headers:{host:headers.host}})).status,200);
+    assert.equal((await call(s.port,'/api/events',{headers:{...headers,origin:'https://other.onrender.com'}})).status,403);
+    assert.equal((await call(s.port,'/api/events',{headers:{host:'evil.example','x-forwarded-host':headers.host}})).status,403);
+  }finally{await s.close();}
+});
+test('disabled Orbit reports unavailable and rejects chat before any model request',async()=>{
+  const s=await start({orbitEnabled:false});
+  try{
+    const status=await call(s.port,'/api/orbit/status');assert.equal(status.status,200);assert.equal(JSON.parse(status.text).available,false);
+    const chat=await call(s.port,'/api/orbit/chat',{method:'POST',body:'{}'});assert.equal(chat.status,503);assert.equal(code(chat.text),'ORBIT_DISABLED');
+    assert.equal((await call(s.port,'/api/events')).status,200);
   }finally{await s.close();}
 });
 test('malformed URL encoding is a 400, and paths cannot leave the build folder',async()=>{
