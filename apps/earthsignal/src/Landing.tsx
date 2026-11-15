@@ -131,10 +131,12 @@ function Scene({id,hold,steps,dwell,pace,close,children}:{id:string;hold?:number
   return <div id={id} className="sp-scene" data-scene data-hold={hold} data-steps={steps?.join(',')} data-dwell={dwell} data-pace={pace} data-close={close?'':undefined}>{children}</div>;
 }
 
-function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
+// intro: a block shown above the case itself (Etna: optical versus radar, before our detection).
+function CaseSection({study,intro}:{study:CaseStudy;intro?:ReactNode}){
   const {look}=study;
   return <Scene id={study.id} dwell={CASE_DWELL}><section className={`sp-section sp-case sp-case-${study.id} sp-theme-${look.theme}`} aria-labelledby={`${study.id}-title`}>
-    <div className="sp-case-grid">
+    {intro}
+    <div className="sp-case-grid" data-stop={intro?'':undefined}>
       <div className="sp-case-text sp-reveal">
         <span className="sp-index">Event trace 0{study.index}</span>
         <h2 id={`${study.id}-title`} className="sp-case-title"><span className="sp-case-big">{look.region}<i>.</i></span> <span className="sp-case-sub">{look.sub}</span></h2>
@@ -145,7 +147,6 @@ function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
       </div>
       <div className="sp-reveal"><CaseViewer study={study}/></div>
     </div>
-    {children}
   </section></Scene>;
 }
 
@@ -445,8 +446,8 @@ export default function Landing(){
       </section></Scene>
 
 
-      <CaseSection study={etna}>
-        <div className="sp-cloud sp-reveal" data-stop>
+      <CaseSection study={etna} intro={
+        <div className="sp-cloud sp-cloud-first sp-reveal">
           <div className="sp-cloud-text">
             <span className="sp-index">Why radar</span>
             <h3>Clouds hide the summit. Radar sees through.</h3>
@@ -456,7 +457,7 @@ export default function Landing(){
             <Compare name="Etna under cloud" before={etnaCloud.before} after={etnaCloud.after} width={etnaCloud.width} height={etnaCloud.height}/>
           </Panel>
         </div>
-      </CaseSection>
+      }/>
 
 
       <Flight reduced={reduced} near={chapterIndex>=chapters.findIndex(item=>item.id==='etna')}/>

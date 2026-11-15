@@ -136,7 +136,7 @@ function draw(i) {
   g += `<line x1="${X(C.dates[q])}" x2="${X(C.dates[q])}" y1="${T}" y2="${H - B}" stroke="${fu ? '#b79cff' : '#7fe0d8'}" stroke-width="1.2"/>`;
   g += `<circle cx="${X(C.dates[q])}" cy="${Y(val)}" r="4.5" fill="${col}" stroke="#0b1420" stroke-width="1.5"/>`;
   const right = X(C.dates[q]) > W - 120;
-  g += `<text x="${X(C.dates[q]) + (right ? -8 : 7)}" y="${Math.max(Y(val) - 8, 16)}" fill="#fff" font-size="12" font-weight="600" text-anchor="${right ? 'end' : 'start'}">${val.toFixed(1)} cm${fu ? ' (prognoza)' : ''}</text>`;
+  g += `<text x="${X(C.dates[q]) + (right ? -8 : 7)}" y="${Math.max(Y(val) - 8, 16)}" fill="#fff" font-size="12" font-weight="600" text-anchor="${right ? 'end' : 'start'}">${val.toFixed(1)} cm${fu ? ' (forecast)' : ''}</text>`;
   $('svg').innerHTML = g;
 }
 </script></body></html>
