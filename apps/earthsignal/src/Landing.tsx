@@ -7,7 +7,8 @@ import JourneyBar from './JourneyBar';
 import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
 import {CLOSE_DEPTH} from './journey/path';
 import {sky} from './journey/sky';
-import {EXPLORER_PATH} from './routes';
+import {ABOUT_PATH,EXPLORER_PATH} from './routes';
+import {TEAM,TEAM_NAME} from './team';
 import {globeEvents as detected,etna,etnaCloud,flight,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
 
@@ -19,8 +20,6 @@ const chapters=[
   {id:'flight',label:'Nepal · 3D flight',short:'Flight'},{id:'discover',label:'Discover',short:'Discover'},
 ];
 // Screens of scrolling the camera spends on the drone flight.
-// The team, alphabetically by surname (shown on the start screen and in the footer).
-const TEAM=['Agata Bielska','Michał Leszczyński','Maria Musiał','Oliwier Necelman','Jakub Radziejewski','Martyna Stasiak'];
 const FLIGHT_HOLD=3.6;
 const eventIcons={glaciers:Snowflake,volcanoes:Mountain,subsidence:Pickaxe};
 
@@ -386,6 +385,7 @@ export default function Landing(){
       <a className="sp-brand" href="#home" aria-label="EarthSignal, back to the start"><span className="sp-logo" aria-hidden="true"/><span><b>EarthSignal</b><small>Dancing with the SARs</small></span></a>
       <div className="sp-nav-actions">
         <span className="sp-signal" aria-hidden="true"><i/>NISAR</span>
+        <a className="sp-small-button" href={ABOUT_PATH}>About us</a>
         <a className="sp-small-button" href={EXPLORER_PATH}><span className="sp-hide-sm">Open the</span> App <ArrowUpRight size={16} aria-hidden="true"/></a>
       </div>
     </header>
@@ -403,7 +403,7 @@ export default function Landing(){
             <a className="sp-button" href="#about">Start the journey <ArrowDown size={20} aria-hidden="true"/></a>
           </div>
         </div>
-        <aside className="sp-team" aria-label="Team"><span>Team</span><ul>{TEAM.map(name=><li key={name}>{name}</li>)}</ul></aside>
+        <aside className="sp-team" aria-label={`Team ${TEAM_NAME}`}><span>Team <em>Blue</em> Trust</span><ul>{TEAM.map(name=><li key={name}>{name}</li>)}</ul></aside>
         <a className="sp-scroll-cue" href="#about"><span>Scroll to travel</span><ChevronsDown size={22} aria-hidden="true"/></a>
       </section></Scene>
 
@@ -445,7 +445,7 @@ export default function Landing(){
         </section>
         <footer className="sp-footer">
           <p><strong>EarthSignal</strong> · Built for the NASA International Space Apps Challenge 2026, “Dancing with the SARs”. An independent team project, not an official NASA or ISRO service.</p>
-          <p>Team: {TEAM.join(' · ')}.</p>
+          <p>Team {TEAM_NAME}: {TEAM.join(' · ')}.</p>
           <p>Data and imagery: NISAR L2 GCOV/GUNW (NASA/ISRO, ASF DAAC) · Sentinel-2 (Copernicus/ESA) · Blue Marble (NASA Earth Observatory) · Esri World Imagery · AWS Terrain Tiles.</p>
         </footer>
       </Scene>
