@@ -1,4 +1,4 @@
-import {Activity,ArrowDownToLine,Flame,Mountain,Snowflake,Waves,type LucideIcon} from 'lucide-react';
+import {Activity,Pickaxe,Flame,Mountain,Snowflake,Waves,type LucideIcon} from 'lucide-react';
 import type {Kind} from './domain';
 
 // How each event type looks in the dashboard: the same lucide icons and colours as the landing page
@@ -9,7 +9,7 @@ export const kindStyle:Record<Kind,{Icon:LucideIcon;color:string}>={
   volcano:{Icon:Mountain,color:'#ff6b6b'},
   earthquake:{Icon:Activity,color:'#ffd84d'},
   ice:{Icon:Snowflake,color:'#9be7ff'},
-  subsidence:{Icon:ArrowDownToLine,color:'#c9a6ff'},
+  subsidence:{Icon:Pickaxe,color:'#c9a6ff'},
 };
 
 // An event type's icon, decorative: the type's name is always shown or announced next to it.
