@@ -1,0 +1,99 @@
+{
+  "method": "UCDFormer SAR adaptation",
+  "status": "complete",
+  "before": "NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001",
+  "after": "NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001",
+  "crs": "EPSG:32633",
+  "transform": [
+    20.0,
+    0.0,
+    495000.0,
+    0.0,
+    -20.0,
+    4183060.0
+  ],
+  "wgs84_bounds": [
+    14.943208469701148,
+    37.705083418292894,
+    15.056821823194243,
+    37.79490769415928
+  ],
+  "display_crs": "EPSG:4326",
+  "valid_pixels": 235776,
+  "valid_area_km2": 94.3104,
+  "changed_pixels": 2437,
+  "changed_area_km2": 0.9748,
+  "changed_fraction": 0.010336081704668838,
+  "details": {
+    "pseudo_method": "physical_local_and_feature_membership_v2",
+    "fcm_centers": [
+      0.2683266284361061,
+      0.4036282772651138,
+      0.5611619701653144
+    ],
+    "changed_seeds": 761,
+    "unchanged_seeds": 12389,
+    "uncertain": 222626,
+    "samples_per_class": 761,
+    "rf_features": [
+      "pre_HH_dB",
+      "pre_HV_dB",
+      "post_HH_dB",
+      "post_HV_dB",
+      "signed_HH_dB_change",
+      "signed_HV_dB_change",
+      "absolute_HH_dB_change",
+      "absolute_HV_dB_change",
+      "HH_normalized_change",
+      "HV_normalized_change",
+      "VGG_score"
+    ],
+    "final_classifier": "temporal-feature RF; uncertain positives require >=0.8 vote and weak physical component connected to positive seed",
+    "rf_positive_vote": 0.8,
+    "local_window_pixels": 31,
+    "threshold_statistic": "local residual MAD proxy; uncalibrated",
+    "pseudo_changed_membership": 0.6,
+    "memberships_calibrated": false,
+    "raw_positive_seeds": 761,
+    "weak_connected_support_pixels": 2502,
+    "modification": "new pseudo-label generator, temporal RF descriptors and hysteresis support; not exact original UCDFormer",
+    "checkpoint_step": 100,
+    "val_translation_loss": 1.7698254585266113,
+    "native_valid_fraction": 0.9999638554216868,
+    "model_supported_fraction": 0.9468915662650602,
+    "feature_score": "original per-date 95th-percentile feature saturation + L2; overlap averaged before labeling",
+    "area_filter_m2": 1600,
+    "pseudo_label_legend": {
+      "-2": "invalid",
+      "-1": "uncertain",
+      "0": "unchanged seed",
+      "1": "changed seed"
+    },
+    "input_power_filter": "3x3 masked linear-power mean, reflect crop boundary; incomplete interior support excluded"
+  },
+  "assets": {
+    "before": "before_wgs84.png",
+    "after": "after_wgs84.png",
+    "mask": "mask_wgs84.png",
+    "overlay": "overlay_wgs84.png"
+  },
+  "limitations": [
+    "No independent reference labels; accuracy not established",
+    "Change score is not a calibrated probability",
+    "Generic backscatter change does not establish a disaster category",
+    "Optical pretrained feature suitability for SAR remains unvalidated"
+  ],
+  "display_transform": [
+    0.00022722670698618959,
+    0.0,
+    14.943208469701148,
+    0.0,
+    -0.0001803700318602044,
+    37.79490769415928
+  ],
+  "display_shape": [
+    498,
+    500
+  ],
+  "display_grid": "native image aspect; non-square degree pixels"
+}

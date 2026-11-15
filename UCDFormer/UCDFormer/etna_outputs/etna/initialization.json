@@ -1,0 +1,13 @@
+{
+  "vgg": "weights/vgg16-397923af.pth",
+  "generator": "weights/gen_00794001.pt",
+  "loaded": "all original translator/decoder tensors, strict=True",
+  "skipped": [],
+  "reinitialized": [],
+  "input_features": [
+    "HH_dB",
+    "HV_dB",
+    "log_pol_ratio"
+  ],
+  "original_content_loss": "raw-dot affinity as executed in utils.py; near-zero denominator guarded"
+}

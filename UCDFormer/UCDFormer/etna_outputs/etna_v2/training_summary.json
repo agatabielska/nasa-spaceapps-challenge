@@ -1,0 +1,11 @@
+{
+  "updates": 600,
+  "best_step": 100,
+  "initial_validation": 2.7843171755472818,
+  "best_validation": 1.7698254585266113,
+  "elapsed_seconds": 25.17341321799904,
+  "training_patch_size": 256,
+  "validation_patch_size": 128,
+  "selection": "translation objective only, no independent change labels",
+  "gradient_clip_norm": 100.0
+}
