@@ -13,10 +13,17 @@ export const replySchema=z.object({
 });
 export type OrbitStatus={available:boolean;model:string|null;models:string[];message:string};
 export class APIError extends Error {code:string;constructor(message:string,code:string){super(message);this.code=code;}}
+// AbortSignal.any where the browser has it (Safari 17.4+, Firefox 124+), otherwise an equivalent controller.
+function anySignal(signals:AbortSignal[]):AbortSignal{
+  if('any' in AbortSignal)return AbortSignal.any(signals);
+  const controller=new AbortController();
+  for(const s of signals){if(s.aborted){controller.abort(s.reason);break;}s.addEventListener('abort',()=>controller.abort(s.reason),{once:true});}
+  return controller.signal;
+}
 async function request(path:string,body?:unknown,signal?:AbortSignal){
   let res:Response;
   const limit=AbortSignal.timeout(240000);
-  try {res=await fetch(path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:signal?AbortSignal.any([signal,limit]):limit});}
+  try {res=await fetch(path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:signal?anySignal([signal,limit]):limit});}
   catch{
     if(signal?.aborted)throw new APIError('Request cancelled.','CANCELLED');
     if(limit.aborted)throw new APIError('The local API did not answer in time.','API_TIMEOUT');

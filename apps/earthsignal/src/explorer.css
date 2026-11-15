@@ -38,6 +38,9 @@
 .app[data-text=xl]{--ui-scale:1.4}
 @media(max-width:1199px){.app[data-text=xl]{--ui-scale:1.2}}
 @media(max-width:899px){.app[data-text=large],.app[data-text=xl]{--ui-scale:1.1}}
+/* Short screens cap it too, so the map keeps a usable height (e.g. XL on a 1280×720 projector). */
+@media(max-height:820px){.app[data-text=xl]{--ui-scale:1.2}}
+@media(max-height:760px){.app[data-text=large],.app[data-text=xl]{--ui-scale:1.1}}
 .app :is(.topbar,.sidebar,.bottom-panel,.map-heading,.reopen,.map-controls,.map-styles,.map-legend,.detail,.chat,.guide,.astronaut-widget,.map-warning,.modal){zoom:var(--ui-scale)}
 
 /* ===== Shell ===== */
@@ -165,7 +168,7 @@
 .app .map-marker.selected svg{width:calc(24px * var(--ui-scale));height:calc(24px * var(--ui-scale))}
 .app .map-marker:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .app .map-warning{position:absolute;left:90px;bottom:74px;z-index:3;max-width:380px;padding:11px 15px;border:1px solid #ffcf8a66;border-radius:var(--radius);background:#071230f2;font-size:14px;color:var(--text-2)}
-.app .maplibregl-ctrl-attrib{font-size:11px!important;background:#071230e6!important;color:var(--text-3)!important}
+.app .maplibregl-ctrl-attrib{font-size:12px!important;background:#071230e6!important;color:var(--text-3)!important}
 .app .maplibregl-ctrl-attrib a{color:var(--text-2)!important}
 .app .maplibregl-ctrl-attrib-button{filter:invert(.85)}
 .app .map .maplibregl-ctrl-bottom-right{z-index:3}
@@ -293,12 +296,14 @@
 .app .bars i{display:block;width:100%;max-width:18px;border-radius:2px 2px 0 0;background:#1d3358;transition:background .15s}
 .app .bars .has-data i{background:#6fb6e0}
 .app .bars button:hover i,.app .bars button:focus-visible i{background:#fff}
-.app .bars span{font-size:11px;line-height:1;color:var(--text-3)}
+.app .bars span{font-size:12px;line-height:1;color:var(--text-3)}
 
 @keyframes enter{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
 
 /* ===== Responsive ===== */
 @media(max-width:1599px){.app .stat>span>small{display:none}}
+/* Below this width the legend would slide under an open brief or chat, so it steps aside. */
+@media(max-width:1279px){.app .map-area:has(.detail,.chat) .map-legend{display:none}}
 @media(max-width:1200px){
   .app .sidebar{width:300px}
   .app .detail{width:360px}

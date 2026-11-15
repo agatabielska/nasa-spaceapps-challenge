@@ -45,7 +45,8 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
    content centred vertically as in the prototype. A taller scene grows and the camera pans through it. The side
    margins leave room for the chapter rail on the left. */
 .landing{--sp-top:76px}
-.sp-engine .sp-section{display:flex;flex-direction:column;justify-content:center;width:min(1400px,calc(100% - 2*clamp(150px,11vw,220px)));min-height:100vh;min-height:100svh;padding:var(--sp-top) 0 calc(var(--sp-bar) + 16px)}
+.landing .sp-section{width:min(1400px,calc(100% - 2*clamp(150px,11vw,220px)))}
+.sp-engine .sp-section{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding:var(--sp-top) 0 calc(var(--sp-bar) + 16px)}
 /* About fills exactly one screen: the orbit takes whatever height the heading and panel leave (never below
    260px, so a very short window makes the scene taller and it scrolls like the others). */
 .sp-engine .sp-about{justify-content:flex-start}
@@ -114,6 +115,9 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .landing{--sp-bar:84px}
 .sp-bar{position:fixed;left:clamp(24px,4.4vw,72px);right:clamp(24px,4.4vw,72px);bottom:clamp(16px,2.6vh,32px);z-index:18;display:grid;grid-template-columns:1fr minmax(260px,520px) 1fr;align-items:end;gap:24px;pointer-events:none}
 .sp-bar>*{pointer-events:auto}
+/* A fade under the HUD keeps its labels readable over whatever passes beneath (panning scenes, the flat page
+   with reduced motion, very short screens). */
+.sp-bar:before{content:'';position:absolute;left:-100vw;right:-100vw;top:-44px;bottom:-40px;z-index:-1;background:linear-gradient(to top,#030814f5 45%,#03081400);pointer-events:none}
 .sp-bar-id{font:700 14px/1.6 Manrope,sans-serif;letter-spacing:.1em;white-space:nowrap;text-transform:uppercase;color:var(--sp-text-3)}
 .sp-bar-id strong{display:block;color:var(--sp-text)}
 .sp-bar-center{min-width:0}
@@ -154,7 +158,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-hero-inner{display:flex;flex-direction:column;align-items:center}
 .sp-kicker{display:flex;align-items:center;gap:12px;font:700 max(14px,.82em) Manrope,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--sp-text-2)}
 .sp-kicker i{width:9px;height:9px;border-radius:50%;background:var(--sp-accent);box-shadow:0 0 18px var(--sp-accent)}
-.landing .sp-title{margin:.22em 0 .3em;font:800 clamp(48px,9vw,164px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
+.landing .sp-title{margin:.22em 0 .3em;font:800 clamp(44px,min(9vw,15vh),164px)/.94 Manrope,sans-serif;letter-spacing:-.05em}
 /* The gradient is clipped to the text, so the box must reach below descenders (g, y): extra bottom padding,
    taken back in part with a negative margin, leaving a clear gap between the two title lines. */
 .sp-title-line{display:block;padding:0 .06em .26em;margin-bottom:-.1em;background:linear-gradient(180deg,#fff 25%,#b9deff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 42px #4aa6ff59)}
@@ -165,13 +169,17 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-scroll-cue svg{color:var(--sp-accent);animation:sp-nudge 1.8s ease-in-out infinite}
 /* Motion mode: the hero is composed around the About globe that shows through behind it (its centre --globe-y
    and radius --globe-r are measured by Landing.tsx). The title is centred on the globe, the kicker sits above the
-   title, and the lead and button start below whichever ends lower, the title or the globe. */
-.sp-engine .sp-hero{--fs:clamp(48px,9vw,164px);display:block;height:100vh;height:100svh;padding:0}
-.sp-engine .sp-hero-inner{position:absolute;inset:0;display:block}
-.sp-engine .sp-hero .sp-kicker{position:absolute;left:0;right:0;justify-content:center;top:calc(var(--globe-y,45vh) - 1.04*var(--fs) - 64px)}
-.sp-engine .sp-hero .sp-title{position:absolute;left:0;right:0;top:var(--globe-y,45vh);margin:0;transform:translateY(-50%)}
-.sp-engine .sp-hero-foot{position:absolute;left:50%;display:flex;flex-direction:column;align-items:center;width:min(760px,calc(100% - 40px));transform:translateX(-50%);top:calc(var(--globe-y,45vh) + max(1.04*var(--fs) + 30px,var(--globe-r,0px) + 34px))}
-.sp-engine .sp-hero .sp-button{margin-top:1.5em}
+   title, and the lead and button start below whichever ends lower, the title or the globe. Short screens have no
+   room for that, so they keep the plain centred column with tighter margins. */
+@media(min-height:721px){
+  .sp-engine .sp-hero{--fs:clamp(44px,min(9vw,15vh),164px);display:block;height:100vh;height:100svh;padding:0}
+  .sp-engine .sp-hero-inner{position:absolute;inset:0;display:block}
+  .sp-engine .sp-hero .sp-kicker{position:absolute;left:0;right:0;justify-content:center;top:calc(var(--globe-y,45vh) - 1.04*var(--fs) - 64px)}
+  .sp-engine .sp-hero .sp-title{position:absolute;left:0;right:0;top:var(--globe-y,45vh);margin:0;transform:translateY(-50%)}
+  .sp-engine .sp-hero-foot{position:absolute;left:50%;display:flex;flex-direction:column;align-items:center;width:min(760px,calc(100% - 40px));transform:translateX(-50%);top:calc(var(--globe-y,45vh) + max(1.04*var(--fs) + 30px,var(--globe-r,0px) + 34px))}
+  .sp-engine .sp-hero .sp-button{margin-top:1.5em}
+}
+@media(max-height:720px){.sp-engine .sp-hero{padding:72px clamp(20px,5vw,80px) calc(var(--sp-bar) + 12px)}.sp-engine .sp-hero .sp-button{margin-top:1.2em}}
 /* Behind the title the globe is dimmed so the text stays readable; it brightens as the camera arrives. */
 .sp-engine .sp-orbit-globe canvas{filter:brightness(calc(.78 + .22*var(--arrive,1))) saturate(calc(.85 + .15*var(--arrive,1)))}
 /* Enlarged while waiting behind the title (see --globe-boost in Landing.tsx), back to its own size on arrival. */
@@ -262,7 +270,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:22px clamp(16px,2vw,32px);margin:1.6em 0 1.3em!important;padding:1.3em 0;border-block:1px solid var(--sp-line)}
 .sp-stats>div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:4px}
 .sp-stats dd{font:800 clamp(36px,3.3vw,58px)/1 Manrope,sans-serif;letter-spacing:-.04em;color:var(--sp-text)}
-.sp-stats dd small{margin-left:.25em;font-size:.42em;font-weight:700;letter-spacing:0;color:var(--sp-accent)}
+.sp-stats dd small{margin-left:.25em;font-size:max(14px,.42em);font-weight:700;letter-spacing:0;color:var(--sp-accent)}
 .sp-stats dt{font-size:max(15px,.85em);line-height:1.35;color:var(--sp-text-2)}
 
 .sp-case-visual{display:flex;flex-direction:column;align-items:center;gap:12px}
@@ -278,7 +286,9 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-compare-narrow .sp-tag-after{top:auto;bottom:14px}
 /* A small viewer has no room for both date tags side by side. */
 .sp-viewer{container-type:inline-size}
-@container (max-width:440px){.sp-tag-after{top:auto;bottom:14px}}
+/* .sp-viewer raises the specificity so the phone rule that pins tags to the top (.sp-tag{top:8px}) cannot win
+   and stretch the tag over the whole image. */
+@container (max-width:440px){.sp-viewer .sp-tag-after{top:auto;bottom:10px}}
 .sp-divider{position:absolute;left:var(--split);top:0;bottom:0;width:3px;background:#fff;transform:translateX(-50%);box-shadow:0 0 16px #000;pointer-events:none}
 .sp-divider span{position:absolute;left:50%;top:50%;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--sp-ink);transform:translate(-50%,-50%);box-shadow:0 4px 22px #0009}
 .sp-range{display:flex;align-items:center;gap:16px;margin-top:12px;font:600 max(15px,.85em) Manrope,sans-serif;color:var(--sp-text-2);white-space:nowrap}

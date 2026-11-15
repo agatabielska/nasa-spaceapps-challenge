@@ -190,7 +190,7 @@ return <div className="app" data-text={textSize}>
     <select value={showDates?'custom':datePreset!.label} onChange={e=>{const preset=presets.find(p=>p.label===e.target.value);if(preset){setFrom(preset.from);setTo(preset.to);setCustomDates(false);}else setCustomDates(true);}}>
       {presets.map(p=><option key={p.label} value={p.label}>{p.label}</option>)}<option value="custom">Custom range…</option>
     </select><ChevronDown size={15} aria-hidden="true"/></label>
-  {showDates&&<div className="date-inputs"><label><span>From</span><input type="date" value={from} max={to} onChange={e=>e.target.value&&setFrom(e.target.value)}/></label><label><span>To</span><input type="date" value={to} min={from} onChange={e=>e.target.value&&setTo(e.target.value)}/></label></div>}
+  {showDates&&<div className="date-inputs"><label><span>From</span><input type="date" value={from} max={to} onChange={e=>{const v=e.target.value;if(!v)return;setFrom(v);if(v>to)setTo(v);}}/></label><label><span>To</span><input type="date" value={to} min={from} onChange={e=>{const v=e.target.value;if(!v)return;setTo(v);if(v<from)setFrom(v);}}/></label></div>}
 </div>
 <div className="more-filters">
   <button type="button" className="more-toggle" aria-expanded={moreOpen} aria-controls="more-filters" onClick={()=>setMoreOpen(!moreOpen)}><SlidersHorizontal size={16} aria-hidden="true"/><span>More filters</span>{extraFilters>0&&<b className="more-count" aria-label={`${extraFilters} on`}>{extraFilters} on</b>}<ChevronDown size={16} aria-hidden="true"/></button>

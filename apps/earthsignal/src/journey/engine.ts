@@ -64,7 +64,10 @@ export class Journey{
     history.scrollRestoration='manual';
     this.measure();
     // Open a deep link (/#etna) on its scene, without flying through everything before it.
-    const start=this.layout.scenes[Math.max(0,this.index(location.hash.slice(1)))].start;
+    const hash=location.hash.slice(1),found=this.index(hash);
+    // An unknown anchor (/#xyz) opens the start screen and is dropped from the address.
+    if(hash&&found<0)history.replaceState(null,'',location.pathname+location.search);
+    const start=this.layout.scenes[Math.max(0,found)].start;
     window.scrollTo({top:start,behavior:'instant'});this.cam=start;
     this.resize=new ResizeObserver(()=>this.relayout());
     this.scenes.forEach(sc=>this.resize.observe(sc.el));
