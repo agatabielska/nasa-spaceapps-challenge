@@ -111,7 +111,8 @@ function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
   </section></Scene>;
 }
 
-// The detected event types orbit the globe; Orbit the astronaut drifts from one to the next.
+// The detected event types orbit the globe; Orbit the astronaut hops from one to the next.
+const SWITCH_MS=3600,HOP_MS=650;
 function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
   const stage=useRef<HTMLDivElement>(null),chips=useRef<(HTMLButtonElement|null)[]>([]),astronaut=useRef<HTMLDivElement>(null);
   const [active,setActive]=useState(0);
@@ -119,7 +120,8 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
   state.current.active=active;state.current.still=paused||reduced;
   useEffect(()=>{
     const el=stage.current;if(!el)return;
-    let frame=0,visible=false,last=performance.now(),angle=-Math.PI/2,ax=NaN,ay=NaN,nextSwitch=last+5200;
+    let frame=0,visible=false,last=performance.now(),angle=-Math.PI/2,ax=NaN,ay=NaN,nextSwitch=last+SWITCH_MS;
+    const hop={active:-1,start:0,fx:0,fy:0};
     const step=Math.PI*2/detected.length;
     function tick(now:number){
       frame=0;
@@ -128,7 +130,7 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
       const rx=w/2-(compact?30:122),ry=h/2-(compact?30:38);
       el!.style.setProperty('--rx',`${rx}px`);el!.style.setProperty('--ry',`${ry}px`);
       if(!s.still&&!s.hover)angle+=dt*Math.PI*2/80000;
-      if(!s.still&&now>nextSwitch&&now>s.holdUntil){nextSwitch=now+5200;setActive(i=>(i+1)%detected.length);}
+      if(!s.still&&now>nextSwitch&&now>s.holdUntil){nextSwitch=now+SWITCH_MS;setActive(i=>(i+1)%detected.length);}
       chips.current.forEach((chip,i)=>{
         if(!chip)return;
         const a=angle+i*step,depth=(Math.sin(a)+1)/2;
@@ -136,10 +138,13 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
         chip.style.zIndex=depth>.5?'3':'1';
       });
       const a=angle+s.active*step,bx=Math.cos(a)*rx,by=Math.sin(a)*ry;
-      const tx=bx+(compact?0:(bx>0?-1:1)*46),ty=by-(compact?58:80);
-      if(Number.isNaN(ax)||s.still){ax=tx;ay=ty;}
-      else{const k=1-Math.exp(-dt*.0026);ax+=(tx-ax)*k;ay+=(ty-ay)*k;}
-      const tilt=s.still?0:clamp((tx-ax)*.14,-20,20)+Math.sin(now/1300)*4;
+      // Stand on the inner side of the chip; the side changes gradually as the chip passes the middle.
+      const tx=bx-(compact?0:clamp(bx/80,-1,1)*46),ty=by-(compact?58:80);
+      // Each new event starts a quick hop: an eased glide to the chip along an arc, leaning into the jump.
+      if(hop.active!==s.active){hop.active=s.active;hop.start=now;hop.fx=Number.isNaN(ax)?tx:ax;hop.fy=Number.isNaN(ay)?ty:ay;}
+      const t=s.still?1:clamp((now-hop.start)/HOP_MS),e=t<.5?4*t*t*t:1-(-2*t+2)**3/2,arc=Math.sin(Math.PI*t);
+      ax=hop.fx+(tx-hop.fx)*e;ay=hop.fy+(ty-hop.fy)*e-arc*Math.min(70,Math.hypot(tx-hop.fx,ty-hop.fy)*.35);
+      const tilt=s.still?0:clamp((tx-hop.fx)*.05,-24,24)*arc+Math.sin(now/1300)*4;
       if(astronaut.current)astronaut.current.style.transform=`translate(-50%,-50%) translate(${ax.toFixed(1)}px,${ay.toFixed(1)}px) rotate(${tilt.toFixed(2)}deg)`;
       if(visible)frame=requestAnimationFrame(tick);
     }
@@ -307,14 +312,8 @@ export default function Landing(){
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
           <h2 id="about-title">One radar. Five kinds of change.</h2>
-          <p>NISAR, the NASA–ISRO radar satellite, maps Earth’s surface with L- and S-band radar. EarthSignal compares its repeat passes to find what changed on the ground.</p>
         </header>
         <OrbitStage paused={paused} reduced={reduced}/>
-        <ul className="sp-facts sp-reveal">
-          <li><strong>Day and night</strong><span>Radar brings its own signal, so it needs no sunlight.</span></li>
-          <li><strong>Through cloud</strong><span>Radar waves pass through cloud and smoke.</span></li>
-          <li><strong>Every 12 days</strong><span>Repeat passes over the same place reveal change.</span></li>
-        </ul>
       </section></Scene>
 
       <Scene id="work"><section className="sp-section sp-work" aria-labelledby="work-title">

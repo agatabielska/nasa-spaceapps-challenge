@@ -34,6 +34,12 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-engine .sp-reveal{opacity:1;transform:none;filter:none;transition:none}
 /* A case should fit between the top bar and the presenter bar, so one camera stop shows all of it:
    tall (portrait) radar images take the height that is left after the text, slider and layer buttons. */
+/* About fills exactly one screen between the bars: the orbit takes whatever height the heading and panel leave
+   (never below 260px, so a very short window makes the scene taller and it scrolls like the others). */
+.sp-engine .sp-about{display:flex;flex-direction:column;min-height:100vh;min-height:100svh;padding:96px 0 calc(var(--sp-bar) + 18px)}
+.sp-engine .sp-about .sp-heading{max-width:1400px;margin-bottom:clamp(6px,1.5vh,20px)}
+.sp-engine .sp-about .sp-orbit-wrap{flex:1 1 auto;gap:clamp(10px,2vh,24px)}
+.sp-engine .sp-about .sp-orbit{flex:1 1 auto;height:auto;min-height:260px}
 .sp-engine .sp-case{padding-top:96px}
 .sp-engine .sp-case .sp-stats{grid-template-columns:repeat(auto-fit,minmax(118px,1fr));margin:1.2em 0 1em!important;padding:1em 0}
 .sp-engine .sp-case .sp-stats dd{font-size:clamp(32px,2.5vw,50px)}
@@ -137,9 +143,6 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-orbit-panel h3{font-size:max(22px,1.35em);font-weight:800;letter-spacing:-.02em}
 .sp-orbit-panel p{color:var(--sp-text-2)}
 .sp-soon{padding:8px 14px;border:1px dashed var(--sp-text-3);font:600 max(15px,.85em) Manrope,sans-serif;color:var(--sp-text-2);white-space:nowrap}
-.sp-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,48px);width:min(1180px,100%);margin:clamp(36px,6vh,64px) auto 0!important;padding-top:28px!important;border-top:1px solid var(--sp-line)}
-.sp-facts strong{display:block;font:800 max(20px,1.25em) Manrope,sans-serif;letter-spacing:-.02em}
-.sp-facts span{color:var(--sp-text-2)}
 
 /* 3. Case studies */
 .sp-work{padding-bottom:clamp(30px,5vh,60px)}
@@ -269,7 +272,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
   .sp-nav-links{display:none;position:absolute;left:0;right:0;top:63px;flex-direction:column;gap:0;padding:8px 18px 14px;border:0;border-bottom:1px solid var(--sp-line);background:#030814;clip-path:none}
   .sp-nav-links.open{display:flex}
   .sp-nav-links a{padding:14px 10px;font-size:16px}
-  .sp-case-links,.sp-facts{grid-template-columns:1fr}
+  .sp-case-links{grid-template-columns:1fr}
   .sp-orbit{height:clamp(360px,54vh,460px)}
   .sp-orbit-globe{height:54%}
   .sp-chip{padding:7px}
