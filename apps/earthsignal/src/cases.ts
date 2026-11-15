@@ -5,12 +5,16 @@ export type CaseImage={src:string;source:string;label:string;date?:string;alt:st
 export type CaseStudy={
   id:'spain'|'etna'|'nepal';index:string;kind:string;title:string;place:string;eventDate:string;
   summary:string;stats:{value:string;unit?:string;label:string}[];notes:string[];
-  width:number;height:number;before:CaseImage;after:CaseImage;layers:CaseLayer[];
+  width:number;height:number;before:CaseImage;after:CaseImage;layers:CaseLayer[];look:CaseLook;
 };
+// How a case is dressed on the landing page (prototype style): big region word and sub-title, colour theme,
+// and the labels on the frame around its visualization.
+export type CaseLook={region:string;sub:string;code:string;theme:'fire'|'ice';panel:string;status:string;caption:string};
 const BOTH='#ff5fd2',BRIGHT='#ffa94d',COHERENCE='#4dc9ff';
 const composite='NISAR radar composite, not a natural-colour photograph.';
 
 export const spain:CaseStudy={
+  look:{region:'Spain',sub:'Wildfire',code:'ES',theme:'fire',panel:'SAR difference',status:'Signal visualization',caption:'Wildfire change detection'},
   id:'spain',index:'01',kind:'Forest wildfire',title:'Ávila wildfire',place:'Near Burgohondo, Spain',eventDate:'22 July 2026',
   summary:'A wildfire broke out near Burgohondo in the province of Ávila. Burnt vegetation scatters radar differently from living forest, so the burn scar appears as a change in radar brightness between two NISAR passes.',
   stats:[{value:'108.5',unit:'km²',label:'Radar-brightness change detected by our model'},{value:'36',unit:'days',label:'Between passes: 21 Jul → 26 Aug 2026'}],
@@ -22,6 +26,7 @@ export const spain:CaseStudy={
 };
 
 export const etna:CaseStudy={
+  look:{region:'Etna',sub:'Eruption',code:'IT',theme:'fire',panel:'Volcanic signal',status:'Change analysis',caption:'Volcanic activity analysis'},
   id:'etna',index:'02',kind:'Volcanic eruption',title:'Etna eruption',place:'Sicily, Italy',eventDate:'6 August 2026',
   summary:'Fresh lava and ash reshape a volcano’s surface. Between two NISAR passes the radar brightness changes and the signal loses coherence. Where both methods agree, the detection is at its most reliable.',
   stats:[{value:'0.3',unit:'km²',label:'Change confirmed by both methods'},{value:'3.7',unit:'km²',label:'Radar-brightness change'},{value:'6.2',unit:'km²',label:'Coherence loss'}],
@@ -45,6 +50,7 @@ export const etnaCloud={
 };
 
 export const nepal:CaseStudy={
+  look:{region:'Nepal',sub:'Flood',code:'NP',theme:'ice',panel:'Flood detection',status:'Terrain scan',caption:'Glacier outburst flood'},
   id:'nepal',index:'03',kind:'Glacier outburst flood',title:'Rasuwa glacier-collapse flood',place:'Bhote Koshi valley, Nepal',eventDate:'26 August 2026',
   summary:'A glacier collapse high above the Bhote Koshi valley sent water and debris downstream. Two independent radar methods trace the flood path along the valley floor, past Timure and on to Syabrubesi.',
   stats:[{value:'6.0',unit:'km²',label:'Change confirmed by both methods'},{value:'10.3',unit:'km²',label:'Radar-brightness change'},{value:'15.9',unit:'km²',label:'Coherence loss'},{value:'≈29',unit:'km',label:'Trace from its origin to Syabrubesi'}],

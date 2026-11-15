@@ -9,7 +9,7 @@ type Scene={el:HTMLElement;id:string;minHold:number;steps?:number[];dwell:number
 type Autopilot={phase:'arrive'|'rest'|'move';wait:number;y:number;from:number;to:number;time:number;duration:number};
 export type JourneyEvents={onChapter:(id:string,index:number)=>void;onAutopilot:(on:boolean)=>void};
 // Room left above a content block when the camera stops on it (top bar), and below it (presenter bar).
-const STOP_GAP=96,BAR_ROOM=96;
+const STOP_GAP=76,BAR_ROOM=96;
 // Vertical position of an element inside its scene, unaffected by the scene's 3D transform.
 function offsetIn(el:HTMLElement,scene:HTMLElement){
   let y=0,node:HTMLElement|null=el;

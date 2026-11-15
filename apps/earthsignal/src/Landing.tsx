@@ -1,5 +1,5 @@
 import {useContext,useEffect,useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent,type ReactNode} from 'react';
-import {Activity,ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,Flame,ImageOff,Menu,Mountain,Pause,Play,Rocket,Snowflake,Sprout,X} from 'lucide-react';
+import {Activity,ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,Flame,ImageOff,Mountain,Rocket,Snowflake,Sprout} from 'lucide-react';
 import {Astronaut} from './Astronaut';
 import EarthGlobe from './EarthGlobe';
 import Starfield from './Starfield';
@@ -10,12 +10,12 @@ import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy
 import './landing.css';
 
 const clamp=(v:number,min=0,max=1)=>Math.max(min,Math.min(max,v));
+// label: the presenter bar and the rail tooltip · short: the rail's step name.
 const chapters=[
-  {id:'home',label:'Home',nav:'home'},{id:'about',label:'About',nav:'about'},{id:'work',label:'Case studies',nav:'work'},
-  {id:'spain',label:'Spain · wildfire',nav:'work'},{id:'etna',label:'Etna · eruption',nav:'work'},{id:'nepal',label:'Nepal · flood',nav:'work'},
-  {id:'flight',label:'Nepal · 3D flight',nav:'work'},{id:'discover',label:'Discover',nav:'discover'},
+  {id:'home',label:'Home',short:'Home'},{id:'about',label:'About',short:'Earth'},{id:'work',label:'Case studies',short:'Cases'},
+  {id:'spain',label:'Spain · wildfire',short:'Spain'},{id:'etna',label:'Etna · eruption',short:'Etna'},{id:'nepal',label:'Nepal · flood',short:'Nepal'},
+  {id:'flight',label:'Nepal · 3D flight',short:'Flight'},{id:'discover',label:'Discover',short:'Discover'},
 ];
-const navLinks=[{id:'home',label:'Home'},{id:'about',label:'About'},{id:'work',label:'Work'},{id:'discover',label:'Discover'}];
 // Screens of scrolling the camera spends on the drone flight.
 const FLIGHT_HOLD=3.6;
 const eventIcons={wildfires:Flame,earthquakes:Activity,farming:Sprout,glaciers:Snowflake,volcanoes:Mountain};
@@ -100,9 +100,19 @@ function Compare({name,before,after,width,height,children}:{name:string;before:C
   </div>;
 }
 
+// The prototype's instrument frame around a visualization: a header line with a live status, the visual, and a
+// caption with its data source.
+function Panel({code,label,status,caption,note,tag,children}:{code:string;label:string;status:string;caption:string;note?:string;tag:string;children:ReactNode}){
+  return <div className="sp-panel">
+    <div className="sp-panel-top"><span>{code} / {label}</span><span className="sp-status">{status}</span></div>
+    {children}
+    <div className="sp-panel-foot"><div><strong>{caption}</strong>{note&&<small>{note}</small>}</div><span className="sp-data-tag">{tag}</span></div>
+  </div>;
+}
+
 function CaseViewer({study}:{study:CaseStudy}){
   const [on,setOn]=useState(()=>study.layers.filter(layer=>layer.on).map(layer=>layer.id)),[missing,setMissing]=useState<string[]>([]);
-  return <div className="sp-case-visual">
+  return <Panel code={study.look.code} label={study.look.panel} status={study.look.status} caption={study.look.caption} note={study.notes.filter(note=>!note.startsWith('Passes')).join(' ')} tag="NISAR data"><div className="sp-case-visual">
     <Compare name={study.title} before={study.before} after={study.after} width={study.width} height={study.height}>
       {study.layers.filter(layer=>on.includes(layer.id)&&!missing.includes(layer.id)).map(layer=>
         <img key={layer.id} className="sp-layer" src={layer.src} alt="" draggable={false} onError={()=>setMissing(list=>[...list,layer.id])}/>)}
@@ -117,7 +127,7 @@ function CaseViewer({study}:{study:CaseStudy}){
         </button>;
       })}
     </div>
-  </div>;
+  </div></Panel>;
 }
 
 // One stop of the camera journey. In motion mode it floats in 3D space; with reduced motion it is a plain block.
@@ -127,15 +137,16 @@ function Scene({id,hold,steps,dwell,pace,children}:{id:string;hold?:number;steps
 }
 
 function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
-  return <Scene id={study.id} dwell={CASE_DWELL}><section className={`sp-section sp-case sp-case-${study.id}`} aria-labelledby={`${study.id}-title`}>
+  const {look}=study;
+  return <Scene id={study.id} dwell={CASE_DWELL}><section className={`sp-section sp-case sp-case-${study.id} sp-theme-${look.theme}`} aria-labelledby={`${study.id}-title`}>
     <div className="sp-case-grid">
       <div className="sp-case-text sp-reveal">
-        <span className="sp-index">Case {study.index} / {study.kind}</span>
-        <h2 id={`${study.id}-title`}>{study.title}</h2>
-        <p className="sp-case-meta">{study.place} · {study.eventDate}</p>
+        <span className="sp-index">Event trace 0{study.index}</span>
+        <h2 id={`${study.id}-title`} className="sp-case-title"><span className="sp-case-big">{look.region}<i>.</i></span> <span className="sp-case-sub">{look.sub}</span></h2>
+        <p className="sp-case-meta">{study.title} · {study.place} · {study.eventDate}</p>
         <p>{study.summary}</p>
         <dl className="sp-stats">{study.stats.map(stat=><div key={stat.label}><dt>{stat.label}</dt><dd>{stat.value}{stat.unit&&<small>{stat.unit}</small>}</dd></div>)}</dl>
-        <ul className="sp-notes">{study.notes.map(note=><li key={note}>{note}</li>)}</ul>
+        <ul className="sp-micro"><li>Region / {look.region}</li><li>Type / {study.kind}</li></ul>
       </div>
       <div className="sp-reveal"><CaseViewer study={study}/></div>
     </div>
@@ -283,14 +294,10 @@ function Flight({reduced,near}:{reduced:boolean;near:boolean}){
 
 export default function Landing(){
   const reduced=useReducedMotion();
-  const [paused,setPaused]=useState(false),[menu,setMenu]=useState(false),[chapter,setChapter]=useState('home');
+  const [paused,setPaused]=useState(false),[chapter,setChapter]=useState('home');
   const [journey,setJourney]=useState<Journey|null>(null),[autopilot,setAutopilot]=useState(false);
   const root=useRef<HTMLDivElement>(null),world=useRef<HTMLElement>(null),spacer=useRef<HTMLDivElement>(null);
-  useEffect(()=>{
-    document.title='EarthSignal — Dancing with the SARs';
-    const close=(e:KeyboardEvent)=>{if(e.key==='Escape')setMenu(false);};
-    window.addEventListener('keydown',close);return()=>window.removeEventListener('keydown',close);
-  },[]);
+  useEffect(()=>{document.title='EarthSignal — Dancing with the SARs';},[]);
   // Motion mode: one camera flies through scenes placed in 3D space.
   useEffect(()=>{
     if(reduced||!root.current||!world.current||!spacer.current)return;
@@ -313,25 +320,23 @@ export default function Landing(){
     window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);
     return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(anchor);window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
   },[reduced]);
-  const still=paused||reduced,activeNav=chapters.find(item=>item.id===chapter)?.nav;
+  const still=paused||reduced;
   const chapterIndex=chapters.findIndex(item=>item.id===chapter);
   return <JourneyContext.Provider value={journey}><AutopilotContext.Provider value={autopilot}><div className={'landing'+(reduced?' sp-flow':' sp-engine')+(still?' sp-paused':'')} ref={root}>
     <div className="sp-space" aria-hidden="true"/>
     <Starfield paused={paused} journey={journey}/>
+    {/* Prototype HUD: a soft vignette, faint scanlines and a thin frame with corner brackets around the screen. */}
+    <div className="sp-vignette" aria-hidden="true"/><div className="sp-scanlines" aria-hidden="true"/><div className="sp-corner" aria-hidden="true"/>
     <a className="sp-skip" href="#about">Skip to the journey</a>
     <header className="sp-nav">
-      <a className="sp-brand" href="#home" aria-label="EarthSignal, back to the top">earth<span>signal</span></a>
-      <nav aria-label="Journey" className={menu?'sp-nav-links open':'sp-nav-links'}>
-        {navLinks.map(link=><a key={link.id} href={`#${link.id}`} aria-current={activeNav===link.id?'location':undefined} onClick={()=>setMenu(false)}>{link.label}</a>)}
-      </nav>
+      <a className="sp-brand" href="#home" aria-label="EarthSignal, back to the start"><span className="sp-logo" aria-hidden="true"/><span><b>EarthSignal</b><small>Dancing with the SARs</small></span></a>
       <div className="sp-nav-actions">
-        {!reduced&&<button type="button" className="sp-motion" onClick={()=>setPaused(!paused)} aria-pressed={paused} aria-label={paused?'Play background motion':'Pause background motion'}>{paused?<Play size={16} aria-hidden="true"/>:<Pause size={16} aria-hidden="true"/>}<span>{paused?'Play motion':'Pause motion'}</span></button>}
-        <a className="sp-button sp-button-small" href={EXPLORER_PATH} aria-label="Open dashboard"><span className="sp-wide">Open dashboard</span><span className="sp-narrow">Dashboard</span><ArrowUpRight size={18} aria-hidden="true"/></a>
-        <button type="button" className="sp-menu" aria-label={menu?'Close navigation':'Open navigation'} aria-expanded={menu} onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button>
+        <span className="sp-signal" aria-hidden="true"><i/>NISAR · L-band radar</span>
+        <a className="sp-small-button" href={EXPLORER_PATH}><span className="sp-hide-sm">Open</span> Dashboard <ArrowUpRight size={16} aria-hidden="true"/></a>
       </div>
     </header>
-    <nav className="sp-rail" aria-label="Journey progress">
-      {chapters.map(item=><a key={item.id} href={`#${item.id}`} aria-current={chapter===item.id?'step':undefined}><span>{item.label}</span><i/></a>)}
+    <nav className="sp-rail" aria-label="Journey chapters">
+      {chapters.map((item,i)=><a key={item.id} href={`#${item.id}`} aria-current={chapter===item.id?'step':undefined} aria-label={item.label}><i/><b>{String(i+1).padStart(2,'0')}</b><span>{item.short}</span></a>)}
     </nav>
 
     <main className="sp-world" ref={world}>
@@ -376,7 +381,9 @@ export default function Landing(){
             <h3>Clouds hide the summit. Radar sees through.</h3>
             <p>An optical satellite sees a white cloud cap over Etna. Radar passes through cloud, so NISAR still maps the summit and the lava fields beneath it.</p>
           </div>
-          <Compare name="Etna under cloud" before={etnaCloud.before} after={etnaCloud.after} width={etnaCloud.width} height={etnaCloud.height}/>
+          <Panel code="IT" label="Optical vs radar" status="Through cloud" caption="Etna under a cloud cap" note="Left: Sentinel-2 optical image. Right: NISAR radar." tag="Sentinel-2 · NISAR">
+            <Compare name="Etna under cloud" before={etnaCloud.before} after={etnaCloud.after} width={etnaCloud.width} height={etnaCloud.height}/>
+          </Panel>
         </div>
       </CaseSection>
 
@@ -399,7 +406,7 @@ export default function Landing(){
         </footer>
       </Scene>
     </main>
-    <JourneyBar chapters={chapters} chapter={chapter} autopilot={autopilot}/>
+    <JourneyBar chapters={chapters} chapter={chapter} autopilot={autopilot} paused={paused} onPause={reduced?undefined:()=>setPaused(!paused)}/>
     <div className="sp-spacer" ref={spacer} aria-hidden="true"/>
   </div></AutopilotContext.Provider></JourneyContext.Provider>;
 }
