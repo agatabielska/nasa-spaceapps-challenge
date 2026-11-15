@@ -1,6 +1,7 @@
 import {useEffect,useRef} from 'react';
 import {add,makeCamera,scale,smooth,type Camera} from './journey/path';
 import type {Journey} from './journey/engine';
+import {sky} from './journey/sky';
 
 type Star={x:number;y:number;z:number;r:number;phase:number;tint:string;ox:number;oy:number;sx:number;sy:number;seen:boolean};
 const tints=['#ffffff','#ffffff','#d6e9ff','#a9d4ff','#ffe8c7'];
@@ -49,6 +50,10 @@ export default function Starfield({paused,journey}:{paused:boolean;journey:Journ
         let x=w/2+(rx*camera.right[0]+ry*camera.right[1]+rz*camera.right[2])*k;
         let y=h/2+(rx*camera.down[0]+ry*camera.down[1]+rz*camera.down[2])*k;
         if(x<-80||x>w+80||y<-80||y>h+80){s.seen=false;continue;}
+        // When the About camera turns around the globe, the sky sweeps the other way; nearer stars move further.
+        // Visible stars wrap around the screen edges, so the density stays the same.
+        const near=.35+.65*Math.min(1,k*2.2);
+        x=((x+80-sky.lon*w*.16*near)%(w+160)+w+160)%(w+160)-80;y=((y+80+sky.lat*h*.12*near)%(h+160)+h+160)%(h+160)-80;
         if(live){
           const dx=x-pointer.px,dy=y-pointer.py,dist=Math.hypot(dx,dy),near=Math.min(1,k*2);
           let tx=0,ty=0;

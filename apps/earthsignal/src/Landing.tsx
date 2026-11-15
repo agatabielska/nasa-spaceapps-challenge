@@ -1,11 +1,12 @@
 import {useContext,useEffect,useRef,useState,type CSSProperties,type PointerEvent as ReactPointerEvent,type ReactNode} from 'react';
 import {Activity,ArrowDown,ArrowUpRight,ChevronLeft,ChevronRight,ChevronsDown,Flame,ImageOff,Mountain,Rocket,Snowflake,Sprout} from 'lucide-react';
 import {Astronaut} from './Astronaut';
-import EarthGlobe from './EarthGlobe';
+import EarthGlobe,{type GlobeView} from './EarthGlobe';
 import Starfield from './Starfield';
 import JourneyBar from './JourneyBar';
 import {AutopilotContext,Journey,JourneyContext} from './journey/engine';
 import {CLOSE_DEPTH} from './journey/path';
+import {sky} from './journey/sky';
 import {EXPLORER_PATH} from './routes';
 import {detected,etna,etnaCloud,flight,nepal,spain,type CaseImage,type CaseStudy} from './cases';
 import './landing.css';
@@ -156,73 +157,96 @@ function CaseSection({study,children}:{study:CaseStudy;children?:ReactNode}){
   </section></Scene>;
 }
 
-// The detected event types orbit the globe; Orbit the astronaut hops from one to the next.
-// Seconds per event and hop length: quick enough to show all five while the autopilot rests on About,
-// slow enough to read each short description.
-const SWITCH_MS=2500,HOP_MS=500;
-function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
-  const stage=useRef<HTMLDivElement>(null),chips=useRef<(HTMLButtonElement|null)[]>([]),astronaut=useRef<HTMLDivElement>(null);
-  const [active,setActive]=useState(0);
-  const state=useRef({active:0,still:false,hover:false,holdUntil:0});
-  state.current.active=active;state.current.still=paused||reduced;
+// About: a camera flies around the globe from one event type's site to the next. The planet turns under it, the
+// starfield sweeps past (journey/sky.ts), every site stays pinned on the globe, and on arrival the event's card
+// grows out of its pin, with the astronaut riding on it. While the scene still waits behind the hero title
+// (--arrive below 1) the globe just turns slowly and nothing else shows.
+// Seconds for one flight and one stay; five of each make the autopilot's stop on About.
+const FLY_MS=1500,STAY_MS=2400;
+const toRad=(d:number)=>d*Math.PI/180;
+// Unit-sphere position of a site as seen by the camera (x right, y up, z towards the viewer).
+function seen(view:GlobeView,lat:number,lon:number){
+  const la=toRad(lat),rel=toRad(lon)-view.lon,c=Math.cos(view.lat),sn=Math.sin(view.lat);
+  const wx=Math.cos(la)*Math.sin(rel),wy=Math.sin(la),wz=Math.cos(la)*Math.cos(rel);
+  return {x:wx,y:c*wy-sn*wz,z:sn*wy+c*wz};
+}
+function AboutGlobe({paused,reduced}:{paused:boolean;reduced:boolean}){
+  const stage=useRef<HTMLDivElement>(null),world=useRef<HTMLDivElement>(null),globe=useRef<HTMLDivElement>(null),pins=useRef<(HTMLButtonElement|null)[]>([]),card=useRef<HTMLDivElement>(null);
+  const start=detected[0].place;
+  const view=useRef<GlobeView>({lon:toRad(start.lon),lat:toRad(start.lat)});
+  const [active,setActive]=useState(0),[shown,setShown]=useState(false);
+  const st=useRef({active:0,from:{...view.current},to:{...view.current},t0:0,flying:false,here:false,hover:false,next:0,holdUntil:0,still:false});
+  st.current.still=paused||reduced;
+  const go=(i:number)=>{
+    const s=st.current,p=detected[i].place;let lon=toRad(p.lon);
+    while(lon-view.current.lon>Math.PI)lon-=Math.PI*2;while(lon-view.current.lon<-Math.PI)lon+=Math.PI*2;
+    s.active=i;s.from={...view.current};s.to={lon,lat:toRad(p.lat)};s.t0=performance.now();s.flying=true;
+    setActive(i);setShown(false);
+  };
+  const pick=(i:number)=>{st.current.holdUntil=performance.now()+15000;go(i);};
   useEffect(()=>{
     const el=stage.current;if(!el)return;
-    let frame=0,visible=false,last=performance.now(),angle=-Math.PI/2,ax=NaN,ay=NaN,nextSwitch=last+SWITCH_MS;
-    const hop={active:-1,start:0,fx:0,fy:0};
-    const step=Math.PI*2/detected.length;
-    function tick(now:number){
-      frame=0;
-      const dt=Math.min(80,now-last);last=now;
-      const s=state.current,w=el!.clientWidth,h=el!.clientHeight,compact=w<760;
-      const rx=w/2-(compact?30:122),ry=h/2-(compact?30:38);
-      el!.style.setProperty('--rx',`${rx}px`);el!.style.setProperty('--ry',`${ry}px`);
-      if(!s.still&&!s.hover)angle+=dt*Math.PI*2/80000;
-      if(!s.still&&now>nextSwitch&&now>s.holdUntil){nextSwitch=now+SWITCH_MS;setActive(i=>(i+1)%detected.length);}
-      chips.current.forEach((chip,i)=>{
-        if(!chip)return;
-        const a=angle+i*step,depth=(Math.sin(a)+1)/2;
-        chip.style.transform=`translate(-50%,-50%) translate(${(Math.cos(a)*rx).toFixed(1)}px,${(Math.sin(a)*ry).toFixed(1)}px) scale(${(.86+.14*depth).toFixed(3)})`;
-        chip.style.zIndex=depth>.5?'3':'1';
-      });
-      const a=angle+s.active*step,bx=Math.cos(a)*rx,by=Math.sin(a)*ry;
-      // Stand on the inner side of the chip; the side changes gradually as the chip passes the middle.
-      const tx=bx-(compact?0:clamp(bx/80,-1,1)*46),ty=by-(compact?58:80);
-      // Each new event starts a quick hop: an eased glide to the chip along an arc, leaning into the jump.
-      if(hop.active!==s.active){hop.active=s.active;hop.start=now;hop.fx=Number.isNaN(ax)?tx:ax;hop.fy=Number.isNaN(ay)?ty:ay;}
-      const t=s.still?1:clamp((now-hop.start)/HOP_MS),e=t<.5?4*t*t*t:1-(-2*t+2)**3/2,arc=Math.sin(Math.PI*t);
-      ax=hop.fx+(tx-hop.fx)*e;ay=hop.fy+(ty-hop.fy)*e-arc*Math.min(70,Math.hypot(tx-hop.fx,ty-hop.fy)*.35);
-      const tilt=s.still?0:clamp((tx-hop.fx)*.05,-24,24)*arc+Math.sin(now/1300)*4;
-      if(astronaut.current)astronaut.current.style.transform=`translate(-50%,-50%) translate(${ax.toFixed(1)}px,${ay.toFixed(1)}px) rotate(${tilt.toFixed(2)}deg)`;
+    const scene=el.closest<HTMLElement>('[data-scene]');
+    let frame=0,visible=false,last=performance.now();
+    const tick=(now:number)=>{
+      frame=0;const dt=Math.min(80,now-last);last=now;
+      const s=st.current,arrive=parseFloat(scene?.style.getPropertyValue('--arrive')||'1');
+      if(arrive<.99){
+        // Waiting behind the hero: turn slowly, no card.
+        if(s.here){s.here=false;setShown(false);}
+        if(!s.flying&&!s.still)view.current={...view.current,lon:view.current.lon+dt*.00011};
+      }else if(!s.here){s.here=true;go(s.active);}
+      if(s.flying){
+        const t=reduced?1:clamp((now-s.t0)/FLY_MS),e=t<.5?4*t*t*t:1-(-2*t+2)**3/2;
+        view.current={lon:s.from.lon+(s.to.lon-s.from.lon)*e,lat:s.from.lat+(s.to.lat-s.from.lat)*e};
+        // The camera pulls back a little mid-flight, as when orbiting to the far side.
+        if(world.current)world.current.style.transform=`scale(${(1-.08*Math.sin(Math.PI*t)).toFixed(4)})`;
+        if(t>=1){s.flying=false;s.next=now+STAY_MS;if(s.here)setShown(true);}
+      }else if(s.here&&!s.still&&!s.hover&&now>s.next&&now>s.holdUntil)go((s.active+1)%detected.length);
+      sky.lon=view.current.lon;sky.lat=view.current.lat;
+      // Pins on the globe (hidden on the far side) and the card at the active pin.
+      const g=globe.current;
+      if(g){
+        // The globe box sits at left/top 50% and is pulled back by half its size, so its offset is its centre.
+        const R=g.offsetWidth/2*.91,cx=g.offsetLeft,cy=g.offsetTop;
+        detected.forEach((ev,i)=>{
+          const pin=pins.current[i];if(!pin)return;const p=seen(view.current,ev.place.lat,ev.place.lon),x=cx+p.x*R,y=cy-p.y*R;
+          pin.style.transform=`translate(-50%,-50%) translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(.6+.4*clamp(p.z)).toFixed(3)})`;
+          pin.style.opacity=p.z>.05?clamp(p.z*3).toFixed(3):'0';pin.style.visibility=p.z>.05?'visible':'hidden';
+          if(i===s.active&&card.current){card.current.style.left=`${x.toFixed(1)}px`;card.current.style.top=`${y.toFixed(1)}px`;}
+        });
+      }
       if(visible)frame=requestAnimationFrame(tick);
-    }
+    };
     const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible&&!frame){last=performance.now();frame=requestAnimationFrame(tick);}},{rootMargin:'20% 0px'});
     observer.observe(el);
     return()=>{observer.disconnect();cancelAnimationFrame(frame);};
   },[]);
-  const pick=(i:number)=>{state.current.holdUntil=performance.now()+15000;setActive(i);};
-  const current=detected[active],CurrentIcon=eventIcons[current.id];
+  const ev=detected[active],Icon=eventIcons[ev.id];
   return <div className="sp-orbit-wrap sp-reveal">
-    <div className="sp-orbit" ref={stage} onPointerEnter={()=>{state.current.hover=true;}} onPointerLeave={()=>{state.current.hover=false;}}>
-      <div className="sp-orbit-ring" aria-hidden="true"/>
-      {/* Radar orbits around the globe, drawn twice: the far half behind the planet, the near half in front. */}
-      <div className="sp-globe-rings sp-globe-rings-back" aria-hidden="true"><i/><i/></div>
-      <div className="sp-orbit-globe"><EarthGlobe paused={paused||reduced}/></div>
-      <div className="sp-globe-rings sp-globe-rings-front" aria-hidden="true"><i/><i/></div>
-      <div className="sp-orbit-events" role="group" aria-label="Events EarthSignal detects">
-        {detected.map((event,i)=>{const Icon=eventIcons[event.id];return <button key={event.id} type="button" ref={node=>{chips.current[i]=node;}} className="sp-chip" style={{'--event':event.color} as CSSProperties} aria-pressed={active===i}
-          aria-label={event.label} onClick={()=>pick(i)} onFocus={()=>pick(i)}><i><Icon size={20} aria-hidden="true"/></i><span>{event.label}</span></button>;})}
+    <div className="sp-orbit" ref={stage} onPointerEnter={()=>{st.current.hover=true;}} onPointerLeave={()=>{st.current.hover=false;}}>
+      <div className="sp-ag-world" ref={world}>
+        {/* Radar orbits around the globe, drawn twice: the far half behind the planet, the near half in front. */}
+        <div className="sp-globe-rings sp-globe-rings-back" aria-hidden="true"><i/><i/></div>
+        <div className="sp-orbit-globe" ref={globe}><EarthGlobe paused={paused||reduced} view={view}/></div>
+        <div className="sp-globe-rings sp-globe-rings-front" aria-hidden="true"><i/><i/></div>
+        <div className="sp-orbit-events" role="group" aria-label="Events EarthSignal detects, by example site">
+          {detected.map((e,i)=>{const PinIcon=eventIcons[e.id];return <button key={e.id} type="button" ref={n=>{pins.current[i]=n;}} className="sp-ag-pin" aria-pressed={active===i} style={{'--event':e.color} as CSSProperties}
+            aria-label={`${e.label}, ${e.place.name}`} onClick={()=>pick(i)}><PinIcon size={15} aria-hidden="true"/></button>;})}
+        </div>
+        <div className={'sp-ag-card'+(shown?' shown':'')} ref={card} style={{'--event':ev.color} as CSSProperties} aria-live="polite">
+          <div className="sp-ag-astronaut" aria-hidden="true"><Astronaut/></div>
+          <div className="sp-ag-pic">{ev.picture?<img src={ev.picture.src} alt={ev.picture.caption} draggable={false}/>:<div className="sp-ag-pic-empty"><ImageOff size={22} aria-hidden="true"/><span>Photo to add</span></div>}</div>
+          <div className="sp-ag-body">
+            <h3><i><Icon size={17} aria-hidden="true"/></i>{ev.label}</h3>
+            <p>{ev.text}</p>
+            <span className="sp-ag-place">{ev.place.example?'Example region':'Case study'} · {ev.place.name}</span>
+            {ev.target?<a className="sp-link" href={`#${ev.target}`}>{ev.cta} <ArrowDown size={18} aria-hidden="true"/></a>:<span className="sp-soon">{ev.cta}</span>}
+          </div>
+        </div>
       </div>
-      <div className="sp-orbit-astronaut" ref={astronaut} aria-hidden="true"><Astronaut/></div>
     </div>
-    <div className="sp-orbit-panel sp-frame" style={{'--event':current.color} as CSSProperties} aria-live="polite">
-      <i><CurrentIcon size={26} aria-hidden="true"/></i>
-      {/* Every event's text sits in the same grid cell and only the current one is visible, so the panel always has
-          the height of the longest description and the orbit above it never resizes when the astronaut moves on. */}
-      <div className="sp-orbit-stack">{detected.map((event,i)=><div key={event.id} className={i===active?'on':undefined}>
-        <span className="sp-orbit-count">Orbit points to {i+1} of {detected.length}</span><h3>{event.label}</h3><p>{event.text}</p></div>)}</div>
-      <div className="sp-orbit-stack sp-orbit-cta">{detected.map((event,i)=><div key={event.id} className={i===active?'on':undefined}>
-        {event.target?<a className="sp-link" href={`#${event.target}`}>{event.cta} <ArrowDown size={18} aria-hidden="true"/></a>:<span className="sp-soon">{event.cta}</span>}</div>)}</div>
-    </div>
+    <div className="sp-ag-dots" role="group" aria-label="Choose an event type">{detected.map((e,i)=><button key={e.id} type="button" aria-label={e.label} aria-pressed={i===active} style={{'--event':e.color} as CSSProperties} onClick={()=>pick(i)}/>)}</div>
   </div>;
 }
 
@@ -385,12 +409,12 @@ export default function Landing(){
 
       {/* About waits right behind the hero title: from the start screen only its turning globe and orbits show;
           the camera flies through the title, the globe grows to full size and the details fill in on arrival. */}
-      <Scene id="about" close dwell={detected.length*SWITCH_MS/1000+1}><section className="sp-section sp-about" aria-labelledby="about-title">
+      <Scene id="about" close dwell={detected.length*(FLY_MS+STAY_MS)/1000}><section className="sp-section sp-about" aria-labelledby="about-title">
         <header className="sp-heading sp-reveal">
           <span className="sp-index">01 / About</span>
           <h2 id="about-title">One radar. Five kinds of change.</h2>
         </header>
-        <OrbitStage paused={paused} reduced={reduced}/>
+        <AboutGlobe paused={paused} reduced={reduced}/>
       </section></Scene>
 
       <Scene id="work"><section className="sp-section sp-work" aria-labelledby="work-title">

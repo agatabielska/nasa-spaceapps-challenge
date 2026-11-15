@@ -82,11 +82,13 @@ export const flight={
   ],
 };
 
-// Event types on the About orbit; color tints each type's icon (fire orange, quake yellow, crops green, ice blue, lava red).
+// Event types on the About globe. color tints each type (fire orange, quake yellow, crops green, ice blue, lava red);
+// place is where the camera flies for it (our case-study sites, example regions where we have no case yet);
+// picture is a radar composite from the matching case study, or null for a labelled placeholder.
 export const detected=[
-  {id:'wildfires',label:'Forest wildfires',color:'#ff9a3c',text:'Burn scars change how the surface scatters radar. Comparing passes before and after a fire outlines the affected area.',target:'spain',cta:'See the Spain case'},
-  {id:'earthquakes',label:'Earthquakes',color:'#ffd84d',text:'Repeat radar passes can reveal ground shifts of a few centimetres along a fault.',target:null,cta:'Coming soon'},
-  {id:'farming',label:'Farming activities',color:'#7ddc6f',text:'Radar brightness follows crops through the season: growth, harvest and changing soil moisture.',target:null,cta:'Coming soon'},
-  {id:'glaciers',label:'Glacier movement',color:'#9be7ff',text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'nepal',cta:'See the Nepal case'},
-  {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See the Etna case'},
+  {id:'wildfires',label:'Forest wildfires',color:'#ff9a3c',place:{lat:40.65,lon:-4.7,name:'Ávila, Spain',example:false},picture:{src:'/media/cases/spain/after.webp',caption:'NISAR radar composite of the Ávila burn area, Spain'},text:'Burn scars change how the surface scatters radar. Comparing passes before and after a fire outlines the affected area.',target:'spain',cta:'See the Spain case'},
+  {id:'earthquakes',label:'Earthquakes',color:'#ffd84d',place:{lat:38.3,lon:140.9,name:'Japan',example:true},picture:null,text:'Repeat radar passes can reveal ground shifts of a few centimetres along a fault.',target:null,cta:'Coming soon'},
+  {id:'farming',label:'Farming activities',color:'#7ddc6f',place:{lat:41.9,lon:-93.1,name:'US Midwest',example:true},picture:null,text:'Radar brightness follows crops through the season: growth, harvest and changing soil moisture.',target:null,cta:'Coming soon'},
+  {id:'glaciers',label:'Glacier movement',color:'#9be7ff',place:{lat:28.2,lon:85.4,name:'Rasuwa, Nepal',example:false},picture:{src:'/media/cases/nepal/after.webp',caption:'NISAR radar composite of the Rasuwa flood area, Nepal'},text:'Flowing ice and sudden collapses leave traces in both radar brightness and coherence.',target:'nepal',cta:'See the Nepal case'},
+  {id:'volcanoes',label:'Volcanoes',color:'#ff6b6b',place:{lat:37.75,lon:15,name:'Etna, Italy',example:false},picture:{src:'/media/cases/etna/after.webp',caption:'NISAR radar composite of Mount Etna, Italy'},text:'New lava and ash reshape the surface, even under a cloud cap that hides the summit from optical satellites.',target:'etna',cta:'See the Etna case'},
 ] as const;
