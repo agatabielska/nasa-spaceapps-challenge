@@ -191,7 +191,10 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
   return <div className="sp-orbit-wrap sp-reveal">
     <div className="sp-orbit" ref={stage} onPointerEnter={()=>{state.current.hover=true;}} onPointerLeave={()=>{state.current.hover=false;}}>
       <div className="sp-orbit-ring" aria-hidden="true"/>
+      {/* Radar orbits around the globe, drawn twice: the far half behind the planet, the near half in front. */}
+      <div className="sp-globe-rings sp-globe-rings-back" aria-hidden="true"><i/><i/></div>
       <div className="sp-orbit-globe"><EarthGlobe paused={paused||reduced}/></div>
+      <div className="sp-globe-rings sp-globe-rings-front" aria-hidden="true"><i/><i/></div>
       <div className="sp-orbit-events" role="group" aria-label="Events EarthSignal detects">
         {detected.map((event,i)=>{const Icon=eventIcons[event.id];return <button key={event.id} type="button" ref={node=>{chips.current[i]=node;}} className="sp-chip" style={{'--event':event.color} as CSSProperties} aria-pressed={active===i}
           aria-label={event.label} onClick={()=>pick(i)} onFocus={()=>pick(i)}><i><Icon size={20} aria-hidden="true"/></i><span>{event.label}</span></button>;})}

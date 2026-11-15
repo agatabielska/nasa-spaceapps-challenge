@@ -13,15 +13,17 @@ const fragmentSource=`
   varying vec2 v_position;
   uniform sampler2D u_earth;
   uniform float u_rotation;
+  uniform float u_scan;
   const float PI=3.14159265359;
   void main(){
     vec2 p=v_position/0.91;
     float radius=length(p);
     vec3 light=normalize(vec3(-0.65,0.45,0.95));
     if(radius>1.0){
-      float glow=exp(-(radius-1.0)*59.0)*0.3;
-      float lit=mix(0.24,1.0,clamp(dot(normalize(vec3(p,0.12)),light)*0.5+0.5,0.0,1.0));
-      gl_FragColor=vec4(vec3(0.28,0.64,0.86),glow*lit);
+      // Atmosphere: a soft cyan halo, brightest on the sunlit side.
+      float glow=exp(-(radius-1.0)*30.0)*0.6;
+      float lit=mix(0.45,1.0,clamp(dot(normalize(vec3(p,0.12)),light)*0.5+0.5,0.0,1.0));
+      gl_FragColor=vec4(vec3(0.42,0.78,1.0),glow*lit);
       return;
     }
     vec3 normal=vec3(p,sqrt(max(0.0,1.0-dot(p,p))));
@@ -31,10 +33,15 @@ const fragmentSource=`
     vec2 uv=vec2(fract(0.5+longitude/(2.0*PI)),0.5+asin(clamp(world.y,-1.0,1.0))/PI);
     vec3 photograph=texture2D(u_earth,uv).rgb;
     float diffuse=max(0.0,dot(normal,light));
-    vec3 surface=photograph*(0.085+diffuse*1.07);
-    float rim=pow(1.0-normal.z,4.0);
-    surface+=vec3(0.17,0.42,0.59)*rim*(0.12+diffuse)*0.65;
-    surface=mix(surface,vec3(0.015,0.045,0.075),0.07);
+    // Brighter than a photo-real night side, so the planet reads on a projector: a generous ambient term,
+    // a little extra saturation and a strong cyan atmosphere rim.
+    vec3 surface=photograph*(0.32+diffuse*1.0);
+    surface=mix(vec3(dot(surface,vec3(0.299,0.587,0.114))),surface,1.18);
+    float rim=pow(1.0-normal.z,3.0);
+    surface+=vec3(0.33,0.72,1.0)*rim*(0.3+diffuse)*0.7;
+    // Radar swath: a thin bright line sweeps across the disc, leaving a faint lit strip behind it.
+    float d=p.x-u_scan;
+    surface+=vec3(0.55,0.9,1.0)*(exp(-d*d/0.0005)*0.55+(d<0.0?exp(d/0.22)*0.07:0.0))*normal.z;
     float edge=1.0-smoothstep(0.996,1.0,radius);
     gl_FragColor=vec4(surface,edge);
   }
@@ -77,13 +84,17 @@ export default function EarthGlobe({paused=false}:{paused?:boolean}){
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
       gl.uniform1i(gl.getUniformLocation(program,'u_earth'),0);
     }catch{release();return;}
-    const rotationUniform=gl.getUniformLocation(program,'u_rotation');
+    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),scanUniform=gl.getUniformLocation(program,'u_scan');
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
     const draw=(time:number)=>{
       frame=0;if(disposed||!loaded||!visible||document.hidden)return;
-      if(lastTime&&!pausedRef.current&&!reduced.matches)rotation+=Math.min(time-lastTime,50)*0.000018;
+      const moving=!pausedRef.current&&!reduced.matches;
+      // About one turn a minute: alive, but calm enough to read the chips around it.
+      if(lastTime&&moving)rotation+=Math.min(time-lastTime,50)*0.00011;
       lastTime=time;
       gl.viewport(0,0,element.width,element.height);
+      // The swath crosses the disc every 7 s and is hidden while motion is paused.
+      gl.uniform1f(scanUniform,moving?((time/7000)%1)*2.6-1.3:-9.0);
       gl.uniform1f(rotationUniform,rotation);gl.drawArrays(gl.TRIANGLES,0,6);
       if(!pausedRef.current&&!reduced.matches)frame=requestAnimationFrame(draw);
     };

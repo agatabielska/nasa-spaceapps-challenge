@@ -131,7 +131,22 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-orbit-wrap{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,34px)}
 .sp-orbit{position:relative;width:min(1180px,100%);height:clamp(400px,60vh,660px)}
 .sp-orbit-ring{position:absolute;left:50%;top:50%;width:calc(var(--rx,40%)*2);height:calc(var(--ry,40%)*2);border:1px dashed #8fd6ff66;border-radius:50%;transform:translate(-50%,-50%)}
-.sp-orbit-globe{position:absolute;left:50%;top:50%;z-index:2;height:62%;aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 0 60px #2f7fff40)}
+.sp-orbit{--globe:62%}
+.sp-orbit-globe{position:absolute;left:50%;top:50%;z-index:2;height:var(--globe);aspect-ratio:1;transform:translate(-50%,-50%);filter:drop-shadow(0 0 70px #3d8bff59)}
+/* A breathing blue halo behind the planet and a glowing rim on its edge (the disc fills 91% of the canvas). */
+.sp-orbit-globe:before{content:'';position:absolute;inset:-32%;z-index:-1;border-radius:50%;background:radial-gradient(circle,#4aa6ff5c 0,#2f7fff30 38%,#2f7fff00 66%);animation:sp-breathe 6s ease-in-out infinite}
+.sp-orbit-globe:after{content:'';position:absolute;inset:4.5%;border-radius:50%;border:1.5px solid #8defff8c;box-shadow:0 0 26px #5cbdff70,inset 0 0 20px #5cbdff3d;pointer-events:none}
+/* Two tilted radar orbits, one with a satellite. The far half sits behind the globe, the near half in front. */
+.sp-globe-rings{position:absolute;left:50%;top:50%;height:calc(var(--globe)*1.9);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none}
+.sp-globe-rings-back{z-index:1;clip-path:inset(0 0 50% 0)}
+.sp-globe-rings-front{z-index:3;clip-path:inset(50% 0 0 0)}
+.sp-globe-rings i{position:absolute;inset:14%;border-radius:50%;border:1.5px solid #8defff66;animation:sp-orbit-a 26s linear infinite}
+.sp-globe-rings i:after{content:'';position:absolute;left:50%;top:-5px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:#e8fbff;box-shadow:0 0 12px 3px #8defff}
+.sp-globe-rings i+i{inset:3%;border:1px dashed #8defff3d;animation:sp-orbit-b 60s linear infinite}
+.sp-globe-rings i+i:after{display:none}
+@keyframes sp-orbit-a{from{transform:rotateX(73deg) rotateY(-12deg) rotateZ(0)}to{transform:rotateX(73deg) rotateY(-12deg) rotateZ(360deg)}}
+@keyframes sp-orbit-b{from{transform:rotateX(68deg) rotateY(14deg) rotateZ(360deg)}to{transform:rotateX(68deg) rotateY(14deg) rotateZ(0)}}
+@keyframes sp-breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.07);opacity:.75}}
 .sp-chip{position:absolute;left:50%;top:50%;display:flex;align-items:center;gap:10px;padding:9px 20px 9px 9px;border:1.5px solid var(--sp-line);border-radius:999px;background:var(--sp-panel);color:var(--sp-text);font:700 max(16px,.92em) Manrope,sans-serif;white-space:nowrap;transition:background .25s,border-color .25s,box-shadow .25s;will-change:transform}
 .sp-chip i{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:color-mix(in srgb,var(--event,var(--sp-accent)) 20%,transparent);color:var(--event,var(--sp-accent));transition:background .25s,color .25s}
 .sp-chip:hover{border-color:var(--sp-line-strong)}
@@ -254,7 +269,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-footer strong{color:var(--sp-text)}
 
 @keyframes sp-nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
-.sp-paused .sp-scroll-cue svg,.sp-paused .astro-body{animation-play-state:paused}
+.sp-paused .sp-scroll-cue svg,.sp-paused .astro-body,.sp-paused .sp-globe-rings i,.sp-paused .sp-orbit-globe:before{animation-play-state:paused}
 
 @media(max-width:1100px){
   .sp-rail{display:none}
@@ -276,7 +291,7 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
   .sp-nav-links a{padding:14px 10px;font-size:16px}
   .sp-case-links{grid-template-columns:1fr}
   .sp-orbit{height:clamp(360px,54vh,460px)}
-  .sp-orbit-globe{height:54%}
+  .sp-orbit{--globe:54%}
   .sp-chip{padding:7px}
   .sp-chip span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
   .sp-chip i{width:40px;height:40px}
