@@ -1,0 +1,61 @@
+{
+  "event": "nepal_rasuwagadhi",
+  "before": "2026-08-19T23:39:18+00:00",
+  "after": "2026-08-31T23:39:18+00:00",
+  "event_context": {
+    "anchor": "2026-08-26",
+    "status": "Event date independently documented",
+    "source": "https://sentinel-asia.org/EO/2026/article20260826NP.html",
+    "note": "Box covers a settlement/river corridor, not the verified source failure. Flood changes and terrain artifacts must be distinguished."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    85.32667662532783,
+    28.232498771250448,
+    85.42868045467218,
+    28.32232988874955
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:32645",
+  "shape": [
+    1009,
+    1014
+  ],
+  "valid_fraction": 0.9790788231361534,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -16.549864768981934,
+        5.483574991226192
+      ],
+      "pre_median_db": -4.991166114807129,
+      "post_median_db": -5.069615840911865,
+      "signed_median_db": -0.0493927001953125,
+      "absolute_median_db": 1.5747604370117188,
+      "absolute_p95_db": 5.202391147613525
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -22.380528030395507,
+        -0.9066480040550285
+      ],
+      "pre_median_db": -10.512399673461914,
+      "post_median_db": -10.61324691772461,
+      "signed_median_db": -0.08967256546020508,
+      "absolute_median_db": 1.6186370849609375,
+      "absolute_p95_db": 5.283608436584473
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

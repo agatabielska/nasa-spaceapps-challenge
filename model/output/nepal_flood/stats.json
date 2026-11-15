@@ -1,0 +1,54 @@
+{
+  "case": "nepal_flood",
+  "kind": "flood",
+  "title": "Rasuwa glacier-collapse flood, Nepal",
+  "event_date": "2026-08-26",
+  "bbox_lonlat": [
+    85.22,
+    28.05,
+    85.6,
+    28.42
+  ],
+  "methods": {
+    "backscatter": {
+      "what": "log-ratio HH+HV, both direction, 5x5 filter, threshold 3.5 sigma",
+      "area_km2": 10.346400000000001,
+      "reliable_fraction": 0.7734074566272661,
+      "mean_change_db_in_mask": {
+        "HHHH": 0.04402145370841026,
+        "HVHV": -1.3137710094451904
+      },
+      "scene_noise_db": {
+        "HHHH": 0.3427509367465973,
+        "HVHV": 0.36619260907173157
+      }
+    },
+    "coherence": {
+      "what": "coherence drop >= 0.25 versus a quiet pair of the same track",
+      "area_km2": 15.8504,
+      "usable_fraction": 0.8647843130455536,
+      "mean_coherence_event": 0.6294458508491516,
+      "mean_coherence_reference": 0.6250579357147217
+    },
+    "displacement": {
+      "what": "unwrapped phase - ionosphere screen -> line-of-sight cm, plane removed, relative to scene median",
+      "valid_fraction": 0.8747632257512618,
+      "p99_abs_cm": 3.7900593280792236,
+      "min_cm": -7.007656097412109,
+      "max_cm": 18.07364845275879,
+      "wavelength_cm": 24.19632429378531
+    }
+  },
+  "agreement": {
+    "iou_backscatter_vs_coherence": 0.29825952503667286,
+    "area_both_km2": 6.018400000000001,
+    "area_backscatter_km2": 4.328,
+    "area_coherence_km2": 9.832
+  },
+  "granules": {
+    "gcov_before": "NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001",
+    "gunw": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+    "gunw_ref": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001"
+  }
+}

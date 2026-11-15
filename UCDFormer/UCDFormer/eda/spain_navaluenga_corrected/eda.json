@@ -1,0 +1,61 @@
+{
+  "event": "spain_navaluenga_corrected",
+  "before": "2026-07-02T05:24:02+00:00",
+  "after": "2026-08-19T05:24:00+00:00",
+  "event_context": {
+    "anchor": "2026-07-22",
+    "status": "Official CEMS/EFFIS-mapped fire region; late-post acquisition after August 5 reference imagery",
+    "source": "https://mapping.emergency.copernicus.eu/activations/EMSR900/",
+    "note": "Corrected Navaluenga south AOI selected with independently mapped fire geometry, not just the town name. July 2/August 19 use same track/frame/CRID and near-real-time orbit class. The longer interval also includes non-fire seasonal/moisture changes. CEMS August 5 optical-derived burn polygons are contextual references, not exhaustive generic-change labels."
+  },
+  "brackets_anchor_date": true,
+  "same_day_after": false,
+  "bbox_wgs84": [
+    -4.7,
+    40.29,
+    -4.58,
+    40.38
+  ],
+  "channels": [
+    "HH",
+    "HV"
+  ],
+  "crs": "EPSG:32630",
+  "shape": [
+    509,
+    519
+  ],
+  "valid_fraction": 1.0,
+  "native_grid_reprojection": false,
+  "statistics": [
+    {
+      "polarization": "HH",
+      "shared_display_db": [
+        -14.226291084289551,
+        -0.7673287677764895
+      ],
+      "pre_median_db": -6.282758712768555,
+      "post_median_db": -5.7283430099487305,
+      "signed_median_db": 0.5082168579101562,
+      "absolute_median_db": 1.4386215209960938,
+      "absolute_p95_db": 4.337303638458252
+    },
+    {
+      "polarization": "HV",
+      "shared_display_db": [
+        -20.27842945098877,
+        -6.342936038970947
+      ],
+      "pre_median_db": -11.3008394241333,
+      "post_median_db": -11.516206741333008,
+      "signed_median_db": -0.23885059356689453,
+      "absolute_median_db": 1.5059995651245117,
+      "absolute_p95_db": 4.690765380859375
+    }
+  ],
+  "limitations": [
+    "Backscatter differences are observations, not verified disaster extent",
+    "Shared display clipping is for visualization, not threshold selection",
+    "Speckle/terrain/geometry/moisture can produce differences"
+  ]
+}

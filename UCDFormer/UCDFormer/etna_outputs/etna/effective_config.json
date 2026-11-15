@@ -1,0 +1,25 @@
+{
+  "study_id": "etna_20260723_20260816",
+  "before": "data/raw/NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001.h5",
+  "after": "data/raw/NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001.h5",
+  "bbox": [
+    14.943194446669025,
+    37.70508444125045,
+    15.056805553330975,
+    37.79491555874955
+  ],
+  "output": "outputs/etna",
+  "vgg": "weights/vgg16-397923af.pth",
+  "generator": "weights/gen_00794001.pt",
+  "seed": 123,
+  "max_updates": 2000,
+  "max_train_seconds": 7200,
+  "validate_every": 100,
+  "patience": 5,
+  "learning_rate": 0.0001,
+  "inference_patch": 256,
+  "inference_stride": 128,
+  "morphology_min_area_m2": 1600,
+  "adaptive_sigma_m": 1000,
+  "reference_labels": null
+}

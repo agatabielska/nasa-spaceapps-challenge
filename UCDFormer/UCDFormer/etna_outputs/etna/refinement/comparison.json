@@ -1,0 +1,54 @@
+{
+  "variants": {
+    "v1_final_rf": {
+      "changed_pixels": 28397,
+      "fraction_of_v1_support": 0.12134795930140634
+    },
+    "strict_changed_seeds": {
+      "changed_pixels": 160,
+      "fraction_of_v1_support": 0.0006837226991662856
+    },
+    "gaussian_adaptive_only": {
+      "changed_pixels": 160,
+      "fraction_of_v1_support": 0.0006837226991662856
+    },
+    "feature_local_residual_k3": {
+      "changed_pixels": 491,
+      "fraction_of_v1_support": 0.002098174033066539
+    },
+    "physical_unfiltered_local_k3": {
+      "changed_pixels": 269,
+      "fraction_of_v1_support": 0.0011495087879733177
+    },
+    "physical_3x3_local_k3": {
+      "changed_pixels": 1265,
+      "fraction_of_v1_support": 0.005405682590283446
+    },
+    "physical_3x3_local_k4": {
+      "changed_pixels": 487,
+      "fraction_of_v1_support": 0.002081080965587382
+    },
+    "rf_and_gaussian_support": {
+      "changed_pixels": 160,
+      "fraction_of_v1_support": 0.0006837226991662856
+    },
+    "rf_and_physical_local_support": {
+      "changed_pixels": 560,
+      "fraction_of_v1_support": 0.0023930294470819995
+    }
+  },
+  "model_updated": false,
+  "selected_final_variant": null,
+  "physical_score": "mean absolute per-polarization normalized difference (post-pre)/(post+pre)",
+  "threshold": "local median + k*1.4826*median-filtered absolute local residual; min residual .001; physical score floor .1",
+  "window_pixels": 31,
+  "window_meters": 620.0,
+  "physical_mean_filter_pixels": 3,
+  "caveats": [
+    "Local-residual statistic is a MAD proxy, not exact center-wise MAD or a calibrated significance test",
+    "No accuracy ranking without independent event/reference evidence",
+    "Large true changes can be absorbed into local background",
+    "Physical-filter score is a separate ablation, not denoised UCDFormer training",
+    "Mask intersection gates intentionally change the classifier semantics"
+  ]
+}

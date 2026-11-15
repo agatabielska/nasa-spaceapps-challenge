@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Original UCDFormer/RF",
+    "path": "outputs/etna",
+    "pixels": 28479,
+    "area_km2": 11.3916
+  },
+  {
+    "name": "Your preferred conservative result",
+    "path": "outputs/etna/refinement/conservative_candidate",
+    "pixels": 560,
+    "area_km2": 0.224
+  },
+  {
+    "name": "Separate v2 rerun: new pseudo-labels",
+    "path": "outputs/etna_v2",
+    "pixels": 2437,
+    "area_km2": 0.9748
+  }
+]

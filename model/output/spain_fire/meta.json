@@ -1,0 +1,53 @@
+{
+  "name": "spain_fire",
+  "bbox_lonlat": [
+    -5.05,
+    40.3,
+    -4.5,
+    40.6
+  ],
+  "event_date": "2026-07-22",
+  "polarization": "HVHV",
+  "mode": "download",
+  "before": {
+    "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_023_D_068_2005_DHDH_A_20260721T191744_20260721T191819_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_023_D_068_2005_DHDH_A_20260721T191744_20260721T191819_P05023_N_F_J_001.h5",
+    "config": "PR",
+    "track": "023",
+    "direction": "D",
+    "frame": "068",
+    "start": "2026-07-21 19:17:44+00:00",
+    "crid": "P05023"
+  },
+  "after": {
+    "url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001.h5",
+    "config": "PR",
+    "track": "023",
+    "direction": "D",
+    "frame": "068",
+    "start": "2026-08-26 19:17:42+00:00",
+    "crid": "P05023"
+  },
+  "shape": [
+    856,
+    1182
+  ],
+  "block": 2,
+  "pixel_m": 40.0,
+  "valid_fraction": 1.0,
+  "mean_db_before": -15.542158704326228,
+  "mean_db_after": -15.645446040202808,
+  "diff_abs_p98_dB": 2.91907953759013,
+  "thresh_dB": -2.0,
+  "area_decrease_km2": 76.6656,
+  "area_increase_km2": 49.964800000000004,
+  "files": [
+    "BEFORE.png",
+    "AFTER.png",
+    "DIFF_after_minus_before.png",
+    "CHANGE_overlay.png"
+  ],
+  "db_stretch": [
+    -24.523988127786577,
+    -7.999013900652001
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "method": "SAR log-change + Otsu",
+  "status": "complete",
+  "before": "NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001",
+  "after": "NISAR_L2_PR_GCOV_028_043_A_021_2005_DHDH_A_20260816T040828_20260816T040903_P05023_N_F_J_001",
+  "crs": "EPSG:32633",
+  "transform": [
+    20.0,
+    0.0,
+    495000.0,
+    0.0,
+    -20.0,
+    4183060.0
+  ],
+  "wgs84_bounds": [
+    14.943208469701148,
+    37.705083418292894,
+    15.056821823194243,
+    37.79490769415928
+  ],
+  "display_crs": "EPSG:4326",
+  "valid_pixels": 248999,
+  "valid_area_km2": 99.5996,
+  "changed_pixels": 69812,
+  "changed_area_km2": 27.9248,
+  "changed_fraction": 0.2803706038980076,
+  "details": {
+    "threshold": 0.8816215252953769,
+    "per_pol_scale_db": [
+      2.7895004749298096,
+      2.6631197929382324
+    ],
+    "training": "none"
+  },
+  "assets": {
+    "before": "before_wgs84.png",
+    "after": "after_wgs84.png",
+    "mask": "mask_wgs84.png",
+    "overlay": "overlay_wgs84.png"
+  },
+  "limitations": [
+    "No independent reference labels; accuracy not established",
+    "Change score is not a calibrated probability",
+    "Generic backscatter change does not establish a disaster category",
+    "Optical pretrained feature suitability for SAR remains unvalidated"
+  ],
+  "display_transform": [
+    0.00022722670698618959,
+    0.0,
+    14.943208469701148,
+    0.0,
+    -0.0001803700318602044,
+    37.79490769415928
+  ],
+  "display_shape": [
+    498,
+    500
+  ],
+  "display_grid": "native image aspect; non-square degree pixels"
+}

@@ -1,0 +1,6 @@
+{
+  "path": "refinement/conservative_candidate",
+  "selection_basis": "user visual preference",
+  "accuracy_validated": false,
+  "model_retrained": false
+}
