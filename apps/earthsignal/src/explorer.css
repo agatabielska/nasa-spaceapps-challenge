@@ -97,8 +97,8 @@
 .app .date-picker-anchor{position:relative;display:inline-flex;align-items:center}
 .app .filter-divider{width:1px;height:18px;margin:0 3px;background:rgba(143,214,255,.16);flex-shrink:0}
 .app .calendar-chip{--kind:#8fd6ff}
-.app .calendar-chip svg{color:#8fd6ff;opacity:.35;transition:opacity .15s ease,transform .15s ease,filter .15s ease}
-.app .calendar-chip:hover svg{opacity:.95;transform:scale(1.15)}
+.app .calendar-chip svg{color:#8fd6ff;opacity:1;transition:opacity .15s ease,transform .15s ease,filter .15s ease}
+.app .calendar-chip:hover svg{opacity:1;transform:scale(1.15)}
 .app .calendar-chip.active svg,.app .calendar-chip[aria-expanded=true] svg{opacity:1;filter:drop-shadow(0 0 6px rgba(143,214,255,.6))}
 .app .collapse-chip{margin-left:auto;color:var(--text-3);opacity:.6;transition:opacity .15s ease,transform .15s ease,color .15s ease}
 .app .collapse-chip:hover{opacity:1;color:var(--text);transform:scale(1.15)}
@@ -464,5 +464,6 @@
 .app .an-press strong{display:flex;align-items:center;gap:10px;font:800 20px/1.3 Manrope,sans-serif}
 .app .an-press strong svg{flex:none;color:var(--accent)}
 .app .an-press span{display:block;margin-top:6px;font-size:15px;line-height:1.5;color:var(--text-2)}
-/* The button that collapses the filter panel always looks the way it used to on hover: bright and slightly larger. */
-.app .collapse-chip{opacity:1;color:var(--text);transform:scale(1.15)}
+/* The collapse-filters button is always bright; hovering only enlarges it. */
+.app .collapse-chip{opacity:1;color:var(--text);transform:none}
+.app .collapse-chip:hover{transform:scale(1.15)}
