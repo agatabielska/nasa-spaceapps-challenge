@@ -62,6 +62,8 @@ useEffect(()=>{revision.current++;},[search,kinds,from,to,verified,viewOnly,boun
 const container=useRef<HTMLDivElement>(null),map=useRef<maplibregl.Map|null>(null),messagesEl=useRef<HTMLDivElement>(null);
 // Orbit results keep the order the assistant returned, so "the second one" matches what the user sees.
 // Documented events (catalogVerified) are prioritized first in the list.
+// The camera position is a dependency only while "in view only" is on: otherwise every map move would rebuild
+// the markers and make their icons blink.
 const filtered=useMemo(()=>{
   const list=filterEvents(events,search,kinds,from,to,verified,viewOnly?bounds:null);
   const sorted=[...list].sort((a,b)=>{
@@ -69,7 +71,7 @@ const filtered=useMemo(()=>{
     return b.date.localeCompare(a.date);
   });
   return orbitIds===null?sorted:sorted.filter(e=>orbitIds.includes(e.id)).sort((a,b)=>orbitIds.indexOf(a.id)-orbitIds.indexOf(b.id));
-},[events,search,kinds,from,to,verified,viewOnly,bounds,orbitIds]);
+},[events,search,kinds,from,to,verified,viewOnly,viewOnly?bounds:null,orbitIds]);
 const visible=filtered.filter(e=>inBounds(e.coordinates,bounds));
 // Padding measured from the visible overlays, so it follows the responsive layout and the UI text size.
 function overlayRect(selector:string){const e=container.current?.parentElement?.querySelector(selector);return e&&getComputedStyle(e).display!=='none'?e.getBoundingClientRect():null;}

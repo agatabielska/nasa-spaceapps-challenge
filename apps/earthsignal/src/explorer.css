@@ -470,3 +470,4 @@
 /* ?embed (used by /show2): only the brand, the globe and its markers. */
 .app.embed :is(.top-right,.sidebar,.reopen,.map-heading,.map-controls,.map-styles,.map-legend,.bottom-panel,.astronaut-widget,.map-status,.map-warning,.detail,.chat,.guide,.mobile-menu){display:none!important}
 .app.embed .map-marker{pointer-events:none}
+.app.embed .map-marker{animation:none!important}
