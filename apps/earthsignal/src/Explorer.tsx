@@ -175,7 +175,7 @@ return <div className="app" data-text={textSize}>
 <header className="topbar">
   <a className="brand" href="/" aria-label="EarthSignal, back to the journey"><span className="brand-logo" aria-hidden="true"/><span><b>EarthSignal</b><small>Explorer</small></span></a>
   <div className="top-right">
-    <a className="top-link" href="/#about">The journey <ArrowUpRight size={15} aria-hidden="true"/></a>
+    <a className="top-link" href="/">The journey <ArrowUpRight size={15} aria-hidden="true"/></a>
     <button className="icon-button mobile-menu" aria-label={sidebar?'Close search and filters':'Open search and filters'} aria-expanded={sidebar} onClick={()=>sidebar?setSidebar(false):openSidebar()}><Menu size={19}/></button>
     <button className="text-size" onClick={()=>setTextSize(textSizes[textSize].next)} aria-label={`Text size: ${textSizes[textSize].label}. Change text size`} title="Text size for presentations"><ALargeSmall size={18} aria-hidden="true"/><span>{textSizes[textSize].label}</span></button>
     <button className="icon-button" onClick={()=>setInfo(true)} aria-label="About EarthSignal, data and method" title="About, data and method"><Info size={18}/></button>
