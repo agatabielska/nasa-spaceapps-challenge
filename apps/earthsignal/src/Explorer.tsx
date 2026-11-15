@@ -136,7 +136,8 @@ useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')escape.curren
 function reset(){setOrbitIds(null);setSearch('');setKinds(allKinds);setFrom(DEFAULT_FROM);setTo(DEFAULT_TO);setVerified(false);setViewOnly(false);setCustomDates(false);setDateOpen(false);}
 /** Remember the camera and filters once, before the first step away from the overview. */
 function remember(){const m=map.current;if(snapshot.current||!m)return;const c=m.getCenter();snapshot.current={center:[c.lng,c.lat],zoom:m.getZoom(),search,kinds,from,to,verified,viewOnly,orbitIds};}
-function select(e:EventRecord){remember();setSelected(e);setGuide(-1);if(narrow()){setSidebar(false);setChat(false);}}
+// Clicking an event (marker or list row) shows its card, so the chat steps aside; events Orbit itself opens keep the chat.
+function select(e:EventRecord){remember();setSelected(e);setGuide(-1);setChat(false);if(narrow())setSidebar(false);}
 function closeSelected(){snapshot.current=null;setSelected(null);setGuide(-1);fitEvents(events,1100);}
 /** Back to the world: restore the camera and filters from before the event was opened. */
 function world(){closeSelected();}
