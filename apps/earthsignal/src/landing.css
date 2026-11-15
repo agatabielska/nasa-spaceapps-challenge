@@ -192,6 +192,10 @@ html:has(.landing){background:#030814;scroll-behavior:smooth;scroll-padding-top:
 .sp-orbit-astronaut svg{display:block;width:100%;height:auto}
 .sp-orbit-panel{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(14px,2vw,28px);width:min(980px,100%);min-height:136px;padding:22px clamp(18px,2.4vw,34px)}
 .sp-orbit-panel>i{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--event,var(--sp-accent));color:var(--sp-ink);transition:background .25s}
+.sp-orbit-stack{display:grid}
+.sp-orbit-stack>div{grid-area:1/1;visibility:hidden}
+.sp-orbit-stack>.on{visibility:visible}
+.sp-orbit-cta>div{align-self:center}
 .sp-orbit-count{display:block;font:700 14px Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--sp-text-3)}
 .sp-orbit-panel h3{font-size:max(22px,1.35em);font-weight:800;letter-spacing:-.02em}
 .sp-orbit-panel p{color:var(--sp-text-2)}

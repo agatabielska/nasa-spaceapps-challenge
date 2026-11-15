@@ -214,8 +214,12 @@ function OrbitStage({paused,reduced}:{paused:boolean;reduced:boolean}){
     </div>
     <div className="sp-orbit-panel sp-frame" style={{'--event':current.color} as CSSProperties} aria-live="polite">
       <i><CurrentIcon size={26} aria-hidden="true"/></i>
-      <div><span className="sp-orbit-count">Orbit points to {active+1} of {detected.length}</span><h3>{current.label}</h3><p>{current.text}</p></div>
-      {current.target?<a className="sp-link" href={`#${current.target}`}>{current.cta} <ArrowDown size={18} aria-hidden="true"/></a>:<span className="sp-soon">{current.cta}</span>}
+      {/* Every event's text sits in the same grid cell and only the current one is visible, so the panel always has
+          the height of the longest description and the orbit above it never resizes when the astronaut moves on. */}
+      <div className="sp-orbit-stack">{detected.map((event,i)=><div key={event.id} className={i===active?'on':undefined}>
+        <span className="sp-orbit-count">Orbit points to {i+1} of {detected.length}</span><h3>{event.label}</h3><p>{event.text}</p></div>)}</div>
+      <div className="sp-orbit-stack sp-orbit-cta">{detected.map((event,i)=><div key={event.id} className={i===active?'on':undefined}>
+        {event.target?<a className="sp-link" href={`#${event.target}`}>{event.cta} <ArrowDown size={18} aria-hidden="true"/></a>:<span className="sp-soon">{event.cta}</span>}</div>)}</div>
     </div>
   </div>;
 }
