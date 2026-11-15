@@ -35,7 +35,7 @@ uv run python analyze_case.py --only nepal_flood   # offline; masks, pictures an
 uv run python make_map3d.py --only nepal_flood     # writes output/nepal_flood/map3d.html
 ```
 
-Results that are already computed are in `model/output/<case>/` and can be opened without running anything.
+Results that are already computed are in `model/output/<case>/` and can be opened without running anything. Details: [model/README.md](model/README.md).
 
 ### UCDFormer
 
