@@ -1,0 +1,72 @@
+{
+  "nepal_flood": {
+    "kind": "flood",
+    "title": "Rasuwa glacier-collapse flood, Nepal",
+    "event_date": "2026-08-26",
+    "bbox": [
+      85.22,
+      28.05,
+      85.6,
+      28.42
+    ],
+    "note": "Glacier collapse north of the Langtang range sent a debris flood down the Bhote Koshi / Trishuli valley (Timure, Syabrubesi). Track 098 ascending, frame 016, 12-day pair across the event plus one quiet 12-day pair as coherence reference.",
+    "gcov_before": "NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_029_098_A_016_4005_DHDH_A_20260831T233918_20260831T233952_P05023_N_F_J_001",
+    "gunw": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+    "gunw_ref": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001"
+  },
+  "etna": {
+    "kind": "volcano",
+    "title": "Etna eruption, August 2026",
+    "event_date": "2026-08-06",
+    "bbox": [
+      14.85,
+      37.6,
+      15.2,
+      37.9
+    ],
+    "note": "Main eruptive phase 6-21 Aug 2026 (lava towards Valle del Leone / Valle del Bove, new vent 10 Aug). GCOV pair brackets the whole eruption; GUNW pair spans its onset.",
+    "gcov_before": "NISAR_L2_PR_GCOV_026_043_A_021_2005_DHDH_A_20260723T040829_20260723T040904_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_029_043_A_021_2005_DHDH_A_20260828T040828_20260828T040903_P05023_N_F_J_001",
+    "gunw": "NISAR_L2_PR_GUNW_026_043_A_021_028_2000_SH_20260723T040829_20260723T040904_20260816T040828_20260816T040903_P05023_N_F_J_001",
+    "gunw_ref": "NISAR_L2_PR_GUNW_024_043_A_021_026_2000_SH_20260629T040831_20260629T040905_20260723T040829_20260723T040904_P05023_N_F_J_001"
+  },
+  "spain_fire_v2": {
+    "kind": "fire",
+    "title": "Avila wildfire near Burgohondo, Spain",
+    "event_date": "2026-07-22",
+    "bbox": [
+      -5.05,
+      40.3,
+      -4.5,
+      40.6
+    ],
+    "note": "Same granules as the first nisar_before_after.py run (track 023 descending, frame 068). Sentinel-2 dNBR is the ground truth (validate_fire.py).",
+    "gcov_before": "NISAR_L2_PR_GCOV_026_023_D_068_2005_DHDH_A_20260721T191744_20260721T191819_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_029_023_D_068_2005_DHDH_A_20260826T191742_20260826T191817_P05023_N_F_J_001"
+  },
+  "jakobshavn_glacier": {
+    "kind": "glacier",
+    "title": "Jakobshavn Glacier motion, Greenland",
+    "bbox": [
+      -50.6,
+      68.9,
+      -49.2,
+      69.4
+    ],
+    "event_date": "2026-10-04",
+    "goff_ascending_early": "NISAR_L2_PR_GOFF_023_059_A_037_024_7700_SH_20260618T065554_20260618T065631_20260630T065554_20260630T065630_P05023_N_P_J_001",
+    "goff_ascending_late": "NISAR_L2_PR_GOFF_032_059_A_037_033_7700_SH_20261004T065551_20261004T065628_20261016T065551_20261016T065628_P05023_N_P_J_001",
+    "goff_descending_early": "NISAR_L2_PR_GOFF_023_069_D_053_024_7700_SH_20260618T234345_20260618T234422_20260630T234344_20260630T234421_P05023_N_P_J_001",
+    "goff_descending_late": "NISAR_L2_PR_GOFF_032_069_D_053_033_7700_SH_20261004T234341_20261004T234418_20261016T234341_20261016T234418_P05023_N_P_J_001",
+    "gcov_ascending_early": "NISAR_L2_PR_GCOV_023_059_A_037_7700_SHNA_A_20260618T065554_20260618T065631_P05023_N_P_J_001",
+    "gcov_ascending_late": "NISAR_L2_PR_GCOV_032_059_A_037_7700_SHNA_A_20261004T065551_20261004T065628_P05023_N_P_J_001"
+  },
+  "brunt_ice_shelf": {
+    "kind": "ice_shelf",
+    "bbox": [-28.5, -75.8, -25.5, -74.8],
+    "gcov_before": "NISAR_L2_PR_GCOV_023_109_D_126_0005_NASV_A_20260621T190039_20260621T190115_P05023_N_F_J_001",
+    "gcov_after": "NISAR_L2_PR_GCOV_033_109_D_126_0005_NASV_A_20261019T190035_20261019T190112_P05023_N_F_J_001",
+    "gcov_middle": "NISAR_L2_PR_GCOV_028_109_D_126_0005_NASV_A_20260820T190035_20260820T190112_P05023_N_F_J_001"
+}
+}
