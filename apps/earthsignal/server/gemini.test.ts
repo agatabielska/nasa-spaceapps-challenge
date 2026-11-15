@@ -155,3 +155,31 @@ test('network errors are sanitised and cancellation is passed through to Google'
   await assert.rejects(waiting.complete(waiting.model,[],tools,controller.signal),{code:'CANCELLED'});
   assert.equal(received!.aborted,true);
 });
+
+test('Flash-Lite uses minimal thinking while the Flash profile stays on LOW',async()=>{
+  let body:any;
+  const model=new Gemini({...env,GEMINI_MODEL:'gemini-3.5-flash-lite'},async(_url,init)=>{
+    body=JSON.parse(init!.body as string);return Response.json(answer('Gotowe.'));
+  });
+  await model.complete(model.model,[{role:'user',content:'Etna'}],tools);
+  assert.equal(body.generationConfig.thinkingConfig.thinkingLevel,'MINIMAL');
+});
+
+test('deadline diagnostics identify the blocked stage without exposing prompts or credentials',async t=>{
+  const logs:string[]=[];t.mock.method(console,'warn',(line:string)=>logs.push(line));
+  assert.throws(()=>new Gemini({...env,GEMINI_REQUEST_TIMEOUT_MS:'0'}),/GEMINI_REQUEST_TIMEOUT_MS/);
+  assert.throws(()=>new Gemini({...env,GEMINI_REQUEST_TIMEOUT_MS:'600000'}),/GEMINI_REQUEST_TIMEOUT_MS/);
+  const model=new Gemini({...env,GEMINI_REQUEST_TIMEOUT_MS:'1000'},async(_url,init)=>{
+    // Keep the event loop alive like a real socket while the deadline signal fires.
+    await new Promise<void>((resolve,reject)=>{
+      const timer=setTimeout(resolve,2000);
+      init!.signal!.addEventListener('abort',()=>{clearTimeout(timer);reject(init!.signal!.reason);},{once:true});
+    });
+    return Response.json(answer('too late'));
+  });
+  await assert.rejects(model.complete(model.model,[{role:'user',content:'private question'}],tools,undefined,'required'),{code:'MODEL_TIMEOUT'});
+  const entry=JSON.parse(logs[0]);
+  assert.equal(entry.code,'MODEL_TIMEOUT');assert.equal(entry.stage,'tool_selection');
+  assert.equal(entry.phase,'waiting_headers');assert.ok(entry.elapsedMs>=900);
+  assert.ok(!logs[0].includes(env.GEMINI_API_KEY));assert.ok(!logs[0].includes('private question'));
+});

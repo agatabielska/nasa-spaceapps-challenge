@@ -47,10 +47,13 @@ function contentsFor(messages:Message[]){
 export class Gemini implements OrbitModel {
   private key:string;
   private transport:typeof fetch;
+  private timeoutMs:number;
   readonly model:string;
   constructor(env:NodeJS.ProcessEnv=process.env,transport:typeof fetch=fetch){
     this.transport=transport;
     this.key=(env.GEMINI_API_KEY??'').trim();
+    this.timeoutMs=Number(env.GEMINI_REQUEST_TIMEOUT_MS??45000);
+    if(!Number.isInteger(this.timeoutMs)||this.timeoutMs<1000||this.timeoutMs>45000)throw new Error('GEMINI_REQUEST_TIMEOUT_MS must be an integer from 1000 to 45000');
     this.model=(env.GEMINI_MODEL??'gemini-3.8-flash').replace(/^models\//,'').trim();
     if(!/^gemini-[a-z0-9.-]+$/.test(this.model))throw new Error('GEMINI_MODEL must be a Gemini model ID, for example gemini-3.8-flash');
   }
@@ -60,9 +63,10 @@ export class Gemini implements OrbitModel {
     return {available:!!this.key,model:this.key?this.model:null,models:this.key?[this.model]:[],
       message:this.key?'Orbit configured; API access is checked when answering.':'Set GEMINI_API_KEY on the server to enable Orbit.'};
   }
-  async request(body:unknown,signal?:AbortSignal):Promise<unknown>{
+  async request(body:unknown,signal?:AbortSignal,stage:'tool_selection'|'response'='response'):Promise<unknown>{
     if(!this.key)throw new ServiceError(503,'MODEL_AUTH','Orbit is not configured. Please contact the site owner.');
-    const limit=AbortSignal.timeout(25000);
+    const limit=AbortSignal.timeout(this.timeoutMs),started=Date.now();
+    let phase:'waiting_headers'|'reading_body'='waiting_headers',upstreamStatus:number|undefined;
     try{
       // A fixed Google endpoint prevents accidentally sending the key to another server.
       // Never include credentials in URLs, logs or upstream error messages.
@@ -70,6 +74,7 @@ export class Gemini implements OrbitModel {
         method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':this.key},
         body:JSON.stringify(body),signal:signal?AbortSignal.any([signal,limit]):limit,redirect:'error',
       });
+      upstreamStatus=response.status;phase='reading_body';
       if(!response.ok){
         if(response.status===401||response.status===403)throw new ServiceError(503,'MODEL_AUTH','Orbit cannot connect to its AI service. Please contact the site owner.');
         if(response.status===429)throw new ServiceError(429,'MODEL_RATE_LIMIT','Orbit is busy or its usage limit has been reached. Please try again later.');
@@ -83,9 +88,12 @@ export class Gemini implements OrbitModel {
       }
     }catch(error){
       if(signal?.aborted)throw new ServiceError(499,'CANCELLED','The request was cancelled.');
-      if(limit.aborted)throw new ServiceError(504,'MODEL_TIMEOUT','Orbit took too long to answer. Please try again.');
-      if(error instanceof ServiceError)throw error;
-      throw new ServiceError(503,'MODEL_UNREACHABLE','Orbit is temporarily unavailable. Please try again shortly.');
+      const failure=limit.aborted?new ServiceError(504,'MODEL_TIMEOUT','Orbit took too long to answer. Please try again.'):
+        error instanceof ServiceError?error:new ServiceError(503,'MODEL_UNREACHABLE','Orbit is temporarily unavailable. Please try again shortly.');
+      // Only fixed fields: upstream messages, credentials and conversation content are never logged.
+      console.warn(JSON.stringify({event:'orbit.model_failure',provider:'gemini',model:this.model,
+        code:failure.code,stage,phase,elapsedMs:Date.now()-started,upstreamStatus}));
+      throw failure;
     }
   }
   async complete(model:string,messages:Message[],tools:unknown[],signal?:AbortSignal,toolChoice:'auto'|'required'='auto'):Promise<Message>{
@@ -96,8 +104,10 @@ export class Gemini implements OrbitModel {
       systemInstruction:{parts:[{text:messages.filter(m=>m.role==='system').map(m=>m.content??'').join('\n')}]},
       contents:contentsFor(messages),tools:[{functionDeclarations:declarations}],
       toolConfig:{functionCallingConfig:{mode:toolChoice==='required'?'ANY':'AUTO'}},
-      generationConfig:{temperature:1,maxOutputTokens:2048,...(/^gemini-[34]/.test(model)?{thinkingConfig:{thinkingLevel:'LOW'}}:{})},
-    },signal);
+      generationConfig:{temperature:1,maxOutputTokens:2048,...(/^gemini-[34]/.test(model)?{
+        thinkingConfig:{thinkingLevel:/^gemini-3\.(?:1|5)-flash-lite$/.test(model)?'MINIMAL':'LOW'},
+      }:{})},
+    },signal,toolChoice==='required'?'tool_selection':'response');
     const parsed=responseSchema.safeParse(raw);
     if(!parsed.success)throw new ServiceError(502,'MODEL_OUTPUT','Orbit received an invalid answer. Please try again.');
     const candidate=parsed.data.candidates?.[0];
