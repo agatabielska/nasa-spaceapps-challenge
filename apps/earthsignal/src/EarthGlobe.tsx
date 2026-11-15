@@ -1,4 +1,4 @@
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useRef,useState,type MutableRefObject} from 'react';
 import './earth-globe.css';
 
 // NASA Blue Marble is a photographic background, not a NISAR data layer. The shader repaints it as an
@@ -14,6 +14,7 @@ const fragmentSource=`
   varying vec2 v_position;
   uniform sampler2D u_earth;
   uniform float u_rotation;
+  uniform float u_tilt;
   uniform float u_time;
   const float PI=3.14159265359;
   const vec2 TEXEL=vec2(1.0/2048.0,1.0/1024.0);
@@ -47,7 +48,7 @@ const fragmentSource=`
       return;
     }
     vec3 normal=vec3(p,sqrt(max(0.0,1.0-dot(p,p))));
-    float tilt=0.29;
+    float tilt=u_tilt;
     vec3 world=vec3(normal.x,normal.y*cos(tilt)+normal.z*sin(tilt),-normal.y*sin(tilt)+normal.z*cos(tilt));
     float longitude=atan(world.x,world.z)+u_rotation;
     float latitude=asin(clamp(world.y,-1.0,1.0));
@@ -87,7 +88,10 @@ const fragmentSource=`
   }
 `;
 
-export default function EarthGlobe({paused=false}:{paused?:boolean}){
+// The longitude and latitude (radians) at the centre of the disc. Pass a view to steer the globe from outside
+// (the camera then decides where it looks); without one it turns slowly on its own, tilted 0.29 rad.
+export type GlobeView={lon:number;lat:number};
+export default function EarthGlobe({paused=false,view}:{paused?:boolean;view?:MutableRefObject<GlobeView>}){
   const canvas=useRef<HTMLCanvasElement>(null);
   const pausedRef=useRef(paused);
   const refresh=useRef<()=>void>(()=>{});
@@ -124,7 +128,7 @@ export default function EarthGlobe({paused=false}:{paused?:boolean}){
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
       gl.uniform1i(gl.getUniformLocation(program,'u_earth'),0);
     }catch{release();return;}
-    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),timeUniform=gl.getUniformLocation(program,'u_time');
+    const rotationUniform=gl.getUniformLocation(program,'u_rotation'),tiltUniform=gl.getUniformLocation(program,'u_tilt'),timeUniform=gl.getUniformLocation(program,'u_time');
     let clock=0;
     const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
     const draw=(time:number)=>{
@@ -135,8 +139,9 @@ export default function EarthGlobe({paused=false}:{paused?:boolean}){
       lastTime=time;
       gl.viewport(0,0,element.width,element.height);
       gl.uniform1f(timeUniform,clock);
-      gl.uniform1f(rotationUniform,rotation);gl.drawArrays(gl.TRIANGLES,0,6);
-      if(!pausedRef.current&&!reduced.matches)frame=requestAnimationFrame(draw);
+      gl.uniform1f(rotationUniform,view?view.current.lon:rotation);gl.uniform1f(tiltUniform,view?view.current.lat:0.29);gl.drawArrays(gl.TRIANGLES,0,6);
+      // A steered globe keeps drawing while visible, because the camera can move even when motion is paused.
+      if(view||(!pausedRef.current&&!reduced.matches))frame=requestAnimationFrame(draw);
     };
     const schedule=()=>{cancelAnimationFrame(frame);frame=0;lastTime=0;if(!disposed)draw(performance.now());};
     refresh.current=schedule;

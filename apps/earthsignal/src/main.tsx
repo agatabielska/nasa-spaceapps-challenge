@@ -1,8 +1,10 @@
 import {lazy,Suspense} from 'react';
 import {createRoot} from 'react-dom/client';
 import './tokens.css';
-import {EXPLORER_PATH} from './routes';
+import {ABOUT_VARIANTS_PATH,EXPLORER_PATH} from './routes';
 const Explorer=lazy(()=>import('./Explorer'));
 const Landing=lazy(()=>import('./Landing'));
-const exploring=window.location.pathname.replace(/\/$/,'')===EXPLORER_PATH;
-createRoot(document.getElementById('root')!).render(<Suspense fallback={<div className="page-loading" role="status">Opening EarthSignal…</div>}>{exploring?<Explorer/>:<Landing/>}</Suspense>);
+const AboutVariants=lazy(()=>import('./AboutVariants'));
+const path=window.location.pathname.replace(/\/$/,'');
+const exploring=path===EXPLORER_PATH;
+createRoot(document.getElementById('root')!).render(<Suspense fallback={<div className="page-loading" role="status">Opening EarthSignal…</div>}>{exploring?<Explorer/>:path===ABOUT_VARIANTS_PATH?<AboutVariants/>:<Landing/>}</Suspense>);
